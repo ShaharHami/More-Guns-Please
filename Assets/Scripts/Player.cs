@@ -5,21 +5,29 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Joystick joystick;
+    [SerializeField] ParticleSystem shots;
     [SerializeField] float speed = 1f;
     [SerializeField] float tilt = 1f;
     void Start()
     {
-        
+
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Flight();
-        Tilt();
+        Roll();
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            print(touch);
+            if (touch.phase == TouchPhase.Began)
+            {
+                Shoot(true);
+            } 
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                Shoot(false);
+            }
         }
     }
 
@@ -32,11 +40,22 @@ public class Player : MonoBehaviour
                 );
     }
 
-    private void Tilt()
+    private void Roll()
     {
         Vector3 rot = transform.rotation.eulerAngles;
         rot.z = joystick.Direction.x * -tilt * Time.deltaTime;
         transform.rotation = Quaternion.Euler(rot);
-        print(transform.rotation.eulerAngles);
+    }
+
+    private void Shoot(bool shoot)
+    {
+        if (shoot)
+        {
+            shots.Play();
+        }
+        else
+        {
+            shots.Stop();
+        }
     }
 }
