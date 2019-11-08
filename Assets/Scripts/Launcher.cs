@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviour
 {
-    [SerializeField] private Rocket rocket;
+    [SerializeField] private EventCallbacks.Rocket rocket;
     [SerializeField] private float speed = 100f;
     private GameObject launchedRocket;
     private Transform closestEnemy;
@@ -14,11 +14,20 @@ public class Launcher : MonoBehaviour
         distance = 0;
         if (launchedRocket == null)
         {
-            Enemy[] enemies = FindObjectsOfType<Enemy>();
-            if (enemies[0] != null)
+            launchedRocket = Instantiate(rocket.gameObject, transform.position, Quaternion.identity);
+            EventCallbacks.Rocket rocketComponent = launchedRocket.GetComponent<EventCallbacks.Rocket>();
+            GetTarget(rocketComponent);
+        }
+    }
+
+    public void GetTarget(EventCallbacks.Rocket rocket)
+    {
+        EventCallbacks.Enemy[] enemies = FindObjectsOfType<EventCallbacks.Enemy>();
+        if (enemies.Length > 0)
+        {
+            for (int i = 0; i < enemies.Length; i++)
             {
-                // closestEnemy = enemies[0].transform;
-                for (int i = 0; i < enemies.Length; i++)
+                if (enemies[i].targetable)
                 {
                     float enemyDistance = (enemies[i].transform.position - transform.position).sqrMagnitude;
                     if (i == 0)
@@ -30,14 +39,29 @@ public class Launcher : MonoBehaviour
                         distance = enemyDistance;
                         closestEnemy = enemies[i].transform;
                     }
-                    if (i == enemies.Length-1)
+                    if (i == enemies.Length - 1)
                     {
-                        launchedRocket = Instantiate(rocket.gameObject, transform.position, Quaternion.identity);
-                        launchedRocket.GetComponent<Rocket>().target = closestEnemy;
+                        if (enemies.Length == 1)
+                        {
+                            closestEnemy = enemies[0].transform;
+                            closestEnemy.GetComponent<EventCallbacks.Enemy>().targetable = true;
+                        }
+                        else if (closestEnemy == null || !closestEnemy.GetComponent<EventCallbacks.Enemy>().targetable)
+                        {
+                            closestEnemy = enemies[Random.Range(0, i)].transform;
+                        }
+                        else
+                        {
+                            closestEnemy.GetComponent<EventCallbacks.Enemy>().targetable = false;
+                        }
+                        rocket.target = closestEnemy;
                     }
                 }
-                Destroy(launchedRocket, 2f);
             }
+        }
+        else
+        {
+            rocket.target = rocket.initialTarget;
         }
     }
 }

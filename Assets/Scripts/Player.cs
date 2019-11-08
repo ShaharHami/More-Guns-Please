@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private Vector2 screenBounds;
     private float objectWidth;
     private float objectHeight;
+    private string activeShot;
 
     void Start()
     {
@@ -30,9 +31,17 @@ public class Player : MonoBehaviour
         {
             minEngineScaleZ = engines[0].transform.localScale.z;
         }
+        activeShot = "Lasers";
         foreach (Shot shot in shots)
         {
-            shot.SetLevel(0);
+            if (shot.type != activeShot)
+            {
+                shot.SetInactive();
+            }
+            else
+            {
+                shot.SetLevel(0);
+            }
         }
     }
 
@@ -63,7 +72,10 @@ public class Player : MonoBehaviour
         {
             foreach (Shot shot in shots)
             {
-                shot.LevelUp();
+                if (shot.type == activeShot)
+                {
+                    shot.LevelUp();
+                }
             }
         }
     }
@@ -77,7 +89,7 @@ public class Player : MonoBehaviour
                 );
 
         Vector3 pos = transform.position + _speed;
-        pos.x = Mathf.Clamp(pos.x + _speed.x, -screenBounds.x / 7 + objectWidth, screenBounds.x / 7 - objectWidth);
+        pos.x = Mathf.Clamp(pos.x + _speed.x, -screenBounds.x / 7 + objectWidth, screenBounds.x / 7 - objectWidth); //TODO: this is bugging me, Remove hardcoded values.
         pos.z = Mathf.Clamp(pos.z + _speed.z, screenBounds.y / 10 + objectHeight * 2, -screenBounds.y / 10 - objectHeight * 2);
         transform.position = pos;
     }
@@ -101,7 +113,6 @@ public class Player : MonoBehaviour
         _tilt = transform.rotation.eulerAngles;
         _tilt.z = joystick.Direction.x * -tilt * Time.deltaTime;
         transform.rotation = Quaternion.Euler(_tilt);
-
     }
 
     private void EaseOut()

@@ -8,17 +8,18 @@ public class Shot
     public string type;
     public int level;
     public GameObject[] shotLevelTransforms;
-
     public void LevelUp()
     {
         if (level < shotLevelTransforms.Length)
         {
+            
             level++;
             SetLevel(level);
         }
     }
-    public void SetLevel(int level)
+    public void SetLevel(int manualLevel)
     {
+        level = manualLevel;
         for (int i = 0; i < shotLevelTransforms.Length; i++)
         {
             if (i <= level)
@@ -32,6 +33,14 @@ public class Shot
             {
                 shotLevelTransforms[i].SetActive(false);
             }
+        }
+    }
+
+    public void SetInactive()
+    {
+        foreach (GameObject obj in shotLevelTransforms)
+        {
+            obj.SetActive(false);
         }
     }
 }
