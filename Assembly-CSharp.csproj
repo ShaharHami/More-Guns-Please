@@ -51,7 +51,13 @@
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
+     <Compile Include="Assets\Scripts\Enemy.cs" />
+     <Compile Include="Assets\Scripts\Lasers.cs" />
+     <Compile Include="Assets\Scripts\Launcher.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\Rocket.cs" />
+     <Compile Include="Assets\Scripts\Rockets.cs" />
+     <Compile Include="Assets\Scripts\Shot.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>/Users/shacharhami/More Guns Please/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
