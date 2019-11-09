@@ -10,8 +10,9 @@ namespace EventCallbacks
         public Transform initialTarget;
         [SerializeField] private float speed = 100f;
         [SerializeField] private float life = 2f;
-        private Launcher launcher;
+        [HideInInspector] public Launcher launcher;
         Vector3 direction;
+        private Explosions explosions;
         void Awake()
         {
             initialTarget = target;
@@ -19,31 +20,37 @@ namespace EventCallbacks
         private void Start()
         {
             Invoke("Explode", life);
-            launcher = FindObjectOfType<Launcher>();
+            launcher.GetTarget(this);
+            explosions = FindObjectOfType<Explosions>();
         }
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
-            if (other.collider.GetComponent<Enemy>() != null)
+            if (other.GetComponent<Enemy>() != null)
             {
                 Explode();
             }
         }
-
-        private void FixedUpdate()
+        void Update()
         {
-
-            if (target != null)
+            if (target == null)
+            {
+                target = initialTarget;
+                launcher.GetTarget(this);
+                return;
+            }
+            else
             {
                 direction = target.position - transform.position;
                 direction.y = 0;
                 direction.Normalize();
                 transform.LookAt(target);
             }
-            else
-            {
-                launcher.GetTarget(this);
-            }
-            transform.position += direction * speed * Time.deltaTime;
+        }
+        private void FixedUpdate()
+        {
+            Vector3 motion = direction * speed * Time.deltaTime;
+            motion.y = 0;
+            transform.position += motion;
         }
 
         private void Explode()
@@ -53,10 +60,10 @@ namespace EventCallbacks
                 MissleHitEvent missileHit = new MissleHitEvent();
                 missileHit.Description = "Unit " + gameObject.name + " has hit ";
                 missileHit.UnitGO = target.gameObject;
-                missileHit.damage = Random.Range(0, 5); //TODO: get rocket damage from central data manager
+                missileHit.damage = Random.Range(1, 5); //TODO: get rocket damage from central data manager
                 missileHit.FireEvent();
             }
-
+            explosions.Explode("Missile Hit", transform.position, 1f);
             foreach (Transform child in transform)
             {
                 GameObject.Destroy(child.gameObject);

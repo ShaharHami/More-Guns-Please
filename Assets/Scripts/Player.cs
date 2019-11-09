@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public bool cheat;
     public Joystick joystick;
+    public int playerHealth = 100;
     [SerializeField] Shot[] shots;
     [SerializeField] ParticleSystem[] engines;
     private float minEngineScaleZ;
@@ -31,7 +32,10 @@ public class Player : MonoBehaviour
         {
             minEngineScaleZ = engines[0].transform.localScale.z;
         }
+        EventCallbacks.EnemyShotHit.RegisterListener(OnDamage);
+        // remove this
         activeShot = "Lasers";
+        // yes that
         foreach (Shot shot in shots)
         {
             if (shot.type != activeShot)
@@ -89,8 +93,8 @@ public class Player : MonoBehaviour
                 );
 
         Vector3 pos = transform.position + _speed;
-        pos.x = Mathf.Clamp(pos.x + _speed.x, -screenBounds.x / 7 + objectWidth, screenBounds.x / 7 - objectWidth); //TODO: this is bugging me, Remove hardcoded values.
-        pos.z = Mathf.Clamp(pos.z + _speed.z, screenBounds.y / 10 + objectHeight * 2, -screenBounds.y / 10 - objectHeight * 2);
+        pos.x = Mathf.Clamp(pos.x + _speed.x, -screenBounds.x / 7, screenBounds.x / 7); //TODO: this is bugging me, Remove hardcoded values.
+        pos.z = Mathf.Clamp(pos.z + _speed.z, screenBounds.y / 10, -screenBounds.y / 10);
         transform.position = pos;
     }
 
@@ -126,4 +130,23 @@ public class Player : MonoBehaviour
             if (_tilt.sqrMagnitude < 0.01f * 0.01f) _tilt = Vector3.zero;
         }
     }
+    private void OnDamage(EventCallbacks.EnemyShotHit hit)
+    {
+        print ("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
+    }
+    private void Damage(int damage)
+    {
+        print("Player dies");
+    }
+    void OnDestroy()
+    {
+        EventCallbacks.EnemyShotHit.UnregisterListener(OnDamage);
+    }
+    private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "Enemy")
+            {
+                Damage(playerHealth);
+            }
+        }
 }

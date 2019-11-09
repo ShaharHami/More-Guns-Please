@@ -5,7 +5,6 @@ using UnityEngine;
 public class Launcher : MonoBehaviour
 {
     [SerializeField] private EventCallbacks.Rocket rocket;
-    [SerializeField] private float speed = 100f;
     private GameObject launchedRocket;
     private Transform closestEnemy;
     float distance;
@@ -16,13 +15,15 @@ public class Launcher : MonoBehaviour
         {
             launchedRocket = Instantiate(rocket.gameObject, transform.position, Quaternion.identity);
             EventCallbacks.Rocket rocketComponent = launchedRocket.GetComponent<EventCallbacks.Rocket>();
-            GetTarget(rocketComponent);
+            rocketComponent.launcher = this;
+            // GetTarget(rocketComponent);
         }
     }
 
     public void GetTarget(EventCallbacks.Rocket rocket)
     {
         EventCallbacks.Enemy[] enemies = FindObjectsOfType<EventCallbacks.Enemy>();
+        Transform target;
         if (enemies.Length > 0)
         {
             for (int i = 0; i < enemies.Length; i++)
@@ -54,14 +55,11 @@ public class Launcher : MonoBehaviour
                         {
                             closestEnemy.GetComponent<EventCallbacks.Enemy>().targetable = false;
                         }
-                        rocket.target = closestEnemy;
+                        target = closestEnemy;
+                        rocket.target = target;
                     }
                 }
             }
-        }
-        else
-        {
-            rocket.target = rocket.initialTarget;
         }
     }
 }

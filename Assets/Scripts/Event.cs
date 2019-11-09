@@ -38,4 +38,9 @@ namespace EventCallbacks
         public int damage;
         public GameObject UnitGO;
     }
+    public class EnemyShotHit : Event<EnemyShotHit>
+    {
+        public int damage;
+        public GameObject UnitGO;
+    }
 }
