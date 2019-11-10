@@ -57,19 +57,26 @@ public class Player : MonoBehaviour
             Flight();
             Roll();
             Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                Shoot(true);
+            }
             if (touch.phase == TouchPhase.Ended)
             {
                 EaseOut();
+                Shoot(false);
             }
         }
         else if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
         {
             Flight();
             Roll();
+            Shoot(true);
         }
         else
         {
             EaseOut();
+            Shoot(false);
         }
         // CHEAT SETTINGS
         if (cheat && Input.GetKeyDown(KeyCode.L))
@@ -132,21 +139,28 @@ public class Player : MonoBehaviour
     }
     private void OnDamage(EventCallbacks.EnemyShotHit hit)
     {
-        print ("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
+        // print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
     }
     private void Damage(int damage)
     {
-        print("Player dies");
+        // print("Player hit");
     }
     void OnDestroy()
     {
         EventCallbacks.EnemyShotHit.UnregisterListener(OnDamage);
     }
     private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy")
         {
-            if (other.gameObject.tag == "Enemy")
-            {
-                Damage(playerHealth);
-            }
+            Damage(playerHealth);
         }
+    }
+    private void Shoot(bool fire)
+    {
+        EventCallbacks.FireWeapon fireWeaponEvent = new EventCallbacks.FireWeapon();
+        fireWeaponEvent.Description = "Fire weapon: " + fire;
+        fireWeaponEvent.fire = fire;
+        fireWeaponEvent.FireEvent();
+    }
 }

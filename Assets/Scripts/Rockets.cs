@@ -5,35 +5,17 @@ using UnityEngine;
 public class Rockets : MonoBehaviour
 {
     [SerializeField] private Launcher[] rocketLaunchers;
-    void Update()
+    private void Start()
     {
-        // TODO: replace with event from main player script
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                Shoot(true);
-
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                Shoot(false);
-            }
-        }
-        else if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
-        {
-            Shoot(true);
-        }
-        else
-        {
-            Shoot(false);
-        }
+        EventCallbacks.FireWeapon.RegisterListener(Shoot);
     }
-
-    private void Shoot(bool shoot)
+    private void OnDestroy()
     {
-        if (shoot)
+        EventCallbacks.FireWeapon.UnregisterListener(Shoot);
+    }
+    private void Shoot(EventCallbacks.FireWeapon fireWeapon)
+    {
+        if (fireWeapon.fire)
         {
             foreach (Launcher launcher in rocketLaunchers)
             {

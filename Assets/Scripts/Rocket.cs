@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EventCallbacks
 {
-    public class Rocket : MonoBehaviour
+    public class Rocket : MonoBehaviour, IpooledObject
     {
         public Transform target;
         public Transform initialTarget;
@@ -19,17 +19,29 @@ namespace EventCallbacks
         }
         private void Start()
         {
-            Invoke("Explode", life);
+            // OnObjectSpawn();
+            // Invoke("Explode", life);
             launcher.GetTarget(this);
             explosions = FindObjectOfType<Explosions>();
         }
+        private void OnEnable()
+        {
+            // Invoke("Explode", life);
+        }
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<Enemy>() != null)
+            if (other.gameObject.tag == "Enemy")
             {
                 Explode();
             }
         }
+        // private void OnCollisionEnter(Collision other)
+        // {
+        //     if (other.gameObject.tag == "Enemy")
+        //     {
+        //         Explode();
+        //     }
+        // }
         void Update()
         {
             if (target == null)
@@ -55,20 +67,30 @@ namespace EventCallbacks
 
         private void Explode()
         {
-            if (target != null)
+            CancelInvoke();
+            if (gameObject.activeSelf)
             {
-                MissleHitEvent missileHit = new MissleHitEvent();
-                missileHit.Description = "Unit " + gameObject.name + " has hit ";
-                missileHit.UnitGO = target.gameObject;
-                missileHit.damage = Random.Range(1, 5); //TODO: get rocket damage from central data manager
-                missileHit.FireEvent();
+                if (target != null)
+                {
+                    MissleHitEvent missileHit = new MissleHitEvent();
+                    missileHit.Description = "Unit " + gameObject.name + " has hit ";
+                    missileHit.UnitGO = target.gameObject;
+                    missileHit.damage = Random.Range(1, 5); //TODO: get rocket damage from central data manager
+                    missileHit.FireEvent();
+                }
+                else
+                {
+                    // print("no target");
+                }
+                explosions.Explode("Missile Hit", transform.position, 1f);
+                target = null;
+                gameObject.SetActive(false);
+                print("exploded");
             }
-            explosions.Explode("Missile Hit", transform.position, 1f);
-            foreach (Transform child in transform)
-            {
-                GameObject.Destroy(child.gameObject);
-            }
-            Destroy(gameObject);
+        }
+        public void OnObjectSpawn()
+        {
+            Invoke("Explode", life);
         }
     }
 }

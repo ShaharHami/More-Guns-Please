@@ -43,4 +43,8 @@ namespace EventCallbacks
         public int damage;
         public GameObject UnitGO;
     }
+    public class FireWeapon : Event<FireWeapon>
+    {
+        public bool fire;
+    }
 }

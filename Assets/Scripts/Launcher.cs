@@ -5,15 +5,21 @@ using UnityEngine;
 public class Launcher : MonoBehaviour
 {
     [SerializeField] private EventCallbacks.Rocket rocket;
+    ObjectPooler pooler;
     private GameObject launchedRocket;
     private Transform closestEnemy;
     float distance;
+    private void Start()
+    {
+        pooler = ObjectPooler.Instance;
+    }
     public void Launch()
     {
         distance = 0;
-        if (launchedRocket == null)
+        if (launchedRocket == null || !launchedRocket.activeSelf)
         {
-            launchedRocket = Instantiate(rocket.gameObject, transform.position, Quaternion.identity);
+            // launchedRocket = Instantiate(rocket.gameObject, transform.position, Quaternion.identity);
+            launchedRocket = pooler.SpawnFromPool("Rocket", transform.position, Quaternion.identity);
             EventCallbacks.Rocket rocketComponent = launchedRocket.GetComponent<EventCallbacks.Rocket>();
             rocketComponent.launcher = this;
             // GetTarget(rocketComponent);
@@ -22,11 +28,11 @@ public class Launcher : MonoBehaviour
 
     public void GetTarget(EventCallbacks.Rocket rocket)
     {
-        EventCallbacks.Enemy[] enemies = FindObjectsOfType<EventCallbacks.Enemy>();
+        List<EventCallbacks.Enemy> enemies = EventCallbacks.Enemy.AllEnemies;
         Transform target;
-        if (enemies.Length > 0)
+        if (enemies.Count > 0)
         {
-            for (int i = 0; i < enemies.Length; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
                 if (enemies[i].targetable)
                 {
@@ -40,9 +46,9 @@ public class Launcher : MonoBehaviour
                         distance = enemyDistance;
                         closestEnemy = enemies[i].transform;
                     }
-                    if (i == enemies.Length - 1)
+                    if (i == enemies.Count - 1)
                     {
-                        if (enemies.Length == 1)
+                        if (enemies.Count == 1)
                         {
                             closestEnemy = enemies[0].transform;
                             closestEnemy.GetComponent<EventCallbacks.Enemy>().targetable = true;

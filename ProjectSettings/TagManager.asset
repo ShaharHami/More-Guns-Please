@@ -7,6 +7,7 @@ TagManager:
   - Lasers
   - Missile Target
   - Enemy
+  - Enemy Shot
   layers:
   - Default
   - TransparentFX

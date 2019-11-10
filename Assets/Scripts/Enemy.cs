@@ -5,15 +5,29 @@ namespace EventCallbacks
 {
     public class Enemy : MonoBehaviour
     {
+        public static List<Enemy> AllEnemies { get; private set; }
         [HideInInspector] public bool targetable = true;
         public GameObject shot;
         public float shotDestroyDelay = 10f;
+        [Range(0.0f, 1.0f)] public float shotProbability;
         public float fireRateMin, fireRateMax;
         public bool lookAtPlayer = true;
         public float destroyDelay = 0f;
-        private int enemyHealth = 50;
+        private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
         private Explosions explosions;
         private GameObject shotInstance;
+        private void OnEnable()
+        {
+            if (AllEnemies == null)
+            {
+                AllEnemies = new List<Enemy>();
+            }
+            AllEnemies.Add(this);
+        }
+        private void OnDisable()
+        {
+            AllEnemies.Remove(this);
+        }
         void Start()
         {
             explosions = FindObjectOfType<Explosions>();
@@ -33,8 +47,12 @@ namespace EventCallbacks
         }
         private void ShotLogic()
         {
-            shotInstance = Instantiate(shot, transform.position, Quaternion.identity);
-            Destroy(shotInstance, shotDestroyDelay);
+            float range = Random.Range(0.0f, 1.0f);
+            if (shotProbability >= range)
+            {
+                shotInstance = Instantiate(shot, transform.position, Quaternion.identity);
+                Destroy(shotInstance, shotDestroyDelay);
+            }
         }
         private void OnTriggerEnter(Collider other)
         {
@@ -54,7 +72,7 @@ namespace EventCallbacks
             {
                 targetable = true;
                 Damage(hit.damage);
-                Debug.Log(hit.Description + hit.UnitGO.name + " And made " + hit.damage + " Damage.");
+                // Debug.Log(hit.Description + hit.UnitGO.name + " And made " + hit.damage + " Damage.");
             }
         }
         void OnParticleCollision(GameObject other)

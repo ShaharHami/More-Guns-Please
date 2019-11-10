@@ -47,7 +47,7 @@ namespace EventCallbacks
                 enemyShotHit.UnitGO = gameObject;
                 enemyShotHit.damage = damage;
                 enemyShotHit.FireEvent();
-                explosions.Explode("Missile Hit", transform.position, 1f);
+                explosions.Explode("Enemy Shot Hit", transform.position, 1f);
             }
         }
     }
