@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace EventCallbacks
 {
-    public class Rocket : MonoBehaviour, IpooledObject
+    public class Rocket : MonoBehaviour
     {
         public Transform target;
         public Transform initialTarget;
@@ -13,42 +15,42 @@ namespace EventCallbacks
         [HideInInspector] public Launcher launcher;
         Vector3 direction;
         private Explosions explosions;
+        private TrailRenderer trailRenderer;
+        private float killTimer;
+
         void Awake()
         {
             initialTarget = target;
-        }
-        private void Start()
-        {
-            // OnObjectSpawn();
-            // Invoke("Explode", life);
-            launcher.GetTarget(this);
+            trailRenderer = GetComponent<TrailRenderer>();
             explosions = FindObjectOfType<Explosions>();
+            launcher = FindObjectOfType<Launcher>();
         }
+
         private void OnEnable()
         {
-            // Invoke("Explode", life);
+            target = launcher.GetTarget(this);
         }
+
+        private void OnDisable()
+        {
+            if (trailRenderer != null)
+            {
+                trailRenderer.Clear();
+            }
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "Enemy")
+            if (other.gameObject.CompareTag("Enemy"))
             {
                 Explode();
             }
         }
-        // private void OnCollisionEnter(Collision other)
-        // {
-        //     if (other.gameObject.tag == "Enemy")
-        //     {
-        //         Explode();
-        //     }
-        // }
-        void Update()
+        private void FixedUpdate()
         {
-            if (target == null)
+            if (!target || !target.gameObject.activeSelf)
             {
                 target = initialTarget;
-                launcher.GetTarget(this);
-                return;
             }
             else
             {
@@ -57,17 +59,19 @@ namespace EventCallbacks
                 direction.Normalize();
                 transform.LookAt(target);
             }
-        }
-        private void FixedUpdate()
-        {
-            Vector3 motion = direction * speed * Time.deltaTime;
+            Vector3 motion = Time.fixedDeltaTime * speed * direction;
             motion.y = 0;
             transform.position += motion;
+            killTimer += Time.fixedDeltaTime;
+            if (killTimer >= life)
+            {
+                Explode();
+                killTimer = 0;
+            }
         }
 
         private void Explode()
         {
-            CancelInvoke();
             if (gameObject.activeSelf)
             {
                 if (target != null)
@@ -78,19 +82,10 @@ namespace EventCallbacks
                     missileHit.damage = Random.Range(1, 5); //TODO: get rocket damage from central data manager
                     missileHit.FireEvent();
                 }
-                else
-                {
-                    // print("no target");
-                }
                 explosions.Explode("Missile Hit", transform.position, 1f);
                 target = null;
                 gameObject.SetActive(false);
-                print("exploded");
             }
-        }
-        public void OnObjectSpawn()
-        {
-            Invoke("Explode", life);
         }
     }
 }

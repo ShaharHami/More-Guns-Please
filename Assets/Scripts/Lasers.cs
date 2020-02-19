@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EventCallbacks;
 using UnityEngine;
 
 public class Lasers : MonoBehaviour
 {
     [SerializeField] private ParticleSystem[] shots;
-    private void Start()
+    private void OnEnable()
     {
         EventCallbacks.FireWeapon.RegisterListener(Shoot);
     }
@@ -19,14 +20,16 @@ public class Lasers : MonoBehaviour
         {
             foreach (ParticleSystem shot in shots)
             {
-                shot.Play();
+                ParticleSystem.EmissionModule e = shot.emission;
+                e.enabled = true;
             }
         }
         else
         {
             foreach (ParticleSystem shot in shots)
             {
-                shot.Stop();
+                ParticleSystem.EmissionModule e = shot.emission;
+                e.enabled = false;
             }
         }
     }

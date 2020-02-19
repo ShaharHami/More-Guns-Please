@@ -16,16 +16,19 @@ public class Player : MonoBehaviour
     private Vector3 _speed;
     [SerializeField] float tilt = 1f;
     [Range(0.0f, 1.0f)] [SerializeField] float tiltEase = 1f;
+    [Range(0.0f, 0.5f)]
+    public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
     private Vector3 _tilt;
-
-    private Vector2 screenBounds;
+    
     private float objectWidth;
     private float objectHeight;
     private string activeShot;
+    private Camera camera1;
+    private Vector3 viewpointCoord;
 
     void Start()
     {
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, Screen.height));
+        camera1 = Camera.main;
         objectWidth = transform.GetComponent<MeshRenderer>().bounds.extents.x;
         objectHeight = transform.GetComponent<MeshRenderer>().bounds.extents.z;
         if (engines[0] != null)
@@ -33,9 +36,7 @@ public class Player : MonoBehaviour
             minEngineScaleZ = engines[0].transform.localScale.z;
         }
         EventCallbacks.EnemyShotHit.RegisterListener(OnDamage);
-        // remove this
-        activeShot = "Lasers";
-        // yes that
+        activeShot = shots[0].type;
         foreach (Shot shot in shots)
         {
             if (shot.type != activeShot)
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
         ControlEngineFlameLength();
         if (Input.touchCount > 0)
@@ -93,16 +94,16 @@ public class Player : MonoBehaviour
 
     private void Flight()
     {
+
         _speed = new Vector3(
                     joystick.Horizontal * speed * Time.deltaTime,
                     0,
                     joystick.Vertical * speed * Time.deltaTime
                 );
-
-        Vector3 pos = transform.position + _speed;
-        pos.x = Mathf.Clamp(pos.x + _speed.x, -screenBounds.x / 7, screenBounds.x / 7); //TODO: this is bugging me, Remove hardcoded values.
-        pos.z = Mathf.Clamp(pos.z + _speed.z, screenBounds.y / 10, -screenBounds.y / 10);
-        transform.position = pos;
+        viewpointCoord = camera1.WorldToViewportPoint(transform.position);
+        viewpointCoord.x = Mathf.Clamp(viewpointCoord.x, 0f + marginLeft, 1f - marginRight);
+        viewpointCoord.y = Mathf.Clamp(viewpointCoord.y, 0f + marginBottom, 1f - marginTop);
+        transform.position = camera1.ViewportToWorldPoint(viewpointCoord) + _speed;
     }
 
     void ControlEngineFlameLength()
@@ -133,17 +134,21 @@ public class Player : MonoBehaviour
             _tilt *= tiltEase;
             _speed *= speedEase;
             transform.rotation = Quaternion.Euler(_tilt);
-            transform.position += _speed;
             if (_tilt.sqrMagnitude < 0.01f * 0.01f) _tilt = Vector3.zero;
+            var worldToViewportPoint = camera1.WorldToViewportPoint(transform.position);
+            if (worldToViewportPoint.x > (0f + marginLeft) && worldToViewportPoint.x < (1f - marginRight) && worldToViewportPoint.y > (0f + marginBottom) && worldToViewportPoint.y < (1f - marginTop))
+            {
+                transform.position += _speed;
+            }
         }
     }
     private void OnDamage(EventCallbacks.EnemyShotHit hit)
     {
-        // print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
+        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
     }
     private void Damage(int damage)
     {
-        // print("Player hit");
+        print("Player hit" + damage);
     }
     void OnDestroy()
     {

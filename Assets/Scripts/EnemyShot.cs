@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,18 +10,27 @@ namespace EventCallbacks
         public float shotSpeed = 100f;
         public bool isHoming = false;
         public int damage = 10;
+        public float life = 1;
+        float killTimer;
         private Vector3 direction;
         private Transform player;
         private Explosions explosions;
-        private void Start()
+        private Vector3 stageDimensions;
+
+        private void Awake()
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+            explosions = FindObjectOfType<Explosions>();
+        }
+
+        private void OnEnable()
         {
             GetTarget();
-            explosions = FindObjectOfType<Explosions>();
         }
 
         private void GetTarget()
         {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            if (player == null) return;
             direction = player.transform.position - transform.position;
             direction.y = 0;
             direction.Normalize();
@@ -32,16 +42,22 @@ namespace EventCallbacks
             {
                 GetTarget();
             }
-            Vector3 motion = direction * shotSpeed * Time.deltaTime;
+            Vector3 motion = Time.deltaTime * shotSpeed * direction;
             motion.y = 0;
             transform.position += motion;
+            killTimer += Time.fixedDeltaTime;
+            if (killTimer >= life)
+            {
+                gameObject.SetActive(false);
+                killTimer = 0;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "Player")
+            if (other.gameObject.CompareTag("Player"))
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
                 EnemyShotHit enemyShotHit = new EnemyShotHit();
                 enemyShotHit.Description = "Player " + gameObject.name + " has hit ";
                 enemyShotHit.UnitGO = gameObject;

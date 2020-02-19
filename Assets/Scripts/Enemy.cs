@@ -6,16 +6,23 @@ namespace EventCallbacks
     public class Enemy : MonoBehaviour
     {
         public static List<Enemy> AllEnemies { get; private set; }
-        [HideInInspector] public bool targetable = true;
         public GameObject shot;
-        public float shotDestroyDelay = 10f;
         [Range(0.0f, 1.0f)] public float shotProbability;
         public float fireRateMin, fireRateMax;
         public bool lookAtPlayer = true;
-        public float destroyDelay = 0f;
-        private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
+        [SerializeField] private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
+        private int initialHealth;
         private Explosions explosions;
-        private GameObject shotInstance;
+        private GameObject player;
+
+        public enum EnemyState
+        {
+            Fly,
+            Formation,
+            Dead
+        };
+
+        private EnemyState enemyState;
         private void OnEnable()
         {
             if (AllEnemies == null)
@@ -23,40 +30,42 @@ namespace EventCallbacks
                 AllEnemies = new List<Enemy>();
             }
             AllEnemies.Add(this);
-        }
-        private void OnDisable()
-        {
-            AllEnemies.Remove(this);
-        }
-        void Start()
-        {
-            explosions = FindObjectOfType<Explosions>();
+            player = GameObject.FindGameObjectWithTag("Player");
             MissleHitEvent.RegisterListener(OnMissleHit);
             if (shot != null)
             {
                 float fireRate = Random.Range(fireRateMin, fireRateMax);
-                InvokeRepeating("ShotLogic", fireRate, fireRate);
+                InvokeRepeating(nameof(ShotLogic), fireRate, fireRate);
             }
         }
-        void Update()
+        private void OnDisable()
         {
-            if (lookAtPlayer)
-            {
-                transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform);
-            }
+            CancelInvoke(nameof(ShotLogic));
+            AllEnemies.Remove(this);
+            MissleHitEvent.UnregisterListener(OnMissleHit);
+        }
+        void Start()
+        {
+            explosions = FindObjectOfType<Explosions>();
+            initialHealth = enemyHealth;
+        }
+        void FixedUpdate()
+        {
+            if (player == null || !lookAtPlayer) return;
+            transform.LookAt(player.transform);
         }
         private void ShotLogic()
         {
             float range = Random.Range(0.0f, 1.0f);
             if (shotProbability >= range)
             {
-                shotInstance = Instantiate(shot, transform.position, Quaternion.identity);
-                Destroy(shotInstance, shotDestroyDelay);
+                ObjectPooler.Instance.SpawnFromPool("Enemy Shot", transform.position, Quaternion.identity);
             }
         }
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "Player")
+            if (other.gameObject.CompareTag("Player"))
             {
                 Damage(enemyHealth);
             }
@@ -70,9 +79,7 @@ namespace EventCallbacks
         {
             if (hit.UnitGO == gameObject)
             {
-                targetable = true;
                 Damage(hit.damage);
-                // Debug.Log(hit.Description + hit.UnitGO.name + " And made " + hit.damage + " Damage.");
             }
         }
         void OnParticleCollision(GameObject other)
@@ -93,9 +100,13 @@ namespace EventCallbacks
         }
         void KillEnemy()
         {
-            StopAllCoroutines();
+            gameObject.SetActive(false);
+            enemyHealth = initialHealth;
             explosions.Explode("Enemy Death", transform.position, 2f);
-            Destroy(gameObject, destroyDelay);
+            EnemyDied enemyDied = new EnemyDied();
+            enemyDied.Description = "Enemy " + gameObject.name + " has died ";
+            enemyDied.parent = transform.parent;
+            enemyDied.FireEvent();
         }
     }
 }

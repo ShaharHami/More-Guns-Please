@@ -47,4 +47,9 @@ namespace EventCallbacks
     {
         public bool fire;
     }
+
+    public class EnemyDied : Event<EnemyDied>
+    {
+        public Transform parent;
+    }
 }

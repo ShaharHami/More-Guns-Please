@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Shahar\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Shahar\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_More Guns Please.-815533987.00" t="ExcludeRecursive" />
+    <e p="F:\Unity\Projects\More Guns Please" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="48 Particle Effect Pack" t="Include">
+          <e p="Script" t="Include">
+            <e p="csDestroyEffect.cs" t="Include" />
+            <e p="csMouseOrbit.cs" t="Include" />
+            <e p="csParticleEffectPackLightControl.cs" t="Include" />
+            <e p="csParticleMove.cs" t="Include" />
+            <e p="csShowAllEffect.cs" t="Include" />
+          </e>
+          <e p="ShurikenEffectEditor" t="Include">
+            <e p="csShurikenEffectChanger.cs" t="Include" />
+            <e p="csShurikenEffectEditor.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Joystick Pack" t="Include">
+          <e p="Examples" t="Include">
+            <e p="JoystickPlayerExample.cs" t="Include" />
+            <e p="JoystickSetterExample.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Base" t="Include">
+              <e p="Joystick.cs" t="Include" />
+            </e>
+            <e p="Editor" t="Include">
+              <e p="DynamicJoystickEditor.cs" t="Include" />
+              <e p="FloatingJoystickEditor.cs" t="Include" />
+              <e p="JoystickEditor.cs" t="Include" />
+              <e p="VariableJoystickEditor.cs" t="Include" />
+            </e>
+            <e p="Joysticks" t="Include">
+              <e p="DynamicJoystick.cs" t="Include" />
+              <e p="FixedJoystick.cs" t="Include" />
+              <e p="FloatingJoystick.cs" t="Include" />
+              <e p="VariableJoystick.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="CollisionDetection.cs" t="Include" />
+          <e p="Enemy.cs" t="Include" />
+          <e p="EnemyShot.cs" t="Include" />
+          <e p="EnemySpawner.cs" t="Include" />
+          <e p="Event.cs" t="Include" />
+          <e p="Explosions.cs" t="Include" />
+          <e p="Formation.cs" t="Include" />
+          <e p="GameManager.cs" t="Include" />
+          <e p="IpooledObject.cs" t="Include" />
+          <e p="Lasers.cs" t="Include" />
+          <e p="Launcher.cs" t="Include" />
+          <e p="ObjectPooler.cs" t="Include" />
+          <e p="Player.cs" t="Include" />
+          <e p="Rocket.cs" t="Include" />
+          <e p="Rockets.cs" t="Include" />
+          <e p="Shot.cs" t="Include" />
+        </e>
+      </e>
+      <e p="More Guns Please.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

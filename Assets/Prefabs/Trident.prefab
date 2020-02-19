@@ -4658,14 +4658,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81eac1b21a0d8427489c050474f48e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetable: 1
   shot: {fileID: 100006, guid: 0ffc584583b8c1541b3c2100725f6ab5, type: 3}
-  shotDestroyDelay: 5
   shotProbability: 0.5
   fireRateMin: 1
   fireRateMax: 3
   lookAtPlayer: 1
-  destroyDelay: 0
+  destroyDelay: 0.2
+  enemyHealth: 50
 --- !u!64 &1344698774742448322
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9515,11 +9514,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8050213697546200591}
     m_Modifications:
-    - target: {fileID: 8345104376824289535, guid: 49f8922c2e3ed4a93bf4d21bc174797d,
-        type: 3}
-      propertyPath: m_Name
-      value: TridentMesh
-      objectReference: {fileID: 0}
     - target: {fileID: 3135483013811964408, guid: 49f8922c2e3ed4a93bf4d21bc174797d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9574,6 +9568,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345104376824289535, guid: 49f8922c2e3ed4a93bf4d21bc174797d,
+        type: 3}
+      propertyPath: m_Name
+      value: TridentMesh
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49f8922c2e3ed4a93bf4d21bc174797d, type: 3}
@@ -9642,14 +9641,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 19800008, guid: 176790904455b214b92ac1cfd30fddc9, type: 3}
-      propertyPath: InitialModule.startRotationX.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800008, guid: 176790904455b214b92ac1cfd30fddc9, type: 3}
-      propertyPath: InitialModule.startRotationY.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 176790904455b214b92ac1cfd30fddc9, type: 3}
       propertyPath: InitialModule.startRotationX.minMaxState
       value: 3
@@ -9687,6 +9678,14 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 19800006, guid: 176790904455b214b92ac1cfd30fddc9, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800008, guid: 176790904455b214b92ac1cfd30fddc9, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800008, guid: 176790904455b214b92ac1cfd30fddc9, type: 3}
       propertyPath: InitialModule.startRotationY.minMaxState
       value: 3
       objectReference: {fileID: 0}

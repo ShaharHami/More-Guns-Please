@@ -14,10 +14,12 @@ public class ObjectPooler : MonoBehaviour
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
     public static ObjectPooler Instance;
+
     void Awake()
     {
         Instance = this;
     }
+
     void Start()
     {
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
@@ -33,6 +35,7 @@ public class ObjectPooler : MonoBehaviour
             poolDictionary.Add(pool.tag, objectPool);
         }
     }
+
     public GameObject SpawnFromPool(string tag, Vector3 pos, Quaternion rot)
     {
         if (!poolDictionary.ContainsKey(tag))
@@ -40,16 +43,30 @@ public class ObjectPooler : MonoBehaviour
             print("no pool with the tag " + tag + " exists in the pool dictionary");
             return null;
         }
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
-        objectToSpawn.SetActive(true);
-        objectToSpawn.transform.position = pos;
-        objectToSpawn.transform.rotation = rot;
-        IpooledObject pooledObject = objectToSpawn.GetComponent<IpooledObject>();
-        if (pooledObject != null)
+        GameObject obj;
+        for (int i = 0; i < poolDictionary[tag].Count; i++)
         {
-            pooledObject.OnObjectSpawn();
+            obj = poolDictionary[tag].Dequeue();
+            if (!obj.activeInHierarchy)
+            {
+                obj.transform.position = pos;
+                obj.transform.rotation = rot;
+                obj.SetActive(true);
+                poolDictionary[tag].Enqueue(obj);
+                return obj;
+            }
+            poolDictionary[tag].Enqueue(obj);
         }
-        poolDictionary[tag].Enqueue(objectToSpawn);
-        return objectToSpawn;
+
+        foreach (Pool pool in pools)
+        {
+            if (pool.tag == tag)
+            {
+                obj = Instantiate(pool.prefab, pos, rot);
+                poolDictionary[tag].Enqueue(obj);
+                return obj;
+            }
+        }
+        return null;
     }
 }
