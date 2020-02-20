@@ -1,4 +1,5 @@
-﻿using EventCallbacks;
+﻿using System.Collections;
+using EventCallbacks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -6,62 +7,89 @@ public class EnemySpawner : MonoBehaviour
 {
     public Formation[] formations;
 
-    private void Start()
-    {
-//        float achmad = 43;
-//        Vector3 achmadVector = new Vector3(achmad, achmad, achmad);
-    }
-
     private void OnEnable()
     {
         EnemyDied.RegisterListener(ClearFormation);
+        ReachedPoint.RegisterListener(ParentEnemy1);
     }
 
     private void OnDisable()
     {
         EnemyDied.UnregisterListener(ClearFormation);
+        ReachedPoint.UnregisterListener(ParentEnemy1);
     }
 
     public void SpawnFormation(Formation formation, string[] enemieTypes)
     {
+        GameObject topContainer = ObjectPooler.Instance.SpawnFromPool("TopContainer", formation.initialPosition, Quaternion.identity);
+        topContainer.transform.SetParent(null);
         GameObject formationContainer = ObjectPooler.Instance.SpawnFromPool("FormationContainer", Vector3.zero, Quaternion.identity);
-        formationContainer.transform.SetParent(transform);
+        formationContainer.transform.SetParent(null);
+        topContainer.transform.SetParent(transform);
+        formationContainer.transform.SetParent(topContainer.transform);
         formationContainer.name = formation.formationName;
-        formationContainer.transform.localPosition = Vector3.zero;
         foreach (var pos in formation.positions)
         {
-            SpawnEnemy(enemieTypes[Random.Range(0, enemieTypes.Length)], pos + formation.initialPosition, Quaternion.identity, formationContainer.transform);
+            GameObject positionMarker = ObjectPooler.Instance.SpawnFromPool("PositionMarker", pos, Quaternion.identity);
+            positionMarker.name = pos.ToString();
+            positionMarker.transform.SetParent(formationContainer.transform);
+            positionMarker.transform.localPosition = pos;
         }
+        StartCoroutine(PopulateFormation(formation, enemieTypes, formationContainer));
         AnimateFormation(formationContainer);
     }
 
+    IEnumerator PopulateFormation(Formation formation, string[] enemieTypes, GameObject formationContainer)
+    {
+        for (int i = 0; i < formation.positions.Length; i++)
+        {
+            SpawnEnemy(enemieTypes[Random.Range(0, enemieTypes.Length)], 
+                formation.positions[i], 
+                Quaternion.identity,
+                formationContainer.transform, 
+                i);
+            yield return new WaitForSeconds(1f);
+        }
+        foreach (var pos in formation.positions)
+        {
+        }
+    }
     private void AnimateFormation(GameObject formationContainer)
     {
         Animator animator = formationContainer.GetComponent<Animator>();
         animator.SetTrigger(formationContainer.name);
     }
-    public void SpawnEnemy(string enemyType, Vector3 pos, Quaternion rot, Transform parent)
+    public void SpawnEnemy(string enemyType, Vector3 pos, Quaternion rot, Transform parent, int parentIndex)
     {
-        GameObject enemy = ObjectPooler.Instance.SpawnFromPool(enemyType, pos, rot);
-        enemy.transform.SetParent(parent);
+        if (parent.childCount <= parentIndex) return;
+        Enemy enemy = ObjectPooler.Instance.SpawnFromPool(enemyType, Vector3.zero, rot).GetComponent<Enemy>();
+        enemy.transform.SetParent(null);
+        enemy.transform.position = new Vector3(0,0,150f);
+        Transform parentTransform = parent.GetChild(parentIndex);
+        enemy.FlyToPoint(parentTransform);
     }
 
+    void ParentEnemy1(ReachedPoint info)
+    {
+        info.objTransform.SetParent(info.parentTransform);
+    }
     void ClearFormation(EnemyDied info)
     {
-        int totalChildren = info.parent.childCount;
+        if (info.parent == null) return;
         int activeChildren = 0;
-        for (int i = 0; i < totalChildren; i++)
+        foreach (Transform child in info.parent)
         {
-            if (info.parent.GetChild(i).gameObject.activeInHierarchy)
+            if (child.gameObject.activeSelf && child.childCount > 0)
             {
                 activeChildren++;
-            }
+            }            
         }
-
         if (activeChildren <= 0)
         {
             info.parent.gameObject.SetActive(false);
+            info.parent.parent.gameObject.SetActive(false);
+            info.parent.parent.transform.SetParent(null);
+            info.parent.transform.SetParent(null);
         }
-        Debug.Log(activeChildren + " Enemies Left");
     }
 }

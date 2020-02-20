@@ -144,11 +144,11 @@ public class Player : MonoBehaviour
     }
     private void OnDamage(EventCallbacks.EnemyShotHit hit)
     {
-        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
+//        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
     }
     private void Damage(int damage)
     {
-        print("Player hit" + damage);
+//        print("Player hit" + damage);
     }
     void OnDestroy()
     {
@@ -156,7 +156,7 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.CompareTag("Enemy"))
         {
             Damage(playerHealth);
         }

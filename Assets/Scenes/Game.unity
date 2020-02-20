@@ -5830,6 +5830,14 @@ MonoBehaviour:
     prefab: {fileID: 9028609909026192224, guid: c248c0bf75482b945b8ac5ad46a14343,
       type: 3}
     size: 0
+  - tag: TopContainer
+    prefab: {fileID: 3360089357158549075, guid: 11daeb307701f084984b0a542132b20f,
+      type: 3}
+    size: 0
+  - tag: PositionMarker
+    prefab: {fileID: 3360089357158549075, guid: 11daeb307701f084984b0a542132b20f,
+      type: 3}
+    size: 0
 --- !u!4 &834251002
 Transform:
   m_ObjectHideFlags: 0
@@ -15558,7 +15566,6 @@ MonoBehaviour:
   formations:
   - {fileID: 11400000, guid: 52f2ef3e9dff27943955b2dd4aaa40cd, type: 2}
   - {fileID: 11400000, guid: 9c6dc3b76f1ee8243b4adae81ebe24d6, type: 2}
-  - {fileID: 11400000, guid: 3e442409b212ea441a67d5042032fd2c, type: 2}
 --- !u!4 &1199371838
 Transform:
   m_ObjectHideFlags: 0

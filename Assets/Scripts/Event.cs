@@ -52,4 +52,10 @@ namespace EventCallbacks
     {
         public Transform parent;
     }
+
+    public class ReachedPoint : Event<ReachedPoint>
+    {
+        public Transform objTransform;
+        public Transform parentTransform;
+    }
 }
