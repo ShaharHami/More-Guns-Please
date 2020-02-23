@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public class Player : MonoBehaviour
     [Range(0.0f, 0.5f)]
     public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
     private Vector3 _tilt;
+    private bool flying;
+    private bool shooting;
     
     private float objectWidth;
     private float objectHeight;
@@ -55,29 +58,29 @@ public class Player : MonoBehaviour
         ControlEngineFlameLength();
         if (Input.touchCount > 0)
         {
-            Flight();
-            Roll();
+            flying = true;
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
-                Shoot(true);
+                shooting = true;
             }
             if (touch.phase == TouchPhase.Ended)
             {
-                EaseOut();
-                Shoot(false);
+                shooting = false;
             }
         }
         else if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
         {
-            Flight();
-            Roll();
-            Shoot(true);
+            flying = true;
+            shooting = true;
+//            Flight();
+//            Roll();
+//            Shoot(true);
         }
         else
         {
-            EaseOut();
-            Shoot(false);
+            flying = false;
+            shooting = false;
         }
         // CHEAT SETTINGS
         if (cheat && Input.GetKeyDown(KeyCode.L))
@@ -89,6 +92,28 @@ public class Player : MonoBehaviour
                     shot.LevelUp();
                 }
             }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (shooting)
+        {
+            Shoot(true);
+        } 
+        else 
+        {
+            Shoot(false);
+        }
+        
+        if (flying)
+        {
+            Flight();
+            Roll();
+        }
+        else
+        {
+            EaseOut();
         }
     }
 

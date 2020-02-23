@@ -86,6 +86,7 @@
      <Compile Include="Assets\Scripts\Rocket.cs" />
      <Compile Include="Assets\Scripts\Rockets.cs" />
      <Compile Include="Assets\Scripts\Shot.cs" />
+     <Compile Include="Assets\Scripts\SingleFormationManager.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>

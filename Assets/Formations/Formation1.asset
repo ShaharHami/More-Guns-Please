@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1d1b05330d47db99d1729669341846, type: 3}
   m_Name: Formation1
   m_EditorClassIdentifier: 
+  formationName: Formation1
+  triggerName: formation1
   positions:
   - {x: -45, y: 0, z: 0}
   - {x: -30, y: 0, z: 0}
@@ -20,5 +22,4 @@ MonoBehaviour:
   - {x: 15, y: 0, z: 0}
   - {x: 30, y: 0, z: 0}
   - {x: 45, y: 0, z: 0}
-  formationName: formation2
   initialPosition: {x: 0, y: 0, z: -30}

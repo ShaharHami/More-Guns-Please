@@ -10,7 +10,7 @@ namespace EventCallbacks
         public float shotSpeed = 100f;
         public bool isHoming = false;
         public int damage = 10;
-        public float life = 1;
+        public float life;
         float killTimer;
         private Vector3 direction;
         private Transform player;
@@ -26,6 +26,7 @@ namespace EventCallbacks
         private void OnEnable()
         {
             GetTarget();
+            killTimer = 0;
         }
 
         private void GetTarget()

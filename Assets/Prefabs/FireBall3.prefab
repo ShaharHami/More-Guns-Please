@@ -13995,7 +13995,7 @@ MonoBehaviour:
   shotSpeed: 60
   isHoming: 0
   damage: 10
-  life: 3
+  life: 5
 --- !u!135 &8686598890978069243
 SphereCollider:
   m_ObjectHideFlags: 0

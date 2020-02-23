@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1d1b05330d47db99d1729669341846, type: 3}
   m_Name: enemyTest
   m_EditorClassIdentifier: Assembly-CSharp::Formation
+  formationName: enemyTest
+  triggerName: enemyTest
   positions:
   - {x: 30, y: 0, z: 30}
   - {x: 0, y: 0, z: 0}
@@ -22,5 +24,4 @@ MonoBehaviour:
   - {x: 0, y: 0, z: -30}
   - {x: -30, y: 0, z: 30}
   - {x: 30, y: 0, z: -30}
-  formationName: enemyTest
   initialPosition: {x: 0, y: 0, z: -20}

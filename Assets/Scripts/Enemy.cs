@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 namespace EventCallbacks
 {
@@ -14,6 +15,7 @@ namespace EventCallbacks
         private int initialHealth;
         private Explosions explosions;
         private GameObject player;
+        private Transform destinationPoint;
 
         public enum EnemyState
         {
@@ -102,21 +104,22 @@ namespace EventCallbacks
         public void FlyToPoint(Transform point)
         {
             if (!gameObject.activeInHierarchy || !gameObject.activeSelf) return;
-            StartCoroutine(FlyToPointCoroutine(point));
+            destinationPoint = point;
+            StartCoroutine(FlyToPointCoroutine());
         }
-        IEnumerator FlyToPointCoroutine(Transform point)
+        IEnumerator FlyToPointCoroutine()
         {
             while (true)
             {
                 if (!gameObject.activeInHierarchy || !gameObject.activeSelf) yield break;
-                Vector3 dir = transform.position - point.position;
-                Vector3 dest = Vector3.Lerp(transform.position, point.transform.position, 0.05f);
+                Vector3 dir = transform.position - destinationPoint.position;
+                Vector3 dest = Vector3.Lerp(transform.position, destinationPoint.transform.position, 0.05f);
                 if (dir.sqrMagnitude <= 1f * 1f)
                 {
                     ReachedPoint reachedPoint = new ReachedPoint();
                     reachedPoint.Description = "Enemy " + gameObject.name + " has reached destination";
                     reachedPoint.objTransform = transform;
-                    reachedPoint.parentTransform = point;
+                    reachedPoint.parentTransform = destinationPoint;
                     reachedPoint.FireEvent();
                     yield break;
                 }
@@ -127,22 +130,18 @@ namespace EventCallbacks
         void KillEnemy()
         {
             Transform thisParent = transform.parent;
-            gameObject.SetActive(false);
-            if (thisParent != null)
-            {
-                thisParent.gameObject.SetActive(false);
-            }
-            transform.SetParent(null);
             enemyHealth = initialHealth;
             explosions.Explode("Enemy Death", transform.position, 2f);
             EnemyDied enemyDied = new EnemyDied();
             enemyDied.Description = "Enemy " + gameObject.name + " has died ";
+            enemyDied.enemy = transform;
+            enemyDied.point = destinationPoint;
             if (thisParent != null)
             {
                 enemyDied.parent = thisParent.parent;
-                thisParent.SetParent(null);
             }
             enemyDied.FireEvent();
+            gameObject.SetActive(false);
         }
     }
 }

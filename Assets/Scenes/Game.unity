@@ -189,7 +189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4433184366678008, guid: a2180b82a36e29b4ea2259e7ac4a754e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -65.8
+      value: -76
       objectReference: {fileID: 0}
     - target: {fileID: 4433184366678008, guid: a2180b82a36e29b4ea2259e7ac4a754e, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5810,7 +5810,7 @@ MonoBehaviour:
     size: 0
   - tag: Enemy Death
     prefab: {fileID: 830704453391579011, guid: a38bc160f5cfb45109c491d13b3887ef, type: 3}
-    size: 0
+    size: 2
   - tag: Missile Hit
     prefab: {fileID: 7461587355805847260, guid: 48c389310cbfb42adaee6eccbba3ac00,
       type: 3}
@@ -5818,7 +5818,7 @@ MonoBehaviour:
   - tag: Enemy Shot Hit
     prefab: {fileID: 4034685459527600621, guid: 3a149f4bc16a74c1f97a28dce646cdbd,
       type: 3}
-    size: 0
+    size: 2
   - tag: Enemy Shot
     prefab: {fileID: 100006, guid: 0ffc584583b8c1541b3c2100725f6ab5, type: 3}
     size: 0
@@ -5835,7 +5835,7 @@ MonoBehaviour:
       type: 3}
     size: 0
   - tag: PositionMarker
-    prefab: {fileID: 3360089357158549075, guid: 11daeb307701f084984b0a542132b20f,
+    prefab: {fileID: 5904814709123022281, guid: 7df24f3c698d67a47baffd6eb09a5a61,
       type: 3}
     size: 0
 --- !u!4 &834251002

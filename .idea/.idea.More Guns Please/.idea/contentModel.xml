@@ -60,6 +60,7 @@
           <e p="Rocket.cs" t="Include" />
           <e p="Rockets.cs" t="Include" />
           <e p="Shot.cs" t="Include" />
+          <e p="SingleFormationManager.cs" t="Include" />
         </e>
       </e>
       <e p="More Guns Please.sln" t="IncludeFlat" />
