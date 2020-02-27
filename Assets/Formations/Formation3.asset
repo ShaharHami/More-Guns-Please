@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d1d1b05330d47db99d1729669341846, type: 3}
-  m_Name: Formation1
+  m_Name: Formation3
   m_EditorClassIdentifier: 
   animator: {fileID: -4044934878969359660, guid: c248c0bf75482b945b8ac5ad46a14343,
     type: 3}
-  formationName: Formation1
-  triggerName: formation1
+  formationName: Formation3
+  triggerName: 
   positions:
   - {x: -45, y: 0, z: 0}
   - {x: -30, y: 0, z: 0}
@@ -24,4 +24,4 @@ MonoBehaviour:
   - {x: 15, y: 0, z: 0}
   - {x: 30, y: 0, z: 0}
   - {x: 45, y: 0, z: 0}
-  initialPosition: {x: 0, y: 0, z: -30}
+  initialPosition: {x: 0, y: 0, z: -10}

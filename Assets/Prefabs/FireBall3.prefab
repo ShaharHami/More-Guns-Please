@@ -13993,7 +13993,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpeed: 60
+  isTargetingPlayer: 1
   isHoming: 0
+  homingDamp: 0.5
   damage: 10
   life: 5
 --- !u!135 &8686598890978069243

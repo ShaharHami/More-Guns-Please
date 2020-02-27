@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
@@ -6,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class SingleFormationManager : MonoBehaviour
 {
-    public Formation formation;
+    [HideInInspector] public Formation formation;
     private Animator animator;
     private int spawnedEnemies;
     private int deadEnemies;
@@ -57,14 +58,17 @@ public class SingleFormationManager : MonoBehaviour
         {
             SpawnEnemy(enemieTypes[Random.Range(0, enemieTypes.Length)], 
                 positionMarker,
-                Quaternion.identity);
-            yield return new WaitForSeconds(1f);
+                Quaternion.Euler(0, 180f, 0));
+            yield return new WaitForSeconds(Random.Range(0.5f, 1.2f));
         }
     }
     private void AnimateFormation(string trigger)
     {
         animator = formationContainer.GetComponent<Animator>();
-        animator.SetTrigger(trigger);
+        if (trigger != "")
+        {
+            animator.SetTrigger(trigger);
+        }
     }
     public void SpawnEnemy(string enemyType, GameObject positionMarker, Quaternion rot)
     {
@@ -100,6 +104,5 @@ public class SingleFormationManager : MonoBehaviour
             FormationDead formationDead = new FormationDead();
             formationDead.FireEvent();
         }
-        print($"Enemies spawned: {spawnedEnemies} | Enemies Killed: {deadEnemies}");
     }
 }

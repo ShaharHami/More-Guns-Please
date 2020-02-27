@@ -20,8 +20,9 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             Enemy randEnemy =
-                ObjectPooler.Instance.SpawnFromPool("Trident", Vector3.zero, Quaternion.identity).GetComponent<Enemy>();
-            randEnemy.transform.position = new Vector3(Random.Range(-50f, 50f), 0, 100);
+                ObjectPooler.Instance.SpawnFromPool("Trident", Vector3.zero, Quaternion.Euler(0,180,0)).GetComponent<Enemy>();
+            randEnemy.transform.position = new Vector3(Random.Range(-50f, 50f), 0, 30);
+            randEnemy.TurnSpeed = 0.01f;
         }
     }
 }

@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1d1b05330d47db99d1729669341846, type: 3}
   m_Name: enemyTest
   m_EditorClassIdentifier: Assembly-CSharp::Formation
-  formationName: enemyTest
+  animator: {fileID: -4044934878969359660, guid: c248c0bf75482b945b8ac5ad46a14343,
+    type: 3}
+  formationName: Rotating
   triggerName: enemyTest
+  triggerIdx: 0
   positions:
   - {x: 30, y: 0, z: 30}
   - {x: 0, y: 0, z: 0}
@@ -24,4 +27,4 @@ MonoBehaviour:
   - {x: 0, y: 0, z: -30}
   - {x: -30, y: 0, z: 30}
   - {x: 30, y: 0, z: -30}
-  initialPosition: {x: 0, y: 0, z: -20}
+  initialPosition: {x: 0, y: 0, z: 0}

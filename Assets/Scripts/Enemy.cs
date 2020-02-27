@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 namespace EventCallbacks
 {
     public class Enemy : MonoBehaviour
@@ -11,22 +13,31 @@ namespace EventCallbacks
         [Range(0.0f, 1.0f)] public float shotProbability;
         public float fireRateMin, fireRateMax;
         public bool lookAtPlayer = true;
+        [SerializeField] private float proximity = 2f;
+        [SerializeField] private float flightSpeed = 0.01f;
+        [SerializeField] private float destroyDelay = 1f;
+        [SerializeField] private float slowTurnSpeed, fastTurnSpeed, turnDuration;
         [SerializeField] private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
         private int initialHealth;
         private Explosions explosions;
         private GameObject player;
         private Transform destinationPoint;
-
+        private bool hasReachedPoint;
+        public float TurnSpeed { get; set; }
         public enum EnemyState
         {
             Fly,
-            Formation,
+            ReachedFormation,
+            InFormation,
             Dead
         };
 
-        private EnemyState enemyState;
+        public EnemyState enemyState;
+
         private void OnEnable()
         {
+            hasReachedPoint = false;
+            enemyState = EnemyState.Fly;
             if (AllEnemies == null)
             {
                 AllEnemies = new List<Enemy>();
@@ -51,10 +62,43 @@ namespace EventCallbacks
             explosions = FindObjectOfType<Explosions>();
             initialHealth = enemyHealth;
         }
+
         void FixedUpdate()
         {
-            if (player == null || !lookAtPlayer) return;
-            transform.LookAt(player.transform);
+            var position = transform.position;
+            switch (enemyState)
+            {
+                case EnemyState.Fly:
+                {
+                    TurnSpeed = fastTurnSpeed;
+                    LerpRotation(destinationPoint.transform.position - position);
+                    break;
+                }
+                case EnemyState.ReachedFormation:
+                {
+                    TurnSpeed = slowTurnSpeed;
+                    StartCoroutine(TurnSlowly());
+                    LerpRotation(player.transform.position - position);
+                    break;
+                }
+                case EnemyState.InFormation:
+                {
+                    LerpRotation(player.transform.position - position);
+                    break;
+                }
+            }
+        }
+
+        IEnumerator TurnSlowly()
+        {
+            yield return new WaitForSeconds(turnDuration);
+            TurnSpeed = fastTurnSpeed;
+            enemyState = EnemyState.InFormation;
+        }
+        void LerpRotation(Vector3 dest)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(dest);
+            transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, TurnSpeed * Time.time);
         }
         private void ShotLogic()
         {
@@ -71,10 +115,6 @@ namespace EventCallbacks
             {
                 Damage(enemyHealth);
             }
-        }
-        void OnDestroy()
-        {
-            MissleHitEvent.UnregisterListener(OnMissleHit);
         }
 
         void OnMissleHit(MissleHitEvent hit)
@@ -113,9 +153,10 @@ namespace EventCallbacks
             {
                 if (!gameObject.activeInHierarchy || !gameObject.activeSelf) yield break;
                 Vector3 dir = transform.position - destinationPoint.position;
-                Vector3 dest = Vector3.Lerp(transform.position, destinationPoint.transform.position, 0.05f);
-                if (dir.sqrMagnitude <= 1f * 1f)
+                Vector3 dest = Vector3.Lerp(transform.position, destinationPoint.transform.position, flightSpeed * Time.deltaTime);
+                if (dir.sqrMagnitude <= proximity * proximity)
                 {
+                    enemyState = EnemyState.ReachedFormation;
                     ReachedPoint reachedPoint = new ReachedPoint();
                     reachedPoint.Description = "Enemy " + gameObject.name + " has reached destination";
                     reachedPoint.objTransform = transform;
@@ -129,19 +170,22 @@ namespace EventCallbacks
         }
         void KillEnemy()
         {
+            explosions.Explode("Enemy Death", transform.position, 2f);
+            StartCoroutine(TimedDisable(gameObject, destroyDelay));
+            
+        }
+        IEnumerator TimedDisable(GameObject obj, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            obj.SetActive(false);
             Transform thisParent = transform.parent;
             enemyHealth = initialHealth;
-            explosions.Explode("Enemy Death", transform.position, 2f);
             EnemyDied enemyDied = new EnemyDied();
             enemyDied.Description = "Enemy " + gameObject.name + " has died ";
             enemyDied.enemy = transform;
             enemyDied.point = destinationPoint;
-            if (thisParent != null)
-            {
-                enemyDied.parent = thisParent.parent;
-            }
+            enemyDied.parent = thisParent?.parent;
             enemyDied.FireEvent();
-            gameObject.SetActive(false);
         }
     }
 }

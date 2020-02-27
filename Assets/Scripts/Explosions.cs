@@ -20,7 +20,7 @@ public class Explosions : MonoBehaviour
         if (explosionsDictionary.ContainsKey(explosionName))
         {
             GameObject explosionInstance = ObjectPooler.Instance.SpawnFromPool(explosionName, instantiationPosition, Quaternion.identity);
-            StartCoroutine(DisableExplosion(explosionInstance, delayBeforeDestroy));
+            StartCoroutine(TimedDisable(explosionInstance, delayBeforeDestroy));
         }
         else
         {
@@ -28,7 +28,7 @@ public class Explosions : MonoBehaviour
         }
     }
 
-    IEnumerator DisableExplosion(GameObject obj, float delay)
+    IEnumerator TimedDisable(GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
         obj.SetActive(false);

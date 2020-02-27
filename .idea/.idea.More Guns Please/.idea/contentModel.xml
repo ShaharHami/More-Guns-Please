@@ -20,6 +20,9 @@
             <e p="csShurikenEffectEditor.cs" t="Include" />
           </e>
         </e>
+        <e p="Editor" t="Include">
+          <e p="FormationEditor.cs" t="Include" />
+        </e>
         <e p="Joystick Pack" t="Include">
           <e p="Examples" t="Include">
             <e p="JoystickPlayerExample.cs" t="Include" />

@@ -1,11 +1,13 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "Formation", menuName = "Create Formation")]
 public class Formation : ScriptableObject
 {
+    public Animator animator;
     public string formationName;
-    public string triggerName;
+    [HideInInspector] public string triggerName;
+    [HideInInspector] public int triggerIdx;
     [Header("Formation Positions")]
     public Vector3[] positions;
     [Header("Offset")]
