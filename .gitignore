@@ -2,4 +2,4 @@ builds/
 Library/
 .vscode/
 Temp/
-obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache
+/obj/Debug/Assembly-CSharp-Editor.csprojAssemblyReference.cache

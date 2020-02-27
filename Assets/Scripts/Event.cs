@@ -23,9 +23,7 @@ namespace EventCallbacks
                 throw new Exception("This event has already fired, to prevent infinite loops you can't refire an event");
             }
             hasFired = true;
-            if (listeners != null) {
-                listeners(this as T);
-            }
+            listeners?.Invoke(this as T);
         }
     }
 
@@ -46,5 +44,23 @@ namespace EventCallbacks
     public class FireWeapon : Event<FireWeapon>
     {
         public bool fire;
+    }
+
+    public class EnemyDied : Event<EnemyDied>
+    {
+        public Transform parent;
+        public Transform point;
+        public Transform enemy;
+    }
+
+    public class ReachedPoint : Event<ReachedPoint>
+    {
+        public Transform objTransform;
+        public Transform parentTransform;
+    }
+
+    public class FormationDead : Event<FormationDead>
+    {
+        
     }
 }

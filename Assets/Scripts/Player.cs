@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,16 +17,21 @@ public class Player : MonoBehaviour
     private Vector3 _speed;
     [SerializeField] float tilt = 1f;
     [Range(0.0f, 1.0f)] [SerializeField] float tiltEase = 1f;
+    [Range(0.0f, 0.5f)]
+    public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
     private Vector3 _tilt;
-
-    private Vector2 screenBounds;
+    private bool flying;
+    private bool shooting;
+    
     private float objectWidth;
     private float objectHeight;
     private string activeShot;
+    private Camera camera1;
+    private Vector3 viewpointCoord;
 
     void Start()
     {
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, Screen.height));
+        camera1 = Camera.main;
         objectWidth = transform.GetComponent<MeshRenderer>().bounds.extents.x;
         objectHeight = transform.GetComponent<MeshRenderer>().bounds.extents.z;
         if (engines[0] != null)
@@ -33,9 +39,7 @@ public class Player : MonoBehaviour
             minEngineScaleZ = engines[0].transform.localScale.z;
         }
         EventCallbacks.EnemyShotHit.RegisterListener(OnDamage);
-        // remove this
-        activeShot = "Lasers";
-        // yes that
+        activeShot = shots[0].type;
         foreach (Shot shot in shots)
         {
             if (shot.type != activeShot)
@@ -49,34 +53,34 @@ public class Player : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
         ControlEngineFlameLength();
         if (Input.touchCount > 0)
         {
-            Flight();
-            Roll();
+            flying = true;
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
-                Shoot(true);
+                shooting = true;
             }
             if (touch.phase == TouchPhase.Ended)
             {
-                EaseOut();
-                Shoot(false);
+                shooting = false;
             }
         }
         else if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
         {
-            Flight();
-            Roll();
-            Shoot(true);
+            flying = true;
+            shooting = true;
+//            Flight();
+//            Roll();
+//            Shoot(true);
         }
         else
         {
-            EaseOut();
-            Shoot(false);
+            flying = false;
+            shooting = false;
         }
         // CHEAT SETTINGS
         if (cheat && Input.GetKeyDown(KeyCode.L))
@@ -91,18 +95,40 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (shooting)
+        {
+            Shoot(true);
+        } 
+        else 
+        {
+            Shoot(false);
+        }
+        
+        if (flying)
+        {
+            Flight();
+            Roll();
+        }
+        else
+        {
+            EaseOut();
+        }
+    }
+
     private void Flight()
     {
+
         _speed = new Vector3(
                     joystick.Horizontal * speed * Time.deltaTime,
                     0,
                     joystick.Vertical * speed * Time.deltaTime
                 );
-
-        Vector3 pos = transform.position + _speed;
-        pos.x = Mathf.Clamp(pos.x + _speed.x, -screenBounds.x / 7, screenBounds.x / 7); //TODO: this is bugging me, Remove hardcoded values.
-        pos.z = Mathf.Clamp(pos.z + _speed.z, screenBounds.y / 10, -screenBounds.y / 10);
-        transform.position = pos;
+        viewpointCoord = camera1.WorldToViewportPoint(transform.position);
+        viewpointCoord.x = Mathf.Clamp(viewpointCoord.x, 0f + marginLeft, 1f - marginRight);
+        viewpointCoord.y = Mathf.Clamp(viewpointCoord.y, 0f + marginBottom, 1f - marginTop);
+        transform.position = camera1.ViewportToWorldPoint(viewpointCoord) + _speed;
     }
 
     void ControlEngineFlameLength()
@@ -133,17 +159,21 @@ public class Player : MonoBehaviour
             _tilt *= tiltEase;
             _speed *= speedEase;
             transform.rotation = Quaternion.Euler(_tilt);
-            transform.position += _speed;
             if (_tilt.sqrMagnitude < 0.01f * 0.01f) _tilt = Vector3.zero;
+            var worldToViewportPoint = camera1.WorldToViewportPoint(transform.position);
+            if (worldToViewportPoint.x > (0f + marginLeft) && worldToViewportPoint.x < (1f - marginRight) && worldToViewportPoint.y > (0f + marginBottom) && worldToViewportPoint.y < (1f - marginTop))
+            {
+                transform.position += _speed;
+            }
         }
     }
     private void OnDamage(EventCallbacks.EnemyShotHit hit)
     {
-        // print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
+//        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
     }
     private void Damage(int damage)
     {
-        // print("Player hit");
+//        print("Player hit" + damage);
     }
     void OnDestroy()
     {
@@ -151,7 +181,7 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.CompareTag("Enemy"))
         {
             Damage(playerHealth);
         }

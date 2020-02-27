@@ -1,78 +1,127 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 namespace EventCallbacks
 {
     public class Enemy : MonoBehaviour
     {
         public static List<Enemy> AllEnemies { get; private set; }
-        [HideInInspector] public bool targetable = true;
         public GameObject shot;
-        public float shotDestroyDelay = 10f;
         [Range(0.0f, 1.0f)] public float shotProbability;
         public float fireRateMin, fireRateMax;
         public bool lookAtPlayer = true;
-        public float destroyDelay = 0f;
-        private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
+        [SerializeField] private float proximity = 2f;
+        [SerializeField] private float flightSpeed = 0.01f;
+        [SerializeField] private float destroyDelay = 1f;
+        [SerializeField] private float slowTurnSpeed, fastTurnSpeed, turnDuration;
+        [SerializeField] private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
+        private int initialHealth;
         private Explosions explosions;
-        private GameObject shotInstance;
+        private GameObject player;
+        private Transform destinationPoint;
+        private bool hasReachedPoint;
+        public float TurnSpeed { get; set; }
+        public enum EnemyState
+        {
+            Fly,
+            ReachedFormation,
+            InFormation,
+            Dead
+        };
+
+        public EnemyState enemyState;
+
         private void OnEnable()
         {
+            hasReachedPoint = false;
+            enemyState = EnemyState.Fly;
             if (AllEnemies == null)
             {
                 AllEnemies = new List<Enemy>();
             }
             AllEnemies.Add(this);
-        }
-        private void OnDisable()
-        {
-            AllEnemies.Remove(this);
-        }
-        void Start()
-        {
-            explosions = FindObjectOfType<Explosions>();
+            player = GameObject.FindGameObjectWithTag("Player");
             MissleHitEvent.RegisterListener(OnMissleHit);
             if (shot != null)
             {
                 float fireRate = Random.Range(fireRateMin, fireRateMax);
-                InvokeRepeating("ShotLogic", fireRate, fireRate);
+                InvokeRepeating(nameof(ShotLogic), fireRate, fireRate);
             }
         }
-        void Update()
+        private void OnDisable()
         {
-            if (lookAtPlayer)
+            CancelInvoke(nameof(ShotLogic));
+            AllEnemies.Remove(this);
+            MissleHitEvent.UnregisterListener(OnMissleHit);
+        }
+        void Start()
+        {
+            explosions = FindObjectOfType<Explosions>();
+            initialHealth = enemyHealth;
+        }
+
+        void FixedUpdate()
+        {
+            var position = transform.position;
+            switch (enemyState)
             {
-                transform.LookAt(GameObject.FindGameObjectWithTag("Player").transform);
+                case EnemyState.Fly:
+                {
+                    TurnSpeed = fastTurnSpeed;
+                    LerpRotation(destinationPoint.transform.position - position);
+                    break;
+                }
+                case EnemyState.ReachedFormation:
+                {
+                    TurnSpeed = slowTurnSpeed;
+                    StartCoroutine(TurnSlowly());
+                    LerpRotation(player.transform.position - position);
+                    break;
+                }
+                case EnemyState.InFormation:
+                {
+                    LerpRotation(player.transform.position - position);
+                    break;
+                }
             }
+        }
+
+        IEnumerator TurnSlowly()
+        {
+            yield return new WaitForSeconds(turnDuration);
+            TurnSpeed = fastTurnSpeed;
+            enemyState = EnemyState.InFormation;
+        }
+        void LerpRotation(Vector3 dest)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(dest);
+            transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, TurnSpeed * Time.time);
         }
         private void ShotLogic()
         {
             float range = Random.Range(0.0f, 1.0f);
             if (shotProbability >= range)
             {
-                shotInstance = Instantiate(shot, transform.position, Quaternion.identity);
-                Destroy(shotInstance, shotDestroyDelay);
+                ObjectPooler.Instance.SpawnFromPool("Enemy Shot", transform.position, Quaternion.identity);
             }
         }
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "Player")
+            if (other.gameObject.CompareTag("Player"))
             {
                 Damage(enemyHealth);
             }
-        }
-        void OnDestroy()
-        {
-            MissleHitEvent.UnregisterListener(OnMissleHit);
         }
 
         void OnMissleHit(MissleHitEvent hit)
         {
             if (hit.UnitGO == gameObject)
             {
-                targetable = true;
                 Damage(hit.damage);
-                // Debug.Log(hit.Description + hit.UnitGO.name + " And made " + hit.damage + " Damage.");
             }
         }
         void OnParticleCollision(GameObject other)
@@ -91,11 +140,52 @@ namespace EventCallbacks
                 KillEnemy();
             }
         }
+
+        public void FlyToPoint(Transform point)
+        {
+            if (!gameObject.activeInHierarchy || !gameObject.activeSelf) return;
+            destinationPoint = point;
+            StartCoroutine(FlyToPointCoroutine());
+        }
+        IEnumerator FlyToPointCoroutine()
+        {
+            while (true)
+            {
+                if (!gameObject.activeInHierarchy || !gameObject.activeSelf) yield break;
+                Vector3 dir = transform.position - destinationPoint.position;
+                Vector3 dest = Vector3.Lerp(transform.position, destinationPoint.transform.position, flightSpeed * Time.deltaTime);
+                if (dir.sqrMagnitude <= proximity * proximity)
+                {
+                    enemyState = EnemyState.ReachedFormation;
+                    ReachedPoint reachedPoint = new ReachedPoint();
+                    reachedPoint.Description = "Enemy " + gameObject.name + " has reached destination";
+                    reachedPoint.objTransform = transform;
+                    reachedPoint.parentTransform = destinationPoint;
+                    reachedPoint.FireEvent();
+                    yield break;
+                }
+                transform.position = dest;
+                yield return null;
+            }
+        }
         void KillEnemy()
         {
-            StopAllCoroutines();
             explosions.Explode("Enemy Death", transform.position, 2f);
-            Destroy(gameObject, destroyDelay);
+            StartCoroutine(TimedDisable(gameObject, destroyDelay));
+            
+        }
+        IEnumerator TimedDisable(GameObject obj, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            obj.SetActive(false);
+            Transform thisParent = transform.parent;
+            enemyHealth = initialHealth;
+            EnemyDied enemyDied = new EnemyDied();
+            enemyDied.Description = "Enemy " + gameObject.name + " has died ";
+            enemyDied.enemy = transform;
+            enemyDied.point = destinationPoint;
+            enemyDied.parent = thisParent?.parent;
+            enemyDied.FireEvent();
         }
     }
 }

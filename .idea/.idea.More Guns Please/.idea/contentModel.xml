@@ -20,6 +20,9 @@
             <e p="csShurikenEffectEditor.cs" t="Include" />
           </e>
         </e>
+        <e p="Editor" t="Include">
+          <e p="FormationEditor.cs" t="Include" />
+        </e>
         <e p="Joystick Pack" t="Include">
           <e p="Examples" t="Include">
             <e p="JoystickPlayerExample.cs" t="Include" />
@@ -47,8 +50,11 @@
           <e p="CollisionDetection.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
           <e p="EnemyShot.cs" t="Include" />
+          <e p="EnemySpawner.cs" t="Include" />
           <e p="Event.cs" t="Include" />
           <e p="Explosions.cs" t="Include" />
+          <e p="Formation.cs" t="Include" />
+          <e p="GameManager.cs" t="Include" />
           <e p="IpooledObject.cs" t="Include" />
           <e p="Lasers.cs" t="Include" />
           <e p="Launcher.cs" t="Include" />
@@ -57,6 +63,7 @@
           <e p="Rocket.cs" t="Include" />
           <e p="Rockets.cs" t="Include" />
           <e p="Shot.cs" t="Include" />
+          <e p="SingleFormationManager.cs" t="Include" />
         </e>
       </e>
       <e p="More Guns Please.sln" t="IncludeFlat" />
