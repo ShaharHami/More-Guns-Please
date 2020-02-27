@@ -15,7 +15,8 @@ MonoBehaviour:
   animator: {fileID: -4044934878969359660, guid: c248c0bf75482b945b8ac5ad46a14343,
     type: 3}
   formationName: Formation1
-  triggerName: formation1
+  triggerName: wave
+  triggerIdx: 4
   positions:
   - {x: -45, y: 0, z: 0}
   - {x: -30, y: 0, z: 0}
@@ -24,4 +25,9 @@ MonoBehaviour:
   - {x: 15, y: 0, z: 0}
   - {x: 30, y: 0, z: 0}
   - {x: 45, y: 0, z: 0}
-  initialPosition: {x: 0, y: 0, z: -30}
+  spawnDelay: {x: 0.6085578, y: 1.2}
+  spawnPoints:
+  - {x: 50, y: 0, z: 120}
+  - {x: -50, y: 0, z: 120}
+  initialPositionX: {x: 0, y: 0}
+  initialPositionZ: {x: 52.297935, y: 52.297935}

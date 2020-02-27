@@ -50,12 +50,12 @@ MonoBehaviour:
   fireRateMin: 1
   fireRateMax: 3
   lookAtPlayer: 1
-  proximity: 2
+  proximity: 1
   flightSpeed: 4
   destroyDelay: 0.05
-  slowTurnSpeed: 0.005
-  fastTurnSpeed: 0.05
-  turnDuration: 1
+  slowTurnSpeed: 3
+  fastTurnSpeed: 13
+  turnDuration: 1.5
   enemyHealth: 50
   enemyState: 0
 --- !u!64 &1344698774742448322

@@ -70,6 +70,7 @@
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
+     <Compile Include="Assets\Scripts\CanGetShot.cs" />
      <Compile Include="Assets\Scripts\CollisionDetection.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\EnemyShot.cs" />
@@ -77,10 +78,12 @@
      <Compile Include="Assets\Scripts\Event.cs" />
      <Compile Include="Assets\Scripts\Explosions.cs" />
      <Compile Include="Assets\Scripts\Formation.cs" />
+     <Compile Include="Assets\Scripts\FormationContainer.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\IpooledObject.cs" />
      <Compile Include="Assets\Scripts\Lasers.cs" />
      <Compile Include="Assets\Scripts\Launcher.cs" />
+     <Compile Include="Assets\Scripts\MinMaxAttribute.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Rocket.cs" />

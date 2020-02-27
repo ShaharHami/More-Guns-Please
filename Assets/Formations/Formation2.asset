@@ -15,7 +15,13 @@ MonoBehaviour:
   animator: {fileID: -4044934878969359660, guid: c248c0bf75482b945b8ac5ad46a14343,
     type: 3}
   formationName: Formation2
-  triggerName: formation2
+  triggerName: flyBy
+  triggerIdx: 5
   positions:
-  - {x: 0, y: 0, z: 0}
-  initialPosition: {x: 0, y: 0, z: -10}
+  - {x: -10, y: 0, z: 0}
+  - {x: 0, y: 0, z: -10}
+  - {x: 10, y: 0, z: 0}
+  spawnDelay: {x: 0, y: 0}
+  spawnPoints: []
+  initialPositionX: {x: -40.41204, y: 40.41204}
+  initialPositionZ: {x: 0, y: 0}

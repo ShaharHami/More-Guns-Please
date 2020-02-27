@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using EventCallbacks;
 
 public class Player : MonoBehaviour
 {
@@ -38,7 +36,7 @@ public class Player : MonoBehaviour
         {
             minEngineScaleZ = engines[0].transform.localScale.z;
         }
-        EventCallbacks.EnemyShotHit.RegisterListener(OnDamage);
+        EnemyShotHit.RegisterListener(OnDamage);
         activeShot = shots[0].type;
         foreach (Shot shot in shots)
         {
@@ -73,9 +71,6 @@ public class Player : MonoBehaviour
         {
             flying = true;
             shooting = true;
-//            Flight();
-//            Roll();
-//            Shoot(true);
         }
         else
         {
@@ -167,7 +162,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    private void OnDamage(EventCallbacks.EnemyShotHit hit)
+    private void OnDamage(EnemyShotHit hit)
     {
 //        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
     }
@@ -177,7 +172,7 @@ public class Player : MonoBehaviour
     }
     void OnDestroy()
     {
-        EventCallbacks.EnemyShotHit.UnregisterListener(OnDamage);
+        EnemyShotHit.UnregisterListener(OnDamage);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -188,7 +183,7 @@ public class Player : MonoBehaviour
     }
     private void Shoot(bool fire)
     {
-        EventCallbacks.FireWeapon fireWeaponEvent = new EventCallbacks.FireWeapon();
+        FireWeapon fireWeaponEvent = new FireWeapon();
         fireWeaponEvent.Description = "Fire weapon: " + fire;
         fireWeaponEvent.fire = fire;
         fireWeaponEvent.FireEvent();

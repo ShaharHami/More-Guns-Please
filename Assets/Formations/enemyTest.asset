@@ -18,13 +18,22 @@ MonoBehaviour:
   triggerName: enemyTest
   triggerIdx: 0
   positions:
-  - {x: 30, y: 0, z: 30}
+  - {x: 25, y: 0, z: 25}
   - {x: 0, y: 0, z: 0}
-  - {x: -30, y: 0, z: -30}
-  - {x: 30, y: 0, z: 0}
-  - {x: -30, y: 0, z: 0}
-  - {x: 0, y: 0, z: 30}
-  - {x: 0, y: 0, z: -30}
-  - {x: -30, y: 0, z: 30}
-  - {x: 30, y: 0, z: -30}
-  initialPosition: {x: 0, y: 0, z: 0}
+  - {x: -25, y: 0, z: -25}
+  - {x: 25, y: 0, z: 0}
+  - {x: -25, y: 0, z: 0}
+  - {x: 0, y: 0, z: 25}
+  - {x: 0, y: 0, z: -25}
+  - {x: -25, y: 0, z: 25}
+  - {x: 25, y: 0, z: -25}
+  spawnDelay: {x: 0.31121835, y: 1.2}
+  spawnPoints:
+  - {x: 100, y: 0, z: 120}
+  - {x: -100, y: 0, z: 120}
+  - {x: 10, y: 0, z: 120}
+  - {x: -10, y: 0, z: 120}
+  - {x: 55, y: 0, z: 120}
+  - {x: -55, y: 0, z: 120}
+  initialPositionX: {x: -11.885895, y: 11.885895}
+  initialPositionZ: {x: -11.885895, y: 35.657684}
