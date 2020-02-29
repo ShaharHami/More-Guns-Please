@@ -79,7 +79,7 @@ namespace EventCallbacks
                     missileHit.damage = Random.Range(1, 5); //TODO: get rocket damage from central data manager
                     missileHit.FireEvent();
                 }
-                explosions.Explode("Missile Hit", transform.position, 1f);
+                explosions.Explode("missile hit", transform.position, 1f);
                 target = null;
                 gameObject.SetActive(false);
             }

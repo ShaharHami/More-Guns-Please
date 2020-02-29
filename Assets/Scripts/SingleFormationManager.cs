@@ -37,7 +37,7 @@ public class SingleFormationManager : MonoBehaviour
     public void BuildFormation(string[] enemieTypes)
     {
         if (formation == null) return;
-        formationContainer = ObjectPooler.Instance.SpawnFromPool("FormationContainer", Vector3.zero, Quaternion.identity);
+        formationContainer = ObjectPooler.Instance.SpawnFromPool("Formation Container", Vector3.zero, Quaternion.identity);
         formationContainer.transform.SetParent(transform);
         formationContainer.name = formation.formationName+"_"+formation.triggerName;
         foreach (var pos in formation.positions)
@@ -49,14 +49,14 @@ public class SingleFormationManager : MonoBehaviour
             positionMarkers.Add(positionMarker);
         }
         AnimateFormation(formation.triggerName);
-        StartCoroutine(PopulateFormation(enemieTypes));
+        StartCoroutine(PopulateFormation(formation.EnemyTypes.ToArray()));
     }
     IEnumerator PopulateFormation(string[] enemieTypes)
     {
         yield return null;
         foreach (GameObject positionMarker in positionMarkers)
         {
-            SpawnEnemy(enemieTypes[Random.Range(0, enemieTypes.Length)], 
+            SpawnEnemy(enemieTypes[Random.Range(0, enemieTypes.Length)],
                 positionMarker,
                 Quaternion.Euler(0, 180f, 0));
             yield return new WaitForSeconds(Random.Range(formation.spawnDelay.x, formation.spawnDelay.y));
@@ -82,6 +82,7 @@ public class SingleFormationManager : MonoBehaviour
             enemy.transform.position = positionMarker.transform.position;
         }
         enemy.FlyToPoint(positionMarker.transform);
+        enemy.lookAtPlayer = formation.enemyLookAtPlayer;
         spawnedEnemies++;
     }
     private void ParentEnemy(ReachedPoint info)

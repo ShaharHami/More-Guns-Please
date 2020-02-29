@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "Formation", menuName = "Create Formation")]
@@ -9,6 +11,7 @@ public class Formation : ScriptableObject
     public string formationName;
     [HideInInspector] public string triggerName;
     [HideInInspector] public int triggerIdx;
+    public bool enemyLookAtPlayer;
     [Header("Formation Positions")]
     public Vector3[] positions;
     [MinMax(0f, 1.2f)]
@@ -21,4 +24,5 @@ public class Formation : ScriptableObject
     public Vector2 initialPositionX;
     [MinMax(-150f, 150f)]
     public Vector2 initialPositionZ;
+    public List<string> EnemyTypes;
 }

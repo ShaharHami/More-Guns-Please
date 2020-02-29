@@ -6,7 +6,7 @@ public class FormationContainer : MonoBehaviour
     {
         foreach (Transform point in transform)
         {
-            point.GetComponentInChildren<Enemy>().KillEnemy();
+            point.GetComponentInChildren<Enemy>().KillEnemy(true);
         }
     }
 }

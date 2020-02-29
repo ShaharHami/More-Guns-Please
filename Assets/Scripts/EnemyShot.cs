@@ -79,7 +79,7 @@ public class EnemyShot : MonoBehaviour
             enemyShotHit.UnitGO = gameObject;
             enemyShotHit.damage = damage;
             enemyShotHit.FireEvent();
-            explosions.Explode("Enemy Shot Hit", transform.position, 1f);
+            explosions.Explode("EnemyShotHit", transform.position, 1f);
         }
     }
 }

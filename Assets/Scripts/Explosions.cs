@@ -1,23 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Explosions : MonoBehaviour
 {
-    public Explosion[] explosions;
-    static private Dictionary<string, Explosion> explosionsDictionary;
-    void Start()
-    {
-        explosionsDictionary = new Dictionary<string, Explosion>();
-        foreach (Explosion explosion in explosions)
-        {
-            explosionsDictionary.Add(explosion.explosionName, explosion);
-        }
-    }
+    public string[] explosions;
     public void Explode(string explosionName, Vector3 instantiationPosition, float delayBeforeDestroy)
     {
-        if (explosionsDictionary.ContainsKey(explosionName))
+        if (explosions.Contains(explosionName))
         {
             GameObject explosionInstance = ObjectPooler.Instance.SpawnFromPool(explosionName, instantiationPosition, Quaternion.identity);
             StartCoroutine(TimedDisable(explosionInstance, delayBeforeDestroy));
@@ -33,10 +25,4 @@ public class Explosions : MonoBehaviour
         yield return new WaitForSeconds(delay);
         obj.SetActive(false);
     }
-}
-[System.Serializable]
-public class Explosion
-{
-    public string explosionName;
-    public GameObject explosionVisualEffect;
 }

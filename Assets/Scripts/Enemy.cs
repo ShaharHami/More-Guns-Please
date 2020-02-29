@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
         if (shot != null)
         {
             float fireRate = Random.Range(fireRateMin, fireRateMax);
-            InvokeRepeating(nameof(ShotLogic), fireRate, fireRate);
+            InvokeRepeating(nameof(ShotLogic), fireRateMin, fireRate);
         }
     }
 
@@ -66,6 +66,14 @@ public class Enemy : MonoBehaviour
     {
         explosions = FindObjectOfType<Explosions>();
         initialHealth = enemyHealth;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            KillEnemy();
+        }
     }
 
     void FixedUpdate()
@@ -89,18 +97,32 @@ public class Enemy : MonoBehaviour
             case EnemyState.SlowTurning:
             {
                 TurnSpeed = slowTurnSpeed;
-                LerpRotation(player.transform.position - position);
+                
+                LerpRotation(Destination() - position);
                 break;
             }
             case EnemyState.InFormation:
             {
                 TurnSpeed = fastTurnSpeed;
-                LerpRotation(player.transform.position - position);
+                LerpRotation(Destination() - position);
                 break;
             }
         }
     }
-    
+
+    private Vector3 Destination()
+    {
+        Vector3 dest;
+        if (lookAtPlayer)
+        {
+            dest = player.transform.position;
+        }
+        else
+        {
+            dest = transform.position - Vector3.forward;
+        }
+        return dest;
+    }
     IEnumerator TurnSlowly()
     {
         yield return new WaitForSeconds(turnDuration);
@@ -118,7 +140,7 @@ public class Enemy : MonoBehaviour
         float range = Random.Range(0.0f, 1.0f);
         if (shotProbability >= range)
         {
-            ObjectPooler.Instance.SpawnFromPool("Enemy Shot", transform.position, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool("FireBall3", transform.position, Quaternion.identity);
         }
     }
 
@@ -187,10 +209,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void KillEnemy()
+    public void KillEnemy(bool silent = false)
     {
-        explosions.Explode("Enemy Death", transform.position, 2f);
         StartCoroutine(TimedDisable(gameObject, destroyDelay));
+        if (silent) return;
+        explosions.Explode("Enemy Death", transform.position, 2f);
     }
 
     IEnumerator TimedDisable(GameObject obj, float delay)
