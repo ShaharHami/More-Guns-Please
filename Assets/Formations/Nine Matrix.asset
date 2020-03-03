@@ -17,7 +17,7 @@ MonoBehaviour:
   formationName: Nine Matrix
   triggerName: enemyTest
   triggerIdx: 0
-  enemyLookAtPlayer: 1
+  enemyLookAtPlayer: 0
   positions:
   - {x: 25, y: 0, z: 25}
   - {x: 0, y: 0, z: 0}
