@@ -21,8 +21,8 @@ public class Player : MonoBehaviour
     private bool flying;
     private bool shooting;
     
-    private float objectWidth;
-    private float objectHeight;
+//    private float objectWidth;
+//    private float objectHeight;
     private string activeShot;
     private Camera camera1;
     private Vector3 viewpointCoord;
@@ -30,8 +30,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         camera1 = Camera.main;
-        objectWidth = transform.GetComponent<MeshRenderer>().bounds.extents.x;
-        objectHeight = transform.GetComponent<MeshRenderer>().bounds.extents.z;
+//        objectWidth = transform.GetComponent<MeshRenderer>().bounds.extents.x;
+//        objectHeight = transform.GetComponent<MeshRenderer>().bounds.extents.z;
         if (engines[0] != null)
         {
             minEngineScaleZ = engines[0].transform.localScale.z;
@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
                 shooting = false;
             }
         }
-        else if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
+        if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
         {
             flying = true;
             shooting = true;

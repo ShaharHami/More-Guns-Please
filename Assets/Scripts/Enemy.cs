@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour
 {
     public static List<Enemy> AllEnemies { get; private set; }
+    public static List<GameObject> AllEnemieGOs { get; private set; }
     public GameObject shot;
     [Range(0.0f, 1.0f)] public float shotProbability;
     public float fireRateMin, fireRateMax;
@@ -18,11 +19,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float destroyDelay = 1f;
     [SerializeField] private float slowTurnSpeed, fastTurnSpeed, turnDuration;
     [SerializeField] private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
+    [SerializeField] private float avoidenceRadius;
+    [SerializeField] private Color gizmoColor;
     private int initialHealth;
     private Explosions explosions;
     private GameObject player;
     private Transform destinationPoint;
     private bool hasReachedPoint;
+    private Collider[] hitColliders;
+    private Vector3 cummulativeDir;
     public float TurnSpeed { get; set; }
 
     public enum EnemyState
@@ -38,14 +43,17 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
+        cummulativeDir = new Vector3();
         hasReachedPoint = false;
         enemyState = EnemyState.Fly;
         if (AllEnemies == null)
         {
             AllEnemies = new List<Enemy>();
+            AllEnemieGOs = new List<GameObject>();
         }
 
         AllEnemies.Add(this);
+        AllEnemieGOs.Add(gameObject);
         player = GameObject.FindGameObjectWithTag("Player");
         MissleHitEvent.RegisterListener(OnMissleHit);
         if (shot != null)
@@ -59,6 +67,7 @@ public class Enemy : MonoBehaviour
     {
         CancelInvoke(nameof(ShotLogic));
         AllEnemies.Remove(this);
+        AllEnemieGOs.Remove(gameObject);
         MissleHitEvent.UnregisterListener(OnMissleHit);
     }
 
@@ -66,6 +75,14 @@ public class Enemy : MonoBehaviour
     {
         explosions = FindObjectOfType<Explosions>();
         initialHealth = enemyHealth;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = gizmoColor;
+        Gizmos.DrawSphere(transform.position, avoidenceRadius);
+//        Gizmos.DrawLine(transform.position, cummulativeDir);
+        Gizmos.DrawRay(transform.position, cummulativeDir);
     }
 
     private void Update()
@@ -76,6 +93,26 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private Vector3 AvoidNeigbours()
+    {
+        hitColliders = Physics.OverlapSphere(transform.position, avoidenceRadius); //TODO Layer mask
+        if (hitColliders.Length <= 0)
+        {
+            return Vector3.zero;
+        }
+
+        foreach (var collider in hitColliders)
+        {
+            if (collider.gameObject != gameObject && AllEnemieGOs.Contains(collider.gameObject))
+            {
+                cummulativeDir += (transform.position - collider.transform.position);
+            }
+        }
+
+        cummulativeDir /= hitColliders.Length;
+        return cummulativeDir;
+    }
+
     void FixedUpdate()
     {
         var position = transform.position;
@@ -84,7 +121,6 @@ public class Enemy : MonoBehaviour
             case EnemyState.Fly:
             {
                 TurnSpeed = fastTurnSpeed;
-                LerpRotation(destinationPoint.transform.position - position);
                 break;
             }
             case EnemyState.ReachedFormation:
@@ -97,14 +133,21 @@ public class Enemy : MonoBehaviour
             case EnemyState.SlowTurning:
             {
                 TurnSpeed = slowTurnSpeed;
-                
-                LerpRotation(Destination() - position);
+//                if (lookAtPlayer)
+//                {
+                    LerpRotation(Destination() - position);
+//                }
+
                 break;
             }
             case EnemyState.InFormation:
             {
                 TurnSpeed = fastTurnSpeed;
-                LerpRotation(Destination() - position);
+//                if (lookAtPlayer)
+//                {
+                    LerpRotation(Destination() - position);
+//                }
+
                 break;
             }
         }
@@ -119,10 +162,12 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            dest = transform.position - Vector3.forward;
+            dest = new Vector3(transform.localPosition.x, 0, transform.localPosition.z * 1.5f);
         }
+
         return dest;
     }
+
     IEnumerator TurnSlowly()
     {
         yield return new WaitForSeconds(turnDuration);
@@ -191,8 +236,6 @@ public class Enemy : MonoBehaviour
         {
             if (!gameObject.activeInHierarchy || !gameObject.activeSelf) yield break;
             Vector3 dir = transform.position - destinationPoint.position;
-            Vector3 dest = Vector3.Lerp(transform.position, destinationPoint.transform.position,
-                flightSpeed * Time.deltaTime);
             if (dir.sqrMagnitude <= proximity * proximity)
             {
                 enemyState = EnemyState.ReachedFormation;
@@ -204,7 +247,10 @@ public class Enemy : MonoBehaviour
                 yield break;
             }
 
-            transform.position = dest;
+            Vector3 dest = Vector3.Lerp(transform.position, destinationPoint.position,
+                flightSpeed * Time.deltaTime);
+            transform.position = dest + ((5f * Time.deltaTime) * AvoidNeigbours());
+            LerpRotation(destinationPoint.transform.position - transform.position);
             yield return null;
         }
     }

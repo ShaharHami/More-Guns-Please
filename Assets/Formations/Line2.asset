@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: -4044934878969359660, guid: c248c0bf75482b945b8ac5ad46a14343,
     type: 3}
-  formationName: Line
+  formationName: Line2
   triggerName: wave
   triggerIdx: 4
   enemyLookAtPlayer: 1
@@ -28,10 +28,11 @@ MonoBehaviour:
   - {x: 45, y: 0, z: 0}
   spawnDelay: {x: 0.359401, y: 1.2}
   spawnPoints:
-  - {x: 50, y: 0, z: 120}
-  - {x: -50, y: 0, z: 120}
-  - {x: 0, y: 0, z: 120}
+  - {x: 50, y: 0, z: 98}
+  - {x: -50, y: 0, z: 98}
+  - {x: 0, y: 0, z: 98}
   initialPositionX: {x: 0, y: 0}
   initialPositionZ: {x: 41.987278, y: 58.930443}
   EnemyTypes:
   - Trident 1
+  - Trident

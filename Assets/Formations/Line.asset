@@ -28,8 +28,8 @@ MonoBehaviour:
   - {x: 45, y: 0, z: 0}
   spawnDelay: {x: 0.6085578, y: 1.2}
   spawnPoints:
-  - {x: 50, y: 0, z: 120}
-  - {x: -50, y: 0, z: 120}
+  - {x: 50, y: 0, z: 98}
+  - {x: -50, y: 0, z: 98}
   initialPositionX: {x: 0, y: 0}
   initialPositionZ: {x: -0.3706379, y: -0.3706379}
   EnemyTypes:
