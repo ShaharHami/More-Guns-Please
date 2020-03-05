@@ -100,7 +100,6 @@ public class Enemy : MonoBehaviour
         {
             return Vector3.zero;
         }
-
         foreach (var collider in hitColliders)
         {
             if (collider.gameObject != gameObject && AllEnemieGOs.Contains(collider.gameObject))
@@ -108,7 +107,6 @@ public class Enemy : MonoBehaviour
                 cummulativeDir += (transform.position - collider.transform.position);
             }
         }
-
         cummulativeDir /= hitColliders.Length;
         return cummulativeDir;
     }
@@ -121,6 +119,7 @@ public class Enemy : MonoBehaviour
             case EnemyState.Fly:
             {
                 TurnSpeed = fastTurnSpeed;
+                LerpRotation(destinationPoint.transform.position - position);
                 break;
             }
             case EnemyState.ReachedFormation:
@@ -133,21 +132,14 @@ public class Enemy : MonoBehaviour
             case EnemyState.SlowTurning:
             {
                 TurnSpeed = slowTurnSpeed;
-//                if (lookAtPlayer)
-//                {
-                    LerpRotation(Destination() - position);
-//                }
 
+                LerpRotation(Destination() - position);
                 break;
             }
             case EnemyState.InFormation:
             {
                 TurnSpeed = fastTurnSpeed;
-//                if (lookAtPlayer)
-//                {
-                    LerpRotation(Destination() - position);
-//                }
-
+                LerpRotation(Destination() - position);
                 break;
             }
         }
@@ -162,7 +154,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            dest = new Vector3(transform.localPosition.x, 0, transform.localPosition.z * 1.5f);
+            dest = transform.position - Vector3.forward;
         }
 
         return dest;
@@ -249,8 +241,7 @@ public class Enemy : MonoBehaviour
 
             Vector3 dest = Vector3.Lerp(transform.position, destinationPoint.position,
                 flightSpeed * Time.deltaTime);
-            transform.position = dest + ((5f * Time.deltaTime) * AvoidNeigbours());
-            LerpRotation(destinationPoint.transform.position - transform.position);
+            transform.position = dest;
             yield return null;
         }
     }

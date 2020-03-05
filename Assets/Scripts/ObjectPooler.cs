@@ -10,6 +10,7 @@ public class ObjectPooler : MonoBehaviour
         public string tag;
         public GameObject prefab;
         public int size;
+        public bool preWarmGradual;
     }
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
@@ -25,15 +26,42 @@ public class ObjectPooler : MonoBehaviour
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
         foreach (Pool pool in pools)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>();
-            for (int i = 0; i < pool.size; i++)
+            if (pool.preWarmGradual)
             {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
+                StartCoroutine(PreWarmGradual(pool));
             }
-            poolDictionary.Add(pool.tag, objectPool);
+            else
+            {
+                PreWarm(pool);
+            }
         }
+    }
+
+    private void PreWarm(Pool pool)
+    {
+        Queue<GameObject> objectPool = new Queue<GameObject>();
+        for (int i = 0; i < pool.size; i++)
+        {
+            GameObject obj = Instantiate(pool.prefab);
+            obj.SetActive(false);
+            objectPool.Enqueue(obj);
+        }
+
+        poolDictionary.Add(pool.tag, objectPool);
+    }
+
+    private IEnumerator PreWarmGradual(Pool pool)
+    {
+        Queue<GameObject> objectPool = new Queue<GameObject>();
+        for (int i = 0; i < pool.size; i++)
+        {
+            GameObject obj = Instantiate(pool.prefab);
+            obj.SetActive(false);
+            objectPool.Enqueue(obj);
+            yield return null;
+        }
+
+        poolDictionary.Add(pool.tag, objectPool);
     }
 
     public GameObject SpawnFromPool(string tag, Vector3 pos, Quaternion rot)
