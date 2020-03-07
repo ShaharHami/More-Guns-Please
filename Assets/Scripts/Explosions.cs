@@ -1,22 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Explosions : MonoBehaviour
 {
-    public string[] explosions;
+    public List<string> explosions;
+
+    private void Start()
+    {
+
+    }
+
     public void Explode(string explosionName, Vector3 instantiationPosition, float delayBeforeDestroy)
     {
         if (explosions.Contains(explosionName))
         {
-            GameObject explosionInstance = ObjectPooler.Instance.SpawnFromPool(explosionName, instantiationPosition, Quaternion.identity);
+            GameObject explosionInstance =
+                ObjectPooler.Instance.SpawnFromPool(explosionName, instantiationPosition, Quaternion.identity);
             StartCoroutine(TimedDisable(explosionInstance, delayBeforeDestroy));
         }
         else
         {
-            print ("Did you misspell your explosion?!");
+            print($"Did you misspell your explosion?! What is {explosionName}??");
         }
     }
 

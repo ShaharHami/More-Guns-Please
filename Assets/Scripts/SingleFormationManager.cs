@@ -58,7 +58,7 @@ public class SingleFormationManager : MonoBehaviour
         {
             SpawnEnemy(enemieTypes[Random.Range(0, enemieTypes.Length)],
                 positionMarker,
-                Quaternion.Euler(0, 180f, 0));
+                Quaternion.Euler(0, 0, 0));
             yield return new WaitForSeconds(Random.Range(formation.spawnDelay.x, formation.spawnDelay.y));
         }
     }
@@ -72,7 +72,12 @@ public class SingleFormationManager : MonoBehaviour
     }
     public void SpawnEnemy(string enemyType, GameObject positionMarker, Quaternion rot)
     {
-        Enemy enemy = ObjectPooler.Instance.SpawnFromPool(enemyType, Vector3.zero, rot).GetComponent<Enemy>();
+        GameObject pooledEnemy = ObjectPooler.Instance.SpawnFromPool(enemyType, Vector3.zero, rot);
+        Enemy enemy = pooledEnemy.GetComponent<Enemy>();
+        if (enemy == null)
+        {
+            enemy = pooledEnemy.GetComponentInChildren<Enemy>();
+        }
         if (formation.spawnPoints.Length > 0)
         {
             enemy.transform.position = formation.spawnPoints[Random.Range(0, formation.spawnPoints.Length)];

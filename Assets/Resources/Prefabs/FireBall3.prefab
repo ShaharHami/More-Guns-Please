@@ -13995,6 +13995,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd2111cfcdad2432284f6e957a795c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitEffect: {fileID: 4034685459527600621, guid: 3a149f4bc16a74c1f97a28dce646cdbd,
+    type: 3}
   shotSpeed: 60
   isTargetingPlayer: 1
   isHoming: 0

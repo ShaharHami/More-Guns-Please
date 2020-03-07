@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using EventCallbacks;
 
 public class Player : MonoBehaviour
@@ -15,14 +16,14 @@ public class Player : MonoBehaviour
     private Vector3 _speed;
     [SerializeField] float tilt = 1f;
     [Range(0.0f, 1.0f)] [SerializeField] float tiltEase = 1f;
-    [Range(0.0f, 0.5f)]
-    public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
+    [Range(0.0f, 0.5f)] public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
     private Vector3 _tilt;
     private bool flying;
     private bool shooting;
-    
-//    private float objectWidth;
-//    private float objectHeight;
+    private int dir;
+    public float barrelRollThreshold;
+    private float joystickX;
+    private DoABarrelRoll doABarrelRoll;
     private string activeShot;
     private Camera camera1;
     private Vector3 viewpointCoord;
@@ -30,12 +31,12 @@ public class Player : MonoBehaviour
     void Start()
     {
         camera1 = Camera.main;
-//        objectWidth = transform.GetComponent<MeshRenderer>().bounds.extents.x;
-//        objectHeight = transform.GetComponent<MeshRenderer>().bounds.extents.z;
+        doABarrelRoll = GetComponent<DoABarrelRoll>();
         if (engines[0] != null)
         {
             minEngineScaleZ = engines[0].transform.localScale.z;
         }
+
         EnemyShotHit.RegisterListener(OnDamage);
         activeShot = shots[0].type;
         foreach (Shot shot in shots)
@@ -62,11 +63,13 @@ public class Player : MonoBehaviour
             {
                 shooting = true;
             }
+
             if (touch.phase == TouchPhase.Ended)
             {
                 shooting = false;
             }
         }
+
         if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
         {
             flying = true;
@@ -76,6 +79,14 @@ public class Player : MonoBehaviour
         {
             flying = false;
             shooting = false;
+        }
+        if (shooting)
+        {
+            Shoot(!doABarrelRoll.isRotating);
+        }
+        else
+        {
+            Shoot(false);
         }
         // CHEAT SETTINGS
         if (cheat && Input.GetKeyDown(KeyCode.L))
@@ -92,34 +103,52 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (shooting)
-        {
-            Shoot(true);
-        } 
-        else 
-        {
-            Shoot(false);
-        }
-        
         if (flying)
         {
+            HandleBarrelRoll();
             Flight();
             Roll();
         }
         else
         {
+            joystickX = 0;
+            dir = 0;
             EaseOut();
         }
     }
 
+    void HandleBarrelRoll()
+    {
+        float currentX = joystick.Direction.x;
+        if (Math.Abs(joystickX) <= 0)
+        {
+            joystickX = currentX;
+            return;
+        }
+        int currentDir = currentX > 0 ? 1 : -1;
+        if (dir == 0)
+        {
+            dir = currentDir;
+            return;
+        }
+        if (currentDir != dir)
+        {
+            if (Math.Abs(joystickX - currentX) > barrelRollThreshold)
+            {
+                doABarrelRoll.BarrelRoll(transform, dir);
+            }
+        }
+        joystickX = currentX;
+        dir = currentDir;
+    }
+
     private void Flight()
     {
-
         _speed = new Vector3(
-                    joystick.Horizontal * speed * Time.deltaTime,
-                    0,
-                    joystick.Vertical * speed * Time.deltaTime
-                );
+            joystick.Horizontal * speed * Time.deltaTime,
+            0,
+            joystick.Vertical * speed * Time.deltaTime
+        );
         viewpointCoord = camera1.WorldToViewportPoint(transform.position);
         viewpointCoord.x = Mathf.Clamp(viewpointCoord.x, 0f + marginLeft, 1f - marginRight);
         viewpointCoord.y = Mathf.Clamp(viewpointCoord.y, 0f + marginBottom, 1f - marginTop);
@@ -136,6 +165,7 @@ public class Player : MonoBehaviour
             {
                 engineScale.z = minEngineScaleZ;
             }
+
             engine.transform.localScale = engineScale;
         }
     }
@@ -156,31 +186,43 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Euler(_tilt);
             if (_tilt.sqrMagnitude < 0.01f * 0.01f) _tilt = Vector3.zero;
             var worldToViewportPoint = camera1.WorldToViewportPoint(transform.position);
-            if (worldToViewportPoint.x > (0f + marginLeft) && worldToViewportPoint.x < (1f - marginRight) && worldToViewportPoint.y > (0f + marginBottom) && worldToViewportPoint.y < (1f - marginTop))
+            if (worldToViewportPoint.x > (0f + marginLeft) && worldToViewportPoint.x < (1f - marginRight) &&
+                worldToViewportPoint.y > (0f + marginBottom) && worldToViewportPoint.y < (1f - marginTop))
             {
                 transform.position += _speed;
             }
         }
     }
+
     private void OnDamage(EnemyShotHit hit)
     {
-//        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
+        if (doABarrelRoll.isRotating)
+        {
+            print($"woohoo got away from {hit.UnitGO.name}!");
+            return;
+        }
+        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
     }
+
     private void Damage(int damage)
     {
 //        print("Player hit" + damage);
     }
+
     void OnDestroy()
     {
         EnemyShotHit.UnregisterListener(OnDamage);
     }
+
     private void OnTriggerEnter(Collider other)
     {
+        if (doABarrelRoll.isRotating) return;
         if (other.gameObject.CompareTag("Enemy"))
         {
             Damage(playerHealth);
         }
     }
+
     private void Shoot(bool fire)
     {
         FireWeapon fireWeaponEvent = new FireWeapon();

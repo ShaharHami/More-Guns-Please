@@ -4,6 +4,7 @@ using EventCallbacks;
 
 public class EnemyShot : MonoBehaviour
 {
+    public GameObject hitEffect;
     public float shotSpeed = 100f;
     public bool isTargetingPlayer = false;
     public bool isHoming = false;
@@ -65,6 +66,7 @@ public class EnemyShot : MonoBehaviour
         if (killTimer >= life)
         {
             gameObject.SetActive(false);
+            explosions.Explode(hitEffect.name, transform.position, 1f);
             killTimer = 0;
         }
     }
@@ -79,7 +81,7 @@ public class EnemyShot : MonoBehaviour
             enemyShotHit.UnitGO = gameObject;
             enemyShotHit.damage = damage;
             enemyShotHit.FireEvent();
-            explosions.Explode("EnemyShotHit", transform.position, 1f);
+            explosions.Explode(hitEffect.name, transform.position, 1f);
         }
     }
 }

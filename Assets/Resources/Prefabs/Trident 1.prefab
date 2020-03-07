@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8050213697546200591}
   - component: {fileID: 8050213697546200580}
   - component: {fileID: 1344698774742448322}
-  - component: {fileID: 3199696703178321689}
   - component: {fileID: 3962104021950527242}
   m_Layer: 8
   m_Name: Trident 1
@@ -52,7 +51,7 @@ MonoBehaviour:
   shotProbability: 0.381
   fireRateMin: 1
   fireRateMax: 3
-  lookAtPlayer: 0
+  lookAtPlayer: 1
   proximity: 1
   flightSpeed: 3
   destroyDelay: 0.05
@@ -77,19 +76,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300002, guid: 6eb06c659fc69044781d905f30fbafc1, type: 3}
---- !u!135 &3199696703178321689
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8050213697546200590}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 16.16
-  m_Center: {x: 0, y: 0, z: -2.8}
 --- !u!54 &3962104021950527242
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -105,7 +91,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 4
-  m_CollisionDetection: 3
+  m_CollisionDetection: 0
 --- !u!1001 &372675045951011136
 PrefabInstance:
   m_ObjectHideFlags: 0

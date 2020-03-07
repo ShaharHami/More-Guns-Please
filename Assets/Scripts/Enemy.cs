@@ -177,7 +177,7 @@ public class Enemy : MonoBehaviour
         float range = Random.Range(0.0f, 1.0f);
         if (shotProbability >= range)
         {
-            ObjectPooler.Instance.SpawnFromPool("FireBall3", transform.position, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(shot.name, transform.position, Quaternion.identity);
         }
     }
 

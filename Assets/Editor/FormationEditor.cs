@@ -114,9 +114,9 @@ public class FormationEditor : Editor
         }
     }
 
-    public List<T> GetPrefabs<T>(string path)
+    public List<GameObject> GetPrefabs<T>(string path)
     {
-        List<T> prefabs = new List<T>();
+        List<GameObject> prefabs = new List<GameObject>();
         Object[] objects = Resources.LoadAll(path);
         foreach (var obj in objects)
         {
@@ -124,9 +124,15 @@ public class FormationEditor : Editor
             {
                 GameObject go = (GameObject) obj;
                 var t = go.GetComponent<T>();
+                var tInChildren = go.GetComponentInChildren<T>();
                 if (t != null)
                 {
-                    prefabs.Add(t);
+                    prefabs.Add(go);
+                    enemyTypes.Add(go.name);
+                }
+                else if (tInChildren != null)
+                {
+                    prefabs.Add(go);
                     enemyTypes.Add(go.name);
                 }
             }
@@ -134,16 +140,4 @@ public class FormationEditor : Editor
 
         return prefabs;
     }
-
-//    public List<string> GetPrefabNames<T>(List<T> objects)
-//    {
-//        List<string> names = new List<string>();
-//        foreach (var obj in objects)
-//        {
-//            var e = (GameObject) obj;
-//            names.Add(obj.ToString());
-//        }
-//
-//        return names;
-//    }
 }

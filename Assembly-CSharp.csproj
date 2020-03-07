@@ -83,14 +83,17 @@
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
      <Compile Include="Assets\Scripts\CanGetShot.cs" />
      <Compile Include="Assets\Scripts\CollisionDetection.cs" />
+     <Compile Include="Assets\Scripts\DoABarrelRoll.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\EnemyShot.cs" />
      <Compile Include="Assets\Scripts\EnemySpawner.cs" />
      <Compile Include="Assets\Scripts\Event.cs" />
+     <Compile Include="Assets\Scripts\ExplosionEffect.cs" />
      <Compile Include="Assets\Scripts\Explosions.cs" />
      <Compile Include="Assets\Scripts\Formation.cs" />
      <Compile Include="Assets\Scripts\FormationContainer.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\IExplode.cs" />
      <Compile Include="Assets\Scripts\IpooledObject.cs" />
      <Compile Include="Assets\Scripts\Lasers.cs" />
      <Compile Include="Assets\Scripts\Launcher.cs" />
@@ -103,14 +106,32 @@
      <Compile Include="Assets\Scripts\SingleFormationManager.cs" />
      <None Include="Assets\DebugDrawingExtension\readme.txt" />
      <None Include="Assets\Demigiant\DOTween\readme.txt" />
+ <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.RenderPipelines.Universal.Shaders">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
  </Reference>
  <Reference Include="Unity.VSCode.Editor">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.RenderPipelines.Core.Editor">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.RenderPipelines.Core.Runtime">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.RenderPipelines.Universal.Runtime">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.RenderPipelines.Universal.Editor">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
@@ -123,6 +144,15 @@
  </Reference>
  <Reference Include="Unity.Rider.Editor">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.ShaderGraph.Editor">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>

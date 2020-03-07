@@ -42,6 +42,7 @@
           </e>
         </e>
         <e p="Editor" t="Include">
+          <e p="ExplosionManagerEditor.cs" t="Include" />
           <e p="FormationEditor.cs" t="Include" />
           <e p="MinMaxDrawer.cs" t="Include" />
           <e p="ObjectPoolerInspector.cs" t="Include" />
@@ -72,14 +73,17 @@
         <e p="Scripts" t="Include">
           <e p="CanGetShot.cs" t="Include" />
           <e p="CollisionDetection.cs" t="Include" />
+          <e p="DoABarrelRoll.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
           <e p="EnemyShot.cs" t="Include" />
           <e p="EnemySpawner.cs" t="Include" />
           <e p="Event.cs" t="Include" />
+          <e p="ExplosionEffect.cs" t="Include" />
           <e p="Explosions.cs" t="Include" />
           <e p="Formation.cs" t="Include" />
           <e p="FormationContainer.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
+          <e p="IExplode.cs" t="Include" />
           <e p="IpooledObject.cs" t="Include" />
           <e p="Lasers.cs" t="Include" />
           <e p="Launcher.cs" t="Include" />

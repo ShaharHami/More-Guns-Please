@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7461587355805847259}
   - component: {fileID: 7461587355805847258}
   - component: {fileID: 7461587355805847261}
+  - component: {fileID: 8554377627206733420}
   m_Layer: 0
   m_Name: missile hit
   m_TagString: Untagged
@@ -4570,6 +4571,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4618,3 +4620,15 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &8554377627206733420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7461587355805847260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2df1bdd91be9d548a2e7f69bc1de812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -17,7 +17,7 @@ MonoBehaviour:
   formationName: Nine Matrix
   triggerName: enemyTest
   triggerIdx: 0
-  enemyLookAtPlayer: 0
+  enemyLookAtPlayer: 1
   positions:
   - {x: 25, y: 0, z: 25}
   - {x: 0, y: 0, z: 0}
@@ -39,5 +39,6 @@ MonoBehaviour:
   initialPositionX: {x: -11.885895, y: 11.885895}
   initialPositionZ: {x: -0.3706379, y: -0.3706379}
   EnemyTypes:
-  - Trident
   - Trident 1
+  - SG_radogost_optimized
+  - SG_stribog_optimized
