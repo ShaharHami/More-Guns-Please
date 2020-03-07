@@ -221,7 +221,6 @@ public class Enemy : MonoBehaviour
         destinationPoint = point;
         StartCoroutine(FlyToPointCoroutine());
     }
-
     IEnumerator FlyToPointCoroutine()
     {
         while (true)

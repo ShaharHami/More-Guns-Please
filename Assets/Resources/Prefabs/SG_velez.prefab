@@ -30,8 +30,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926261428844550}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: -76}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 3474822412784830837}
   - {fileID: 3109032440713607340}
@@ -142,7 +142,7 @@ MonoBehaviour:
   marginRight: 0.07
   marginTop: 0.07
   marginBottom: 0.07
-  barrelRollThreshold: 0.6
+  barrelRollThreshold: 0.1
 --- !u!54 &974284231254359621
 Rigidbody:
   m_ObjectHideFlags: 0

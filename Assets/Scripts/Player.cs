@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     private Vector3 _tilt;
     private bool flying;
     private bool shooting;
-    private int dir;
     public float barrelRollThreshold;
     private float joystickX;
     private DoABarrelRoll doABarrelRoll;
@@ -80,6 +79,16 @@ public class Player : MonoBehaviour
             flying = false;
             shooting = false;
         }
+
+        if (Input.anyKey)
+        {
+            flying = true;
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            shooting = true;
+        }
         if (shooting)
         {
             Shoot(!doABarrelRoll.isRotating);
@@ -112,7 +121,6 @@ public class Player : MonoBehaviour
         else
         {
             joystickX = 0;
-            dir = 0;
             EaseOut();
         }
     }
@@ -120,34 +128,26 @@ public class Player : MonoBehaviour
     void HandleBarrelRoll()
     {
         float currentX = joystick.Direction.x;
-        if (Math.Abs(joystickX) <= 0)
+        if (Math.Abs(currentX) > barrelRollThreshold && Math.Abs(joystickX) > barrelRollThreshold)
         {
-            joystickX = currentX;
-            return;
-        }
-        int currentDir = currentX > 0 ? 1 : -1;
-        if (dir == 0)
-        {
-            dir = currentDir;
-            return;
-        }
-        if (currentDir != dir)
-        {
-            if (Math.Abs(joystickX - currentX) > barrelRollThreshold)
+            if (Math.Sign(joystickX) != Math.Sign(currentX))
             {
-                doABarrelRoll.BarrelRoll(transform, dir);
+                doABarrelRoll.BarrelRoll(transform, 1 * Math.Sign(joystickX));
             }
         }
         joystickX = currentX;
-        dir = currentDir;
+        if (Math.Abs(Input.GetAxis("Horizontal")) > 0 && Input.GetKey(KeyCode.LeftControl))
+        {
+            doABarrelRoll.BarrelRoll(transform, -1 * Math.Sign(Input.GetAxis("Horizontal")));
+        }
     }
 
     private void Flight()
     {
         _speed = new Vector3(
-            joystick.Horizontal * speed * Time.deltaTime,
+            (joystick.Horizontal + Input.GetAxis("Horizontal")) * speed * Time.deltaTime,
             0,
-            joystick.Vertical * speed * Time.deltaTime
+            (joystick.Vertical + Input.GetAxis("Vertical")) * speed * Time.deltaTime
         );
         viewpointCoord = camera1.WorldToViewportPoint(transform.position);
         viewpointCoord.x = Mathf.Clamp(viewpointCoord.x, 0f + marginLeft, 1f - marginRight);
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour
         foreach (ParticleSystem engine in engines)
         {
             Vector3 engineScale = engine.transform.localScale;
-            engineScale.z = joystick.Vertical * speed + minEngineScaleZ;
+            engineScale.z = (joystick.Vertical + Input.GetAxis("Vertical")) * speed + minEngineScaleZ;
             if (engineScale.z < minEngineScaleZ)
             {
                 engineScale.z = minEngineScaleZ;
@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
     private void Roll()
     {
         _tilt = transform.rotation.eulerAngles;
-        _tilt.z = joystick.Direction.x * -tilt * Time.deltaTime;
+        _tilt.z = (joystick.Direction.x + Input.GetAxis("Horizontal")) * -tilt * Time.deltaTime;
         transform.rotation = Quaternion.Euler(_tilt);
     }
 
