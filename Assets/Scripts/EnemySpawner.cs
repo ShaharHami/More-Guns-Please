@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
         FormationDead.UnregisterListener(KillFormation);
     }
 
-    public void SpawnFormation(Formation formation, string[] enemieTypes)
+    public void SpawnFormation(Formation formation)
     {
         Vector3 initialPosition = new Vector3(
             Random.Range(formation.initialPositionX.x, formation.initialPositionX.y),
@@ -26,7 +26,7 @@ public class EnemySpawner : MonoBehaviour
         SingleFormationManager formationManager = topContainer.GetComponent<SingleFormationManager>();
         formationManager.formation = formation;
         topContainer.transform.SetParent(transform);
-        formationManager.BuildFormation(enemieTypes);
+        formationManager.BuildFormation();
     }
     void KillFormation(FormationDead info)
     {

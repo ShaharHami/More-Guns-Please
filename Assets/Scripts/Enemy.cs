@@ -84,15 +84,7 @@ public class Enemy : MonoBehaviour
 //        Gizmos.DrawLine(transform.position, cummulativeDir);
         Gizmos.DrawRay(transform.position, cummulativeDir);
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            KillEnemy();
-        }
-    }
-
+    
     private Vector3 AvoidNeigbours()
     {
         hitColliders = Physics.OverlapSphere(transform.position, avoidenceRadius); //TODO Layer mask

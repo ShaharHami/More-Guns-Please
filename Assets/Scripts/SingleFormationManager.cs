@@ -34,7 +34,7 @@ public class SingleFormationManager : MonoBehaviour
         EnemyDied.UnregisterListener(ClearFormation);
         ReachedPoint.UnregisterListener(ParentEnemy);
     }
-    public void BuildFormation(string[] enemieTypes)
+    public void BuildFormation()
     {
         if (formation == null) return;
         formationContainer = ObjectPooler.Instance.SpawnFromPool("Formation Container", Vector3.zero, Quaternion.identity);

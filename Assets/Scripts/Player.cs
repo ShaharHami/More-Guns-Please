@@ -4,10 +4,9 @@ using EventCallbacks;
 
 public class Player : MonoBehaviour
 {
-    public bool cheat;
     public Joystick joystick;
     public int playerHealth = 100;
-    [SerializeField] Shot[] shots;
+    public Shot[] shots;
     [SerializeField] ParticleSystem[] engines;
     private float minEngineScaleZ;
     [SerializeField] float speed = 1f;
@@ -23,7 +22,7 @@ public class Player : MonoBehaviour
     public float barrelRollThreshold;
     private float joystickX;
     private DoABarrelRoll doABarrelRoll;
-    private string activeShot;
+    public string activeShot { get; private set; }
     private Camera camera1;
     private Vector3 viewpointCoord;
 
@@ -80,14 +79,10 @@ public class Player : MonoBehaviour
             shooting = false;
         }
 
-        if (Input.anyKey)
-        {
-            flying = true;
-        }
-
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space)) // keyboard support for debugging purposes
         {
             shooting = true;
+            flying = true;
         }
         if (shooting)
         {
@@ -96,17 +91,6 @@ public class Player : MonoBehaviour
         else
         {
             Shoot(false);
-        }
-        // CHEAT SETTINGS
-        if (cheat && Input.GetKeyDown(KeyCode.L))
-        {
-            foreach (Shot shot in shots)
-            {
-                if (shot.type == activeShot)
-                {
-                    shot.LevelUp();
-                }
-            }
         }
     }
 
