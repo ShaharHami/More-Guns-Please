@@ -1,40 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using EventCallbacks;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
-    public Joystick joystick;
     public int playerHealth = 100;
     public Shot[] shots;
-    [SerializeField] ParticleSystem[] engines;
-    private float minEngineScaleZ;
-    [SerializeField] float speed = 1f;
-    [Range(0.0f, 1.0f)] [SerializeField] float speedEase = 1f;
-
-    private Vector3 _speed;
-    [SerializeField] float tilt = 1f;
-    [Range(0.0f, 1.0f)] [SerializeField] float tiltEase = 1f;
+    public bool autoFire;
     [Range(0.0f, 0.5f)] public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
-    private Vector3 _tilt;
-    private bool flying;
     private bool shooting;
-    public float barrelRollThreshold;
-    private float joystickX;
     private DoABarrelRoll doABarrelRoll;
     public string activeShot { get; private set; }
-    private Camera camera1;
-    private Vector3 viewpointCoord;
+
+    public TextMeshProUGUI hitsDisplay;
 
     void Start()
     {
-        camera1 = Camera.main;
         doABarrelRoll = GetComponent<DoABarrelRoll>();
-        if (engines[0] != null)
-        {
-            minEngineScaleZ = engines[0].transform.localScale.z;
-        }
-
         EnemyShotHit.RegisterListener(OnDamage);
         activeShot = shots[0].type;
         foreach (Shot shot in shots)
@@ -52,38 +37,41 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        ControlEngineFlameLength();
-        if (Input.touchCount > 0)
+        if (autoFire)
         {
-            flying = true;
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                shooting = true;
-            }
-
-            if (touch.phase == TouchPhase.Ended)
-            {
-                shooting = false;
-            }
-        }
-
-        if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
-        {
-            flying = true;
             shooting = true;
         }
         else
         {
-            flying = false;
-            shooting = false;
-        }
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
+                {
+                    shooting = true;
+                }
 
-        if (Input.GetKey(KeyCode.Space)) // keyboard support for debugging purposes
-        {
-            shooting = true;
-            flying = true;
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    shooting = false;
+                }
+            }
+
+            if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
+            {
+                shooting = true;
+            }
+            else
+            {
+                shooting = false;
+            }
+
+            if (Input.GetKey(KeyCode.Space)) // keyboard support for debugging purposes
+            {
+                shooting = true;
+            }
         }
+        
         if (shooting)
         {
             Shoot(!doABarrelRoll.isRotating);
@@ -94,90 +82,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void SetAutoFire(bool setAutoFire)
     {
-        if (flying)
-        {
-            HandleBarrelRoll();
-            Flight();
-            Roll();
-        }
-        else
-        {
-            joystickX = 0;
-            EaseOut();
-        }
+        autoFire = setAutoFire;
     }
-
-    void HandleBarrelRoll()
-    {
-        float currentX = joystick.Direction.x;
-        if (Math.Abs(currentX) > barrelRollThreshold && Math.Abs(joystickX) > barrelRollThreshold)
-        {
-            if (Math.Sign(joystickX) != Math.Sign(currentX))
-            {
-                doABarrelRoll.BarrelRoll(transform, 1 * Math.Sign(joystickX));
-            }
-        }
-        joystickX = currentX;
-        if (Math.Abs(Input.GetAxis("Horizontal")) > 0 && Input.GetKey(KeyCode.LeftControl))
-        {
-            doABarrelRoll.BarrelRoll(transform, -1 * Math.Sign(Input.GetAxis("Horizontal")));
-        }
-    }
-
-    private void Flight()
-    {
-        _speed = new Vector3(
-            (joystick.Horizontal + Input.GetAxis("Horizontal")) * speed * Time.deltaTime,
-            0,
-            (joystick.Vertical + Input.GetAxis("Vertical")) * speed * Time.deltaTime
-        );
-        viewpointCoord = camera1.WorldToViewportPoint(transform.position);
-        viewpointCoord.x = Mathf.Clamp(viewpointCoord.x, 0f + marginLeft, 1f - marginRight);
-        viewpointCoord.y = Mathf.Clamp(viewpointCoord.y, 0f + marginBottom, 1f - marginTop);
-        transform.position = camera1.ViewportToWorldPoint(viewpointCoord) + _speed;
-    }
-
-    void ControlEngineFlameLength()
-    {
-        foreach (ParticleSystem engine in engines)
-        {
-            Vector3 engineScale = engine.transform.localScale;
-            engineScale.z = (joystick.Vertical + Input.GetAxis("Vertical")) * speed + minEngineScaleZ;
-            if (engineScale.z < minEngineScaleZ)
-            {
-                engineScale.z = minEngineScaleZ;
-            }
-
-            engine.transform.localScale = engineScale;
-        }
-    }
-
-    private void Roll()
-    {
-        _tilt = transform.rotation.eulerAngles;
-        _tilt.z = (joystick.Direction.x + Input.GetAxis("Horizontal")) * -tilt * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(_tilt);
-    }
-
-    private void EaseOut()
-    {
-        if (_tilt.sqrMagnitude > 0f)
-        {
-            _tilt *= tiltEase;
-            _speed *= speedEase;
-            transform.rotation = Quaternion.Euler(_tilt);
-            if (_tilt.sqrMagnitude < 0.01f * 0.01f) _tilt = Vector3.zero;
-            var worldToViewportPoint = camera1.WorldToViewportPoint(transform.position);
-            if (worldToViewportPoint.x > (0f + marginLeft) && worldToViewportPoint.x < (1f - marginRight) &&
-                worldToViewportPoint.y > (0f + marginBottom) && worldToViewportPoint.y < (1f - marginTop))
-            {
-                transform.position += _speed;
-            }
-        }
-    }
-
+    // BLAHHHHHYHHHHH
+    Dictionary<string, int> hitsTaken = new Dictionary<string, int>();
+    int counter;
+    string message;
     private void OnDamage(EnemyShotHit hit)
     {
         if (doABarrelRoll.isRotating)
@@ -185,12 +97,52 @@ public class Player : MonoBehaviour
             print($"woohoo got away from {hit.UnitGO.name}!");
             return;
         }
-        print("Player got hit by " + hit.UnitGO.name + " and lost " + hit.damage + " Points of health");
+        Damage(hit.damage);
+        if (hitsTaken.Keys.Contains(hit.UnitGO.name))
+        {
+            hitsTaken[hit.UnitGO.name] += 1;
+        }
+        else
+        {
+            hitsTaken.Add(hit.UnitGO.name, 1);
+        }
+
+        RenderMessage();
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (doABarrelRoll.isRotating) return;
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            if (hitsTaken.Keys.Contains(other.gameObject.name))
+            {
+                hitsTaken[other.gameObject.name] += 1;
+            }
+            else
+            {
+                hitsTaken.Add(other.gameObject.name, 1);
+            }
+            Damage(20);
+        }
+
+        RenderMessage();
     }
 
+    private void RenderMessage()
+    {
+        message = "";
+        foreach (var hitType in hitsTaken.Keys)
+        {
+            message += hitType + " | " + hitsTaken[hitType] + Environment.NewLine;
+        }
+        if (hitsDisplay != null)
+        {
+            hitsDisplay.text = message;
+        }
+    }
     private void Damage(int damage)
     {
-//        print("Player hit" + damage);
+        playerHealth -= damage;
     }
 
     void OnDestroy()
@@ -198,14 +150,7 @@ public class Player : MonoBehaviour
         EnemyShotHit.UnregisterListener(OnDamage);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (doABarrelRoll.isRotating) return;
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            Damage(playerHealth);
-        }
-    }
+
 
     private void Shoot(bool fire)
     {

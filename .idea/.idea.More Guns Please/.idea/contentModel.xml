@@ -73,7 +73,9 @@
         <e p="Scripts" t="Include">
           <e p="CanGetShot.cs" t="Include" />
           <e p="CollisionDetection.cs" t="Include" />
+          <e p="ControlEngineFlame.cs" t="Include" />
           <e p="DoABarrelRoll.cs" t="Include" />
+          <e p="DragFingerMove.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
           <e p="EnemyShot.cs" t="Include" />
           <e p="EnemySpawner.cs" t="Include" />

@@ -6,7 +6,7 @@ public class DoABarrelRoll : MonoBehaviour
 {
     private Vector3 rotation = new Vector3(0, 0,360f);
     public bool isRotating { get; private set; }
-    public float duration, upwardMotion;
+    public float duration, upwardMotion, threshold;
     private bool tweenKilled;
     private Tween tween, tween2;
     public void BarrelRoll(Transform target, int dir)
