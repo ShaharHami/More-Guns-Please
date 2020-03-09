@@ -19,13 +19,13 @@ MonoBehaviour:
   triggerIdx: 4
   enemyLookAtPlayer: 1
   positions:
-  - {x: -45, y: 0, z: 0}
-  - {x: -30, y: 0, z: 0}
+  - {x: -40, y: 0, z: 0}
+  - {x: -27.5, y: 0, z: 0}
   - {x: -15, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 15, y: 0, z: 0}
-  - {x: 30, y: 0, z: 0}
-  - {x: 45, y: 0, z: 0}
+  - {x: 27.5, y: 0, z: 0}
+  - {x: 40, y: 0, z: 0}
   spawnDelay: {x: 0.359401, y: 1.2}
   spawnPoints:
   - {x: 50, y: 0, z: 98}
@@ -36,3 +36,5 @@ MonoBehaviour:
   EnemyTypes:
   - Trident 1
   - Trident
+  - SG_radogost_optimized
+  - SG_stribog_optimized

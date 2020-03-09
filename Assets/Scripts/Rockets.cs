@@ -15,7 +15,7 @@ public class Rockets : MonoBehaviour
     }
     private void Shoot(EventCallbacks.FireWeapon fireWeapon)
     {
-        if (fireWeapon.fire)
+        if (fireWeapon.fire && gameObject.activeInHierarchy)
         {
             foreach (Launcher launcher in rocketLaunchers)
             {

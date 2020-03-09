@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,16 +12,30 @@ public class Player : MonoBehaviour
     public Shot[] shots;
     public bool autoFire;
     [Range(0.0f, 0.5f)] public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
-    private bool shooting;
+    public Vector3 spawnPoint;
+    private int storePlayerHealth;
+    public bool shooting;
     private DoABarrelRoll doABarrelRoll;
+    private HealthDisplay healthDisplay;
+    private Explosions explosions;
+
     public string activeShot { get; private set; }
 
+    // Debugging
     public TextMeshProUGUI hitsDisplay;
 
-    void Start()
+    private void Awake()
+    {
+        explosions = FindObjectOfType<Explosions>();
+        healthDisplay = GetComponent<HealthDisplay>();
+        storePlayerHealth = playerHealth;
+    }
+
+    private void OnEnable()
     {
         doABarrelRoll = GetComponent<DoABarrelRoll>();
         EnemyShotHit.RegisterListener(OnDamage);
+        healthDisplay.SetHealth(storePlayerHealth, false);
         activeShot = shots[0].type;
         foreach (Shot shot in shots)
         {
@@ -31,6 +46,21 @@ public class Player : MonoBehaviour
             else
             {
                 shot.SetLevel(0);
+            }
+        }
+    }
+
+    private void SetInitialShotsLevel()
+    {
+        foreach (Shot shot in shots)
+        {
+            if (shot.type != activeShot)
+            {
+                shot.SetInactive();
+            }
+            else
+            {
+                shot.SetLevel(1);
             }
         }
     }
@@ -71,7 +101,7 @@ public class Player : MonoBehaviour
                 shooting = true;
             }
         }
-        
+
         if (shooting)
         {
             Shoot(!doABarrelRoll.isRotating);
@@ -86,71 +116,35 @@ public class Player : MonoBehaviour
     {
         autoFire = setAutoFire;
     }
-    // BLAHHHHHYHHHHH
-    Dictionary<string, int> hitsTaken = new Dictionary<string, int>();
-    int counter;
-    string message;
-    private void OnDamage(EnemyShotHit hit)
-    {
-        if (doABarrelRoll.isRotating)
-        {
-            print($"woohoo got away from {hit.UnitGO.name}!");
-            return;
-        }
-        Damage(hit.damage);
-        if (hitsTaken.Keys.Contains(hit.UnitGO.name))
-        {
-            hitsTaken[hit.UnitGO.name] += 1;
-        }
-        else
-        {
-            hitsTaken.Add(hit.UnitGO.name, 1);
-        }
 
-        RenderMessage();
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (doABarrelRoll.isRotating) return;
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            if (hitsTaken.Keys.Contains(other.gameObject.name))
-            {
-                hitsTaken[other.gameObject.name] += 1;
-            }
-            else
-            {
-                hitsTaken.Add(other.gameObject.name, 1);
-            }
-            Damage(20);
-        }
-
-        RenderMessage();
-    }
-
-    private void RenderMessage()
-    {
-        message = "";
-        foreach (var hitType in hitsTaken.Keys)
-        {
-            message += hitType + " | " + hitsTaken[hitType] + Environment.NewLine;
-        }
-        if (hitsDisplay != null)
-        {
-            hitsDisplay.text = message;
-        }
-    }
     private void Damage(int damage)
     {
         playerHealth -= damage;
+        healthDisplay.ChangeHealth(playerHealth);
+        if (playerHealth <= 0)
+        {
+            playerHealth = 0;
+            KillPlayer();
+        }
     }
 
-    void OnDestroy()
+    void KillPlayer()
+    {
+        explosions.Explode("Player Death", transform.position, 2f);
+        PlayerDied playerDied = new PlayerDied();
+        playerDied.Description = "Player Died";
+        playerDied.respawnTimer = 5f;
+        playerDied.FireEvent();
+        gameObject.SetActive(false);
+        playerHealth = storePlayerHealth;
+        transform.position = spawnPoint;
+        SetInitialShotsLevel();
+    }
+
+    void OnDisable()
     {
         EnemyShotHit.UnregisterListener(OnDamage);
     }
-
-
 
     private void Shoot(bool fire)
     {
@@ -158,5 +152,67 @@ public class Player : MonoBehaviour
         fireWeaponEvent.Description = "Fire weapon: " + fire;
         fireWeaponEvent.fire = fire;
         fireWeaponEvent.FireEvent();
+    }
+
+    // BLAHHHHHYHHHHH
+    // Debugging
+    Dictionary<string, int> hitsTaken = new Dictionary<string, int>();
+    int counter;
+    string message;
+
+    private void OnDamage(EnemyShotHit hit)
+    {
+//        if (doABarrelRoll.isRotating)
+//        {
+//            print($"woohoo got away from {hit.UnitGO.name}!");
+//            return;
+//        }
+
+        Damage(hit.damage);
+        // Debugging
+        if (hitsTaken.Keys.Contains(hit.UnitGO.name))
+        {
+            hitsTaken[hit.UnitGO.name] += hit.damage;
+        }
+        else
+        {
+            hitsTaken.Add(hit.UnitGO.name, hit.damage);
+        }
+
+        RenderMessage();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+//        if (doABarrelRoll.isRotating) return;
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            int amount = other.GetComponent<Enemy>().initialHealth;
+            // Debugging
+            if (hitsTaken.Keys.Contains(other.gameObject.name))
+            {
+                hitsTaken[other.gameObject.name] += amount;
+            }
+            else
+            {
+                hitsTaken.Add(other.gameObject.name, amount);
+            }
+
+            Damage(amount);
+        }
+
+        // Debugging
+        RenderMessage();
+    }
+
+    private void RenderMessage()
+    {
+        if (hitsDisplay == null) return;
+        message = "";
+        foreach (var hitType in hitsTaken.Keys)
+        {
+            message += "Total Damage From: " + hitType + ": " + hitsTaken[hitType] + Environment.NewLine;
+        }
+        hitsDisplay.text = message;
     }
 }

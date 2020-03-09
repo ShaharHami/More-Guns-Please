@@ -10,24 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d1d1b05330d47db99d1729669341846, type: 3}
-  m_Name: Three Fighter Static
+  m_Name: Scatter Line
   m_EditorClassIdentifier: 
   animator: {fileID: -4044934878969359660, guid: c248c0bf75482b945b8ac5ad46a14343,
     type: 3}
-  formationName: Three fighter static
+  formationName: 
   triggerName: flyBy
   triggerIdx: 5
   enemyLookAtPlayer: 0
   positions:
-  - {x: -10, y: 0, z: 0}
-  - {x: 0, y: 0, z: -10}
-  - {x: 10, y: 0, z: 0}
+  - {x: 40, y: 0, z: 0}
+  - {x: -40, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 20, y: 0, z: 0}
+  - {x: -20, y: 0, z: 0}
   spawnDelay: {x: 0, y: 0}
   spawnPoints: []
-  initialPositionX: {x: -40.41204, y: 40.41204}
+  initialPositionX: {x: -8.283478, y: 8.283478}
   initialPositionZ: {x: 0, y: 0}
   EnemyTypes:
-  - Trident 1
   - SG_radogost_optimized
   - SG_stribog_optimized
   - Trident
+  - Trident 1

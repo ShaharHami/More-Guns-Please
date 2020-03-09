@@ -85,6 +85,7 @@
           <e p="Formation.cs" t="Include" />
           <e p="FormationContainer.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
+          <e p="HealthDisplay.cs" t="Include" />
           <e p="IExplode.cs" t="Include" />
           <e p="IpooledObject.cs" t="Include" />
           <e p="Lasers.cs" t="Include" />

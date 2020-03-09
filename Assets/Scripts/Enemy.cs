@@ -21,13 +21,16 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int enemyHealth = 50; //TODO: make this dynamic and centrally managed, off course
     [SerializeField] private float avoidenceRadius;
     [SerializeField] private Color gizmoColor;
-    private int initialHealth;
+    public int initialHealth;
     private Explosions explosions;
     private GameObject player;
     private Transform destinationPoint;
     private bool hasReachedPoint;
     private Collider[] hitColliders;
     private Vector3 cummulativeDir;
+    Vector3 dest;
+
+    private HealthDisplay healthDisplay;
     public float TurnSpeed { get; set; }
 
     public enum EnemyState
@@ -41,8 +44,14 @@ public class Enemy : MonoBehaviour
 
     public EnemyState enemyState;
 
+    private void Awake()
+    {
+        healthDisplay = GetComponent<HealthDisplay>();
+    }
+
     private void OnEnable()
     {
+        healthDisplay.SetHealth(enemyHealth, true);
         cummulativeDir = new Vector3();
         hasReachedPoint = false;
         enemyState = EnemyState.Fly;
@@ -84,7 +93,7 @@ public class Enemy : MonoBehaviour
 //        Gizmos.DrawLine(transform.position, cummulativeDir);
         Gizmos.DrawRay(transform.position, cummulativeDir);
     }
-    
+
     private Vector3 AvoidNeigbours()
     {
         hitColliders = Physics.OverlapSphere(transform.position, avoidenceRadius); //TODO Layer mask
@@ -92,6 +101,7 @@ public class Enemy : MonoBehaviour
         {
             return Vector3.zero;
         }
+
         foreach (var collider in hitColliders)
         {
             if (collider.gameObject != gameObject && AllEnemieGOs.Contains(collider.gameObject))
@@ -99,6 +109,7 @@ public class Enemy : MonoBehaviour
                 cummulativeDir += (transform.position - collider.transform.position);
             }
         }
+
         cummulativeDir /= hitColliders.Length;
         return cummulativeDir;
     }
@@ -139,16 +150,25 @@ public class Enemy : MonoBehaviour
 
     private Vector3 Destination()
     {
-        Vector3 dest;
-        if (lookAtPlayer)
+        if (player == null)
         {
-            dest = player.transform.position;
+            return dest;
         }
-        else
+        if (!player.activeInHierarchy)
+        { 
+            enemyState = EnemyState.SlowTurning;
+        }
+        else 
         {
-            dest = transform.position - Vector3.forward;
+            if (lookAtPlayer)
+            {
+                dest = player.transform.position;
+            }
+            else
+            {
+                dest = transform.position - Vector3.forward;
+            }
         }
-
         return dest;
     }
 
@@ -166,10 +186,13 @@ public class Enemy : MonoBehaviour
 
     private void ShotLogic()
     {
-        float range = Random.Range(0.0f, 1.0f);
-        if (shotProbability >= range)
+        if (player != null && player.gameObject.activeInHierarchy)
         {
-            ObjectPooler.Instance.SpawnFromPool(shot.name, transform.position, Quaternion.identity);
+            float range = Random.Range(0.0f, 1.0f);
+            if (shotProbability >= range)
+            {
+                ObjectPooler.Instance.SpawnFromPool(shot.name, transform.position, Quaternion.identity);
+            }
         }
     }
 
@@ -193,7 +216,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Lasers"))
         {
-            Damage(1); //TODO: get laser damage from central data manager
+            Damage(2); //TODO: get laser damage from central data manager
         }
     }
 
@@ -205,6 +228,7 @@ public class Enemy : MonoBehaviour
             enemyHealth = 0;
             KillEnemy();
         }
+        healthDisplay.ChangeHealth(enemyHealth);
     }
 
     public void FlyToPoint(Transform point)
@@ -213,6 +237,7 @@ public class Enemy : MonoBehaviour
         destinationPoint = point;
         StartCoroutine(FlyToPointCoroutine());
     }
+
     IEnumerator FlyToPointCoroutine()
     {
         while (true)

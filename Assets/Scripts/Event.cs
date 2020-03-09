@@ -63,4 +63,9 @@ namespace EventCallbacks
     {
         
     }
+
+    public class PlayerDied : Event<PlayerDied>
+    {
+        public float respawnTimer;
+    }
 }

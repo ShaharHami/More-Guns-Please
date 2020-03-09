@@ -28,9 +28,4 @@ public class DoABarrelRoll : MonoBehaviour
     {
         isRotating = false;
     }
-    private void Update()
-    {
-//        if (tween == null || tweenKilled) return;
-//        isRotating = tween.IsPlaying();
-    }
 }

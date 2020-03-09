@@ -1,36 +1,47 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
 public class Lasers : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem[] shots;
+    public GameObject[] shots;
+    private List<ParticleSystem> particleSystems;
+
     private void OnEnable()
     {
-        EventCallbacks.FireWeapon.RegisterListener(Shoot);
+        FireWeapon.RegisterListener(Shoot);
+        RegisterParticleSystems();
     }
+
     private void OnDestroy()
     {
-        EventCallbacks.FireWeapon.UnregisterListener(Shoot);
+        FireWeapon.UnregisterListener(Shoot);
     }
-    private void Shoot(EventCallbacks.FireWeapon fireWeapon)
+
+    void RegisterParticleSystems()
     {
-        if (fireWeapon.fire)
+        particleSystems = new List<ParticleSystem>();
+        foreach (var shot in shots)
         {
-            foreach (ParticleSystem shot in shots)
-            {
-                ParticleSystem.EmissionModule e = shot.emission;
-                e.enabled = true;
-            }
+            if (shot == null) return;
+            particleSystems.Add(shot.GetComponent<ParticleSystem>());
         }
-        else
+    }
+
+    private void Shoot(FireWeapon fireWeapon)
+    {
+        foreach (ParticleSystem particleSystem in particleSystems)
         {
-            foreach (ParticleSystem shot in shots)
+            if (particleSystem == null)
             {
-                ParticleSystem.EmissionModule e = shot.emission;
-                e.enabled = false;
+                RegisterParticleSystems();
+                return;
             }
+
+            ParticleSystem.EmissionModule e = particleSystem.emission;
+            e.enabled = fireWeapon.fire;
         }
     }
 }

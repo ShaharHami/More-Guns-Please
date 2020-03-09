@@ -1,19 +1,11 @@
-﻿using EventCallbacks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using EventCallbacks;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
     public Formation[] formations;
-
-    private void OnEnable()
-    {
-        FormationDead.RegisterListener(KillFormation);
-    }
-
-    private void OnDisable()
-    {
-        FormationDead.UnregisterListener(KillFormation);
-    }
 
     public void SpawnFormation(Formation formation)
     {
@@ -27,9 +19,5 @@ public class EnemySpawner : MonoBehaviour
         formationManager.formation = formation;
         topContainer.transform.SetParent(transform);
         formationManager.BuildFormation();
-    }
-    void KillFormation(FormationDead info)
-    {
-//        SpawnFormation(formations[Random.Range(0, formations.Length)], new []{"Trident"});
     }
 }

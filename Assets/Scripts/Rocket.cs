@@ -76,7 +76,7 @@ namespace EventCallbacks
                     MissleHitEvent missileHit = new MissleHitEvent();
                     missileHit.Description = "Unit " + gameObject.name + " has hit ";
                     missileHit.UnitGO = target.gameObject;
-                    missileHit.damage = Random.Range(1, 5); //TODO: get rocket damage from central data manager
+                    missileHit.damage = 3; //TODO: get rocket damage from central data manager
                     missileHit.FireEvent();
                 }
                 explosions.Explode("missile hit", transform.position, 1f);

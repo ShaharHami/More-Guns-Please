@@ -20,7 +20,11 @@ public class EnemyShot : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        var playerGO = FindObjectOfType<Player>();
+        if (playerGO != null)
+        {
+            player = playerGO.transform;
+        }
         explosions = FindObjectOfType<Explosions>();
     }
 
@@ -48,7 +52,7 @@ public class EnemyShot : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (player != null && isHoming)
+        if (player != null && player.gameObject.activeInHierarchy && isHoming)
         {
             targetPos = player.position;
             GetTarget();

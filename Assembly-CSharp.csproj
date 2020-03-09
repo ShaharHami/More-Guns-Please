@@ -95,6 +95,7 @@
      <Compile Include="Assets\Scripts\Formation.cs" />
      <Compile Include="Assets\Scripts\FormationContainer.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\HealthDisplay.cs" />
      <Compile Include="Assets\Scripts\IExplode.cs" />
      <Compile Include="Assets\Scripts\IpooledObject.cs" />
      <Compile Include="Assets\Scripts\Lasers.cs" />

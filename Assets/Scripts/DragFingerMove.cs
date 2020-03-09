@@ -24,21 +24,19 @@ public class DragFingerMove : MonoBehaviour
 
     private Vector3 mousePos;
     private Camera mainCam;
-
-    // Use this for initialization
+    
     private void Start()
     {
         mainCam = Camera.main;
         rb = GetComponent<Rigidbody>();
         doABarrelRoll = GetComponent<DoABarrelRoll>();
-        barrelRollThreshold = doABarrelRoll.threshold;
     }
-
-    // Update is called once per frame
+    
     private void FixedUpdate()
     {
         oldPos = inputPos;
-        thresholdDisplay.text = barrelRollThreshold.ToString();
+        barrelRollThreshold = Screen.width / doABarrelRoll.threshold;
+        thresholdDisplay.text = doABarrelRoll.threshold.ToString();
         zOffsetDisplay.text = zOffset.ToString();
         if (Input.touchCount > 0)
         {
@@ -48,7 +46,6 @@ public class DragFingerMove : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            barrelRollThreshold = doABarrelRoll.threshold / 2.5f;
             inputPos = Input.mousePosition;
             HandleFlight();
         }
@@ -69,12 +66,16 @@ public class DragFingerMove : MonoBehaviour
     }
     public void UpThreshold()
     {
-        barrelRollThreshold += 5;
+        doABarrelRoll.threshold += 0.5f;
     }
 
     public void DownThreshold()
     {
-        barrelRollThreshold -= 5;
+        doABarrelRoll.threshold -= 0.5f;
+        if (doABarrelRoll.threshold <= 1)
+        {
+            doABarrelRoll.threshold = 1;
+        }
     }
 
     public void UpZOffset()

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using UnityEngine;
 
 [System.Serializable]
@@ -8,30 +9,33 @@ public class Shot
     public string type;
     public int level;
     public GameObject[] shotLevelTransforms;
+
     public void LevelUp()
     {
         if (level < shotLevelTransforms.Length)
         {
-            
             level++;
             SetLevel(level);
         }
     }
+
+    public void ResetLevel()
+    {
+        
+    }
     public void SetLevel(int manualLevel)
     {
-        level = manualLevel;
-        for (int i = 0; i < shotLevelTransforms.Length; i++)
+        foreach (GameObject t in shotLevelTransforms)
         {
-            if (i <= level)
+            t.SetActive(false);
+        }
+        level = manualLevel;
+        if (level > shotLevelTransforms.Length) return;
+        for (int i = 0; i < level; i++)
+        {
+            if (shotLevelTransforms[i] != null)
             {
-                if (shotLevelTransforms[i] != null && !shotLevelTransforms[i].activeSelf)
-                {
-                    shotLevelTransforms[i].SetActive(true);
-                }
-            }
-            else
-            {
-                shotLevelTransforms[i].SetActive(false);
+                shotLevelTransforms[i].SetActive(true);
             }
         }
     }
