@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,17 +37,7 @@ public class Player : MonoBehaviour
         EnemyShotHit.RegisterListener(OnDamage);
         healthDisplay.SetHealth(storePlayerHealth, false);
         activeShot = shots[0].type;
-        foreach (Shot shot in shots)
-        {
-            if (shot.type != activeShot)
-            {
-                shot.SetInactive();
-            }
-            else
-            {
-                shot.SetLevel(0);
-            }
-        }
+        SetInitialShotsLevel();
     }
 
     private void SetInitialShotsLevel()
