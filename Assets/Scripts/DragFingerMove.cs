@@ -9,6 +9,7 @@ public class DragFingerMove : MonoBehaviour
     public float motionDampRate = 5f;
     public float rotationDampRate = 5f;
     public float maxSpeed;
+    public float speed;
     [SerializeField] float tilt = 1f;
     [SerializeField] private float zOffset;
     [SerializeField] private TextMeshProUGUI thresholdDisplay;
@@ -21,12 +22,14 @@ public class DragFingerMove : MonoBehaviour
     private float timer;
     private DoABarrelRoll doABarrelRoll;
     private float barrelRollThreshold;
+    private float variableZOffset;
 
     private Vector3 mousePos;
     private Camera mainCam;
     
     private void Start()
     {
+//        float speed = scale(0, Screen.height, 0, 1,);
         mainCam = Camera.main;
         rb = GetComponent<Rigidbody>();
         doABarrelRoll = GetComponent<DoABarrelRoll>();
@@ -37,7 +40,7 @@ public class DragFingerMove : MonoBehaviour
         oldPos = inputPos;
         barrelRollThreshold = Screen.width / doABarrelRoll.threshold;
         thresholdDisplay.text = doABarrelRoll.threshold.ToString();
-        zOffsetDisplay.text = zOffset.ToString();
+        
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -55,6 +58,7 @@ public class DragFingerMove : MonoBehaviour
             inputPos = transform.position;
             EaseOut();
         }
+        zOffsetDisplay.text = variableZOffset.ToString();
     }
 
     protected void LateUpdate()
@@ -88,6 +92,8 @@ public class DragFingerMove : MonoBehaviour
     }
     private void HandleFlight()
     {
+        float modifier = scale(0, Screen.height, 0, 1,inputPos.y) * Time.fixedDeltaTime;
+        variableZOffset = zOffset + speed * modifier;
         Move(inputPos);
         Roll();
         timer += Time.deltaTime;
@@ -109,7 +115,7 @@ public class DragFingerMove : MonoBehaviour
         direction = new Vector3(
             mousePos.x - transform.position.x,
             0,
-            mousePos.z + zOffset - transform.position.z
+            mousePos.z + variableZOffset - transform.position.z
         );
         direction *= Time.deltaTime;
         if (Math.Abs(direction.x) >= maxSpeed)
@@ -140,5 +146,13 @@ public class DragFingerMove : MonoBehaviour
         {
             doABarrelRoll.BarrelRoll(transform, Math.Sign(inputPos.x - oldPos.x) * -1);
         }
+    }
+    public float scale(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue){
+ 
+        float OldRange = (OldMax - OldMin);
+        float NewRange = (NewMax - NewMin);
+        float NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin;
+ 
+        return(NewValue);
     }
 }

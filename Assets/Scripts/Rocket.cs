@@ -26,6 +26,7 @@ namespace EventCallbacks
         private void OnEnable()
         {
             target = launcher.GetTarget(this);
+            killTimer = 0;
         }
 
         private void OnDisable()

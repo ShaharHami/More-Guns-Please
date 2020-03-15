@@ -9548,6 +9548,7 @@ GameObject:
   - component: {fileID: 64294869319849656}
   - component: {fileID: 1520827098}
   - component: {fileID: 974284231254359621}
+  - component: {fileID: 8949751108947925505}
   - component: {fileID: 2024982474974682069}
   - component: {fileID: 5225763322702221133}
   - component: {fileID: 2557867539954394531}
@@ -9626,6 +9627,7 @@ MonoBehaviour:
   marginRight: 0.07
   marginTop: 0.07
   marginBottom: 0.07
+  spawnPoint: {x: 0, y: 0, z: 0}
   shooting: 0
   hitsDisplay: {fileID: 0}
 --- !u!54 &974284231254359621
@@ -9644,6 +9646,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 3
+--- !u!114 &8949751108947925505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926261428844550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718aba89d9b72d147a9c799388a518bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volleyAngle: 35
+  numberOfShots: 5
+  shotsInterval: 0.2
+  volleyShotsInterval: 0
+  distanceFromOrigin: 5
 --- !u!114 &2024982474974682069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9659,9 +9678,10 @@ MonoBehaviour:
   moveSpeed: 260
   motionDampRate: 5
   rotationDampRate: 10
-  maxSpeed: 0.4
+  maxSpeed: 0.7
+  speed: 0
   tilt: 50
-  zOffset: 24
+  zOffset: 12
   thresholdDisplay: {fileID: 0}
   zOffsetDisplay: {fileID: 0}
 --- !u!114 &5225763322702221133
@@ -9677,8 +9697,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 1
-  upwardMotion: 30
-  threshold: 7.5
+  upwardMotion: 40
+  threshold: 9
 --- !u!114 &2557867539954394531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9694,7 +9714,7 @@ MonoBehaviour:
   engines:
   - {fileID: 3474822412784830837}
   - {fileID: 3109032440713607340}
-  speed: 1
+  speed: 0.7
 --- !u!114 &6073261310400574385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20168,15 +20188,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5665eb3ea8f85884f93c4a2b49aced15, type: 3}
---- !u!1 &3654750245406315553 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2957034243456806994, guid: 5665eb3ea8f85884f93c4a2b49aced15,
-    type: 3}
-  m_PrefabInstance: {fileID: 1995438808872494195}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6131266338401375264 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5667669328513134675, guid: 5665eb3ea8f85884f93c4a2b49aced15,
+    type: 3}
+  m_PrefabInstance: {fileID: 1995438808872494195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3654750245406315553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2957034243456806994, guid: 5665eb3ea8f85884f93c4a2b49aced15,
     type: 3}
   m_PrefabInstance: {fileID: 1995438808872494195}
   m_PrefabAsset: {fileID: 0}

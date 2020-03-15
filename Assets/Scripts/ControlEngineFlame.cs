@@ -29,9 +29,9 @@ public class ControlEngineFlame : MonoBehaviour
         {
             Vector3 engineScale = engine.localScale;
             engineScale.z = (rb.velocity.z + Input.GetAxis("Vertical")) * speed + minEngineScaleZ;
-            if (engineScale.z < minEngineScaleZ)
+            if (engineScale.z < minEngineScaleZ / 2)
             {
-                engineScale.z = minEngineScaleZ;
+                engineScale.z = minEngineScaleZ / 2;
             }
             engine.localScale = engineScale;
             

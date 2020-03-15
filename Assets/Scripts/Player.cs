@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
     public bool autoFire;
     [Range(0.0f, 0.5f)] public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
     public Vector3 spawnPoint;
+    [HideInInspector] public bool shooting;
     private int storePlayerHealth;
-    public bool shooting;
     private DoABarrelRoll doABarrelRoll;
     private HealthDisplay healthDisplay;
     private Explosions explosions;
@@ -152,12 +152,6 @@ public class Player : MonoBehaviour
 
     private void OnDamage(EnemyShotHit hit)
     {
-//        if (doABarrelRoll.isRotating)
-//        {
-//            print($"woohoo got away from {hit.UnitGO.name}!");
-//            return;
-//        }
-
         Damage(hit.damage);
         // Debugging
         if (hitsTaken.Keys.Contains(hit.UnitGO.name))
@@ -174,10 +168,10 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-//        if (doABarrelRoll.isRotating) return;
-        if (other.gameObject.CompareTag("Enemy"))
+        var enemy = other.GetComponent<Enemy>();
+        if (enemy != null)
         {
-            int amount = other.GetComponent<Enemy>().initialHealth;
+            int amount = enemy.initialHealth;
             // Debugging
             if (hitsTaken.Keys.Contains(other.gameObject.name))
             {

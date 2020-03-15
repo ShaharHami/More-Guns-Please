@@ -39,7 +39,7 @@ public class Lasers : MonoBehaviour
                 RegisterParticleSystems();
                 return;
             }
-
+            
             ParticleSystem.EmissionModule e = particleSystem.emission;
             e.enabled = fireWeapon.fire;
         }
