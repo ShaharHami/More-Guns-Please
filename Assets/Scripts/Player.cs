@@ -11,13 +11,14 @@ public class Player : MonoBehaviour
     public int playerHealth = 100;
     public Shot[] shots;
     public bool autoFire;
-    [Range(0.0f, 0.5f)] public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
+//    [Range(0.0f, 0.5f)] public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
     public Vector3 spawnPoint;
     [HideInInspector] public bool shooting;
     private int storePlayerHealth;
     private DoABarrelRoll doABarrelRoll;
     private HealthDisplay healthDisplay;
     private Explosions explosions;
+    [HideInInspector] public bool lastFrameShooting;
 
     public string activeShot { get; private set; }
 
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        lastFrameShooting = !shooting;
         explosions = FindObjectOfType<Explosions>();
         healthDisplay = GetComponent<HealthDisplay>();
         storePlayerHealth = playerHealth;
@@ -91,14 +93,23 @@ public class Player : MonoBehaviour
                 shooting = true;
             }
         }
-
+        
         if (shooting)
         {
-            Shoot(!doABarrelRoll.isRotating);
+            Shoot(true);
         }
         else
         {
             Shoot(false);
+        }
+
+        if (doABarrelRoll.isRotating)
+        {
+            lastFrameShooting = !shooting;
+        }
+        else
+        {
+            lastFrameShooting = shooting;
         }
     }
 
@@ -138,6 +149,11 @@ public class Player : MonoBehaviour
 
     private void Shoot(bool fire)
     {
+        if (lastFrameShooting == shooting) return;
+        if (doABarrelRoll.isRotating)
+        {
+            fire = false;
+        }
         FireWeapon fireWeaponEvent = new FireWeapon();
         fireWeaponEvent.Description = "Fire weapon: " + fire;
         fireWeaponEvent.fire = fire;

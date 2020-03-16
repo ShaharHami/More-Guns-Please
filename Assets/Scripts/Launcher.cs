@@ -6,21 +6,16 @@ using JetBrains.Annotations;
 
 public class Launcher : MonoBehaviour
 {
-    [SerializeField] private Rocket rocket;
-    ObjectPooler pooler;
+    [SerializeField] private GameObject rocket;
     private GameObject launchedRocket;
     private Transform closestEnemy;
     float distance;
-    private void Start()
-    {
-        pooler = ObjectPooler.Instance;
-    }
     public void Launch()
     {
         distance = 0;
         if (launchedRocket == null || !launchedRocket.activeSelf)
         {
-            launchedRocket = pooler.SpawnFromPool("Rocket", transform.position, Quaternion.identity);
+            launchedRocket = ObjectPooler.Instance.SpawnFromPool(rocket.name, transform.position, Quaternion.identity);
             Rocket rocketComponent = launchedRocket.GetComponent<Rocket>();
             rocketComponent.launcher = this;
         }

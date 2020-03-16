@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EventCallbacks;
 using UnityEngine;
 
@@ -27,6 +25,12 @@ public class Lasers : MonoBehaviour
         {
             if (shot == null) return;
             particleSystems.Add(shot.GetComponent<ParticleSystem>());
+        }
+
+        foreach (ParticleSystem particleSystem in particleSystems)
+        {
+            ParticleSystem.EmissionModule e = particleSystem.emission;
+            e.enabled = false;
         }
     }
 

@@ -10,10 +10,12 @@ public class HealthDisplay : MonoBehaviour
     private bool rotateWithParent;
     private int baseHealth;
     private Vector3 healthBarScale;
+    private Quaternion rot;
 
     private void Awake()
     {
         healthBarScale = new Vector3(1, 1, 1);
+        rot = healthDisplayCanvas.transform.rotation;
         if (healthBar != null)
         {
             healthBar.transform.localScale = healthBarScale;
@@ -38,14 +40,14 @@ public class HealthDisplay : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (rotateWithParent)
+        if (!rotateWithParent)
         {
-            healthDisplayCanvas.transform.rotation = Quaternion.Euler(90, 0, 0);
+            healthDisplayCanvas.transform.rotation = rot;
             if (healthBar != null)
             {
-                healthBar.transform.rotation = Quaternion.Euler(90, 0, 0);
+//                healthBar.transform.rotation = Quaternion.Euler(90, 0, 0);
             }
         }
     }

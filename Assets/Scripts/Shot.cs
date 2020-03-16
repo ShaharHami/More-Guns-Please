@@ -18,11 +18,7 @@ public class Shot
             SetLevel(level);
         }
     }
-
-    public void ResetLevel()
-    {
-        
-    }
+    
     public void SetLevel(int manualLevel)
     {
         foreach (GameObject t in shotLevelTransforms)
@@ -38,6 +34,8 @@ public class Shot
                 shotLevelTransforms[i].SetActive(true);
             }
         }
+//        var player = GameObject.FindObjectOfType<Player>();
+//        player.lastFrameShooting = false;
     }
 
     public void SetInactive()

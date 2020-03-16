@@ -47,6 +47,7 @@
           <e p="MinMaxDrawer.cs" t="Include" />
           <e p="ObjectPoolerInspector.cs" t="Include" />
         </e>
+        <e p="ForwardMotion.cs" t="Include" />
         <e p="Joystick Pack" t="Include">
           <e p="Examples" t="Include">
             <e p="JoystickPlayerExample.cs" t="Include" />

@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
-        healthDisplay.SetHealth(enemyHealth, true);
+        healthDisplay.SetHealth(enemyHealth, false);
         cummulativeDir = new Vector3();
         hasReachedPoint = false;
         enemyState = EnemyState.Fly;

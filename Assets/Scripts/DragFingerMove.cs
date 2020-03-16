@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(DoABarrelRoll))]
 public class DragFingerMove : MonoBehaviour
@@ -9,9 +10,9 @@ public class DragFingerMove : MonoBehaviour
     public float motionDampRate = 5f;
     public float rotationDampRate = 5f;
     public float maxSpeed;
-    public float speed;
-    [SerializeField] float tilt = 1f;
     [SerializeField] private float zOffset;
+    public float zOffsetChangeFactor;
+    [SerializeField] float tilt = 1f;
     [SerializeField] private TextMeshProUGUI thresholdDisplay;
     [SerializeField] private TextMeshProUGUI zOffsetDisplay;
     private Vector3 inputPos; 
@@ -29,7 +30,6 @@ public class DragFingerMove : MonoBehaviour
     
     private void Start()
     {
-//        float speed = scale(0, Screen.height, 0, 1,);
         mainCam = Camera.main;
         rb = GetComponent<Rigidbody>();
         doABarrelRoll = GetComponent<DoABarrelRoll>();
@@ -93,7 +93,7 @@ public class DragFingerMove : MonoBehaviour
     private void HandleFlight()
     {
         float modifier = scale(0, Screen.height, 0, 1,inputPos.y) * Time.fixedDeltaTime;
-        variableZOffset = zOffset + speed * modifier;
+        variableZOffset = zOffset + zOffsetChangeFactor * modifier;
         Move(inputPos);
         Roll();
         timer += Time.deltaTime;
@@ -132,6 +132,7 @@ public class DragFingerMove : MonoBehaviour
 
     private void Roll()
     {
+        if (doABarrelRoll.isRotating) return;
         Vector3 _tilt = transform.rotation.eulerAngles;
         _tilt.x = 0;
         _tilt.y = 0;

@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     private SceneManager sceneManager;
     private int shotLevels;
     private int upgrades;
+    private bool volleyActive;
 
     private void OnEnable()
     {
@@ -54,6 +55,18 @@ public class GameManager : MonoBehaviour
         wavesDisplay.text = wavesCounter + " / " + maxWaves;
     }
 
+    private void ActivateVolley()
+    {
+        var volley = FindObjectOfType<Volley>();
+        volleyActive = !volleyActive;
+        volley.PerformSimpleVolley(volleyActive);
+    }
+
+    private IEnumerator AutoVolley()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))
@@ -69,6 +82,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             LevelUpShots();
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            ActivateVolley();
         }
 
         if (Input.GetKeyDown(KeyCode.J))

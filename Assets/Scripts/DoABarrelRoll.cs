@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class DoABarrelRoll : MonoBehaviour
 {
-    private Vector3 rotation = new Vector3(0, 0,360f);
+    private Vector3 rotation = new Vector3(0, 0,350f);
     public bool isRotating { get; private set; }
     public float duration, upwardMotion, threshold;
     private bool tweenKilled;
@@ -13,7 +13,7 @@ public class DoABarrelRoll : MonoBehaviour
     {
         if (!isRotating)
         {
-            tween = target.DORotate(rotation  * dir, duration, RotateMode.LocalAxisAdd);
+            tween = target.DORotate(rotation * dir, duration, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
             tween2 = target.DOLocalMoveY(upwardMotion, duration/2);
             tween2.OnKill(() => target.DOLocalMoveY(0f, duration / 2));
             tween.OnStart(OnStartTween).OnKill(OnTweenKill);

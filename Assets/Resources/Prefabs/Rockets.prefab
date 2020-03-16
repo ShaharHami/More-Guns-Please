@@ -43,5 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c965e2a03c624e64a484e1cd61d726d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocket: {fileID: 213504265621278848, guid: 9775b998ba33b4e508841ac227e8a070, type: 3}
-  speed: 100
+  rocket: {fileID: 5488592387341234142, guid: 9775b998ba33b4e508841ac227e8a070, type: 3}

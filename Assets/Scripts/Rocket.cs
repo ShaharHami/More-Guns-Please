@@ -21,6 +21,10 @@ namespace EventCallbacks
             trailRenderer = GetComponent<TrailRenderer>();
             explosions = FindObjectOfType<Explosions>();
             launcher = FindObjectOfType<Launcher>();
+            if (launcher == null)
+            {
+                launcher = new Launcher();
+            }
         }
 
         private void OnEnable()
@@ -44,6 +48,7 @@ namespace EventCallbacks
                 Explode();
             }
         }
+
         private void FixedUpdate()
         {
             if (!target || !target.gameObject.activeSelf)
@@ -57,6 +62,7 @@ namespace EventCallbacks
                 direction.Normalize();
                 transform.LookAt(target);
             }
+
             Vector3 motion = Time.fixedDeltaTime * speed * direction;
             motion.y = 0;
             transform.position += motion;
@@ -80,6 +86,7 @@ namespace EventCallbacks
                     missileHit.damage = 3; //TODO: get rocket damage from central data manager
                     missileHit.FireEvent();
                 }
+
                 explosions.Explode("missile hit", transform.position, 1f);
                 target = null;
                 gameObject.SetActive(false);

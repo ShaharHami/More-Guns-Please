@@ -5,6 +5,8 @@ using UnityEngine;
 public class Rockets : MonoBehaviour
 {
     [SerializeField] private Launcher[] rocketLaunchers;
+    [SerializeField] private float rocketInterval;
+    private Coroutine shootingCoroutine;
     private void Start()
     {
         EventCallbacks.FireWeapon.RegisterListener(Shoot);
@@ -15,12 +17,22 @@ public class Rockets : MonoBehaviour
     }
     private void Shoot(EventCallbacks.FireWeapon fireWeapon)
     {
-        if (fireWeapon.fire && gameObject.activeInHierarchy)
+        if (!fireWeapon.fire && shootingCoroutine != null)
+        {
+            StopCoroutine(shootingCoroutine);
+        }
+        shootingCoroutine = StartCoroutine(ShootingLogic(fireWeapon.fire));
+    }
+
+    private IEnumerator ShootingLogic(bool fire)
+    {
+        while (fire && gameObject.activeInHierarchy)
         {
             foreach (Launcher launcher in rocketLaunchers)
             {
                 launcher.Launch();
             }
+            yield return new WaitForSeconds(rocketInterval);
         }
     }
 }
