@@ -74,7 +74,6 @@
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUI.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
-     <Compile Include="Assets\ForwardMotion.cs" />
      <Compile Include="Assets\Joystick Pack\Examples\JoystickPlayerExample.cs" />
      <Compile Include="Assets\Joystick Pack\Examples\JoystickSetterExample.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Base\Joystick.cs" />
@@ -95,6 +94,7 @@
      <Compile Include="Assets\Scripts\Explosions.cs" />
      <Compile Include="Assets\Scripts\Formation.cs" />
      <Compile Include="Assets\Scripts\FormationContainer.cs" />
+     <Compile Include="Assets\Scripts\ForwardMotion.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\HealthDisplay.cs" />
      <Compile Include="Assets\Scripts\IExplode.cs" />
@@ -105,7 +105,6 @@
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Rocket.cs" />
-     <Compile Include="Assets\Scripts\Rockets.cs" />
      <Compile Include="Assets\Scripts\Shot.cs" />
      <Compile Include="Assets\Scripts\SingleFormationManager.cs" />
      <Compile Include="Assets\Scripts\Volley.cs" />

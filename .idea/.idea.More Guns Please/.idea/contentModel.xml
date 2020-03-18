@@ -47,7 +47,6 @@
           <e p="MinMaxDrawer.cs" t="Include" />
           <e p="ObjectPoolerInspector.cs" t="Include" />
         </e>
-        <e p="ForwardMotion.cs" t="Include" />
         <e p="Joystick Pack" t="Include">
           <e p="Examples" t="Include">
             <e p="JoystickPlayerExample.cs" t="Include" />
@@ -85,6 +84,7 @@
           <e p="Explosions.cs" t="Include" />
           <e p="Formation.cs" t="Include" />
           <e p="FormationContainer.cs" t="Include" />
+          <e p="ForwardMotion.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="HealthDisplay.cs" t="Include" />
           <e p="IExplode.cs" t="Include" />
@@ -95,7 +95,6 @@
           <e p="ObjectPooler.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="Rocket.cs" t="Include" />
-          <e p="Rockets.cs" t="Include" />
           <e p="Shot.cs" t="Include" />
           <e p="SingleFormationManager.cs" t="Include" />
           <e p="Volley.cs" t="Include" />

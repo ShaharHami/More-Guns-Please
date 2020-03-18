@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.Permissions;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class Shot
@@ -9,33 +6,43 @@ public class Shot
     public string type;
     public int level;
     public GameObject[] shotLevelTransforms;
+    public Player player;
 
     public void LevelUp()
     {
         if (level < shotLevelTransforms.Length)
         {
-            level++;
-            SetLevel(level);
+            SetLevel(level + 1);
         }
     }
-    
+
     public void SetLevel(int manualLevel)
     {
-        foreach (GameObject t in shotLevelTransforms)
+        if (manualLevel > shotLevelTransforms.Length) return;
+        if (manualLevel < level)
         {
-            t.SetActive(false);
+            foreach (GameObject t in shotLevelTransforms)
+            {
+                t.SetActive(false);
+            }
+            level = 0;
         }
-        level = manualLevel;
-        if (level > shotLevelTransforms.Length) return;
-        for (int i = 0; i < level; i++)
+        for (int i = level; i < manualLevel; i++)
         {
             if (shotLevelTransforms[i] != null)
             {
                 shotLevelTransforms[i].SetActive(true);
             }
         }
-//        var player = GameObject.FindObjectOfType<Player>();
-//        player.lastFrameShooting = false;
+        level = manualLevel;
+
+        if (Input.touchCount <= 0 && !Input.GetMouseButton(0)) return;
+        if (player == null)
+        {
+            player = GameObject.FindObjectOfType<Player>();
+        }
+
+        player.lastFrameShooting = false;
     }
 
     public void SetInactive()

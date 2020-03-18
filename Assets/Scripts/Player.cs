@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public int playerHealth = 100;
     public Shot[] shots;
     public bool autoFire;
-//    [Range(0.0f, 0.5f)] public float marginLeft = 0f, marginRight = 0f, marginTop = 0f, marginBottom = 0f;
     public Vector3 spawnPoint;
     [HideInInspector] public bool shooting;
     private int storePlayerHealth;
@@ -57,7 +56,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (autoFire)
         {
@@ -68,41 +67,20 @@ public class Player : MonoBehaviour
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Began)
+                switch (touch.phase)
                 {
-                    shooting = true;
+                    case TouchPhase.Began:
+                        shooting = true;
+                        break;
+                    case TouchPhase.Ended:
+                        shooting = false;
+                        break;
                 }
-
-                if (touch.phase == TouchPhase.Ended)
-                {
-                    shooting = false;
-                }
             }
 
-            if (Input.GetMouseButton(0)) // Mouse support for debugging purposes
-            {
-                shooting = true;
-            }
-            else
-            {
-                shooting = false;
-            }
-
-            if (Input.GetKey(KeyCode.Space)) // keyboard support for debugging purposes
-            {
-                shooting = true;
-            }
+            shooting = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space);
         }
-        
-        if (shooting)
-        {
-            Shoot(true);
-        }
-        else
-        {
-            Shoot(false);
-        }
-
+        Shoot(shooting);
         if (doABarrelRoll.isRotating)
         {
             lastFrameShooting = !shooting;

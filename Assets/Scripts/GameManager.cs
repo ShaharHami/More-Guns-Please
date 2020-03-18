@@ -25,9 +25,8 @@ public class GameManager : MonoBehaviour
     public float delayBetweenWaves;
     public GameObject startButton;
     private SceneManager sceneManager;
-    private int shotLevels;
-    private int upgrades;
     private bool volleyActive;
+    private Coroutine nextWaveCoroutine, respawnCoroutine; 
 
     private void OnEnable()
     {
@@ -40,6 +39,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerDied.UnregisterListener(OnPlayerDeath);
         FormationDead.UnregisterListener(OnFormationDead);
+        StopAllCoroutines();
     }
 
     void Start()
@@ -47,7 +47,6 @@ public class GameManager : MonoBehaviour
         enemySpawner = FindObjectOfType<EnemySpawner>();
         formations = enemySpawner.formations;
         player = FindObjectOfType<Player>();
-        shotLevels = player.shots[0].shotLevelTransforms.Length-1;
         respawnCountdownDisplay.transform.position = Camera.main.WorldToScreenPoint(player.spawnPoint);
         respawnCountdownDisplay.gameObject.SetActive(false);
         upgradeMessage.SetActive(false);
@@ -78,11 +77,20 @@ public class GameManager : MonoBehaviour
         {
             KillAllEnemies();
         }
-
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            AutoUpgradeShot();
+        }
         if (Input.GetKeyDown(KeyCode.L))
         {
-            LevelUpShots();
+            LevelUpShots(player.shots[0].type);
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            LevelUpShots(player.shots[1].type);
+        }
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             ActivateVolley();
@@ -97,17 +105,12 @@ public class GameManager : MonoBehaviour
             randEnemy.TurnSpeed = 0.01f;
         }
     }
-    
-    public void LevelUpShots()
-    {
-        if (player == null)
-        {
-            player = FindObjectOfType<Player>();
-        }
 
+    private void LevelUpShots(string shotToLevelUp)
+    {
         foreach (Shot shot in player.shots)
         {
-            if (shot.type == player.activeShot)
+            if (shot.type == shotToLevelUp)
             {
                 shot.LevelUp();
             }
@@ -116,7 +119,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        StartCoroutine(NextWaveCountdown());
+        nextWaveCoroutine = StartCoroutine(NextWaveCountdown());
         startButton.SetActive(false);
     }
 
@@ -124,6 +127,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
     public void SpawnWave()
     {
         if (simultaniuosWavesCounter < allowedSimultaniousWaves)
@@ -146,7 +150,6 @@ public class GameManager : MonoBehaviour
     void OnPlayerDeath(PlayerDied info)
     {
         lives--;
-        upgrades = 0;
         livesDisplay.text = lives.ToString();
         if (lives <= 0)
         {
@@ -155,7 +158,7 @@ public class GameManager : MonoBehaviour
         else
         {
             respawnCountdownDisplay.gameObject.SetActive(true);
-            StartCoroutine(Respawn(info.respawnTimer));
+            respawnCoroutine = StartCoroutine(Respawn(info.respawnTimer));
         }
     }
 
@@ -178,17 +181,25 @@ public class GameManager : MonoBehaviour
         simultaniuosWavesCounter--;
         if (wavesCounter < maxWaves)
         {
-            if (upgrades < shotLevels)
-            {
-                LevelUpShots();
-                upgradeMessage.SetActive(true);
-                upgrades++;
-            }
-            StartCoroutine(NextWaveCountdown());
+            AutoUpgradeShot();
+            upgradeMessage.SetActive(true);
+            nextWaveCoroutine = StartCoroutine(NextWaveCountdown());
         }
         else
         {
             HandleGameOver(true);
+        }
+    }
+
+    private void AutoUpgradeShot()
+    {
+        foreach (var t in player.shots)
+        {
+            if (t.level < t.shotLevelTransforms.Length)
+            {
+                LevelUpShots(t.type);
+                break;
+            }
         }
     }
 
