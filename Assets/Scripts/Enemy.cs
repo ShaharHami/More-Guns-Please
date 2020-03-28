@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
     private bool hasReachedPoint;
     private Collider[] hitColliders;
     private Vector3 cummulativeDir;
+    private ShootingLogic shootingLogic;
     Vector3 dest;
 
     private HealthDisplay healthDisplay;
@@ -65,7 +66,8 @@ public class Enemy : MonoBehaviour
         AllEnemieGOs.Add(gameObject);
         player = GameObject.FindGameObjectWithTag("Player");
         MissleHitEvent.RegisterListener(OnMissleHit);
-        if (shot != null)
+        shootingLogic = GetComponent<ShootingLogic>();
+        if (shootingLogic != null)
         {
             float fireRate = Random.Range(fireRateMin, fireRateMax);
             InvokeRepeating(nameof(ShotLogic), fireRateMin, fireRate);
@@ -186,14 +188,18 @@ public class Enemy : MonoBehaviour
 
     private void ShotLogic()
     {
-        if (player != null && player.gameObject.activeInHierarchy)
-        {
-            float range = Random.Range(0.0f, 1.0f);
-            if (shotProbability >= range)
-            {
-                ObjectPooler.Instance.SpawnFromPool(shot.name, transform.position, Quaternion.identity);
-            }
-        }
+        // if (player != null && player.gameObject.activeInHierarchy)
+        // {
+        //     float range = Random.Range(0.0f, 1.0f);
+        //     if (shotProbability >= range)
+        //     {
+        //         GameObject shotInstance = ObjectPooler.Instance.SpawnFromPool(shot.name, transform.position, Quaternion.identity);
+        //         // shotInstance.transform.parent = transform;
+        //         EnemyShot enemyShot = shotInstance.GetComponent<EnemyShot>();
+        //         enemyShot.SetDir(transform.forward);
+        //     }
+        // }
+        shootingLogic.Shoot();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -202,6 +208,11 @@ public class Enemy : MonoBehaviour
         {
             Damage(enemyHealth);
         }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        print(other.collider.name);
     }
 
     void OnMissleHit(MissleHitEvent hit)

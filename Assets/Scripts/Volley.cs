@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using EventCallbacks;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,45 +8,30 @@ using Random = UnityEngine.Random;
 public class Volley : MonoBehaviour
 {
     public GameObject shotPrefab;
-    [Range(0f, 360f)] public float volleyAngle;
-    public int numberOfShots;
-    public float distanceFromCenter;
     public float volleyInterval;
     public float shotsInterval;
-    public bool randomShot;
-    public bool randomTiming;
+    public bool randomBarrel;
+    public bool sequential;
     public bool ltr;
     public bool alternating;
     private Coroutine volleyCoroutine;
     private Coroutine shotsCoroutine;
     private List<Coroutine> coroutines;
-
-    private void OnDrawGizmos()
-    {
-        for (int i = 0; i < numberOfShots; i++)
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(transform.position, GetAngles(i));
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawCube(GetAngles(i), Vector3.one / 2);
-        }
-    }
+    public Vector3[] shootingPoints;
 
     private void OnEnable()
     {
-        FireWeapon.RegisterListener(PerformShot);
         coroutines = new List<Coroutine>();
     }
 
     private void OnDisable()
     {
-        FireWeapon.UnregisterListener(PerformShot);
         StopCoroutines();
     }
-    public void PerformShot(FireWeapon info = null)
+
+    public void SetShootingPoints(Vector3[] points)
     {
-        if (info == null) return;
-        PerformSimpleVolley(info.fire);
+        shootingPoints = points;
     }
     public void PerformSimpleVolley(bool shoot)
     {
@@ -54,12 +40,14 @@ public class Volley : MonoBehaviour
             StopCoroutines();
             return;
         }
+
         volleyCoroutine = StartCoroutine(ShootCoroutine());
         coroutines.Add(volleyCoroutine);
     }
+
     private void SingleVolley()
     {
-        if (randomTiming)
+        if (sequential)
         {
             shotsCoroutine = StartCoroutine(ShootVolleyCoroutine());
             coroutines.Add(shotsCoroutine);
@@ -73,6 +61,7 @@ public class Volley : MonoBehaviour
 
             ShootVolley();
         }
+
         if (alternating)
         {
             ltr = !ltr;
@@ -81,7 +70,8 @@ public class Volley : MonoBehaviour
 
     private void StopCoroutines()
     {
-        foreach (Coroutine coroutine in coroutines)
+        if (coroutines == null || coroutines.Count <= 0) return;
+        foreach (var coroutine in coroutines.Where(coroutine => coroutine != null))
         {
             StopCoroutine(coroutine);
         }
@@ -91,7 +81,7 @@ public class Volley : MonoBehaviour
     {
         if (ltr)
         {
-            for (int i = numberOfShots; i > 0; i--)
+            for (int i = shootingPoints.Length - 1; i >= 0; i--)
             {
                 PositionShot(i);
                 yield return new WaitForSeconds(shotsInterval);
@@ -99,13 +89,14 @@ public class Volley : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < numberOfShots; i++)
+            for (int i = 0; i < shootingPoints.Length; i++)
             {
                 PositionShot(i);
                 yield return new WaitForSeconds(shotsInterval);
             }
         }
     }
+
     private IEnumerator ShootCoroutine()
     {
         while (true)
@@ -114,18 +105,19 @@ public class Volley : MonoBehaviour
             yield return new WaitForSeconds(volleyInterval);
         }
     }
+
     private void ShootVolley()
     {
         if (ltr)
         {
-            for (int i = numberOfShots; i > 0; i--)
+            for (int i = shootingPoints.Length - 1; i >= 0; i--)
             {
                 PositionShot(i);
             }
         }
         else
         {
-            for (int i = 0; i < numberOfShots; i++)
+            for (int i = 0; i < shootingPoints.Length; i++)
             {
                 PositionShot(i);
             }
@@ -134,24 +126,6 @@ public class Volley : MonoBehaviour
 
     private void PositionShot(int shotNum)
     {
-        Vector3 pos;
-        if (randomShot)
-        {
-            pos = GetAngles(Random.Range(0, numberOfShots));
-        }
-        else
-        {
-            pos = GetAngles(shotNum);
-        }
-
-        GameObject obj = ObjectPooler.Instance.SpawnFromPool(shotPrefab.name, pos, Quaternion.identity);
-    }
-
-    private Vector3 GetAngles(int posNum)
-    {
-        float angle = (posNum + .5f) * ((Mathf.PI * 2f) * (volleyAngle / 360)) / numberOfShots;
-        angle = angle + ((Mathf.PI * (-1 / (360 / volleyAngle))) + (Mathf.PI * 0.5f));
-        return transform.position +
-               (new Vector3(Mathf.Cos(angle) * distanceFromCenter, 0, Mathf.Sin(angle) * distanceFromCenter));
+        GameObject obj = ObjectPooler.Instance.SpawnFromPool(shotPrefab.name, shootingPoints[randomBarrel ? Random.Range(0, shootingPoints.Length) : shotNum], Quaternion.identity);
     }
 }

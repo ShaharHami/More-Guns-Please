@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private EnemySpawner enemySpawner;
     private Formation[] formations;
     private Player player;
+    private FireInputManager fireInputManager;
     public TextMeshProUGUI respawnCountdownDisplay;
     public TextMeshProUGUI livesDisplay;
     public TextMeshProUGUI wavesDisplay;
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject startButton;
     private SceneManager sceneManager;
     private bool volleyActive;
-    private Coroutine nextWaveCoroutine, respawnCoroutine; 
+    private Coroutine nextWaveCoroutine, respawnCoroutine;
 
     private void OnEnable()
     {
@@ -47,23 +48,12 @@ public class GameManager : MonoBehaviour
         enemySpawner = FindObjectOfType<EnemySpawner>();
         formations = enemySpawner.formations;
         player = FindObjectOfType<Player>();
+        fireInputManager = player.GetComponent<FireInputManager>();
         respawnCountdownDisplay.transform.position = Camera.main.WorldToScreenPoint(player.spawnPoint);
         respawnCountdownDisplay.gameObject.SetActive(false);
         upgradeMessage.SetActive(false);
         livesDisplay.text = lives.ToString();
         wavesDisplay.text = wavesCounter + " / " + maxWaves;
-    }
-
-    private void ActivateVolley()
-    {
-        var volley = FindObjectOfType<Volley>();
-        volleyActive = !volleyActive;
-        volley.PerformSimpleVolley(volleyActive);
-    }
-
-    private IEnumerator AutoVolley()
-    {
-        yield return new WaitForSeconds(1f);
     }
 
     void Update()
@@ -77,23 +67,11 @@ public class GameManager : MonoBehaviour
         {
             KillAllEnemies();
         }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            AutoUpgradeShot();
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            LevelUpShots(player.shots[0].type);
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            LevelUpShots(player.shots[1].type);
-        }
 
         if (Input.GetKeyDown(KeyCode.V))
         {
-            ActivateVolley();
+            volleyActive = !volleyActive;
+            fireInputManager.SetAutoFire(volleyActive);
         }
 
         if (Input.GetKeyDown(KeyCode.J))
@@ -103,17 +81,6 @@ public class GameManager : MonoBehaviour
                     .GetComponent<Enemy>();
             randEnemy.transform.position = new Vector3(Random.Range(-50f, 50f), 0, 30);
             randEnemy.TurnSpeed = 0.01f;
-        }
-    }
-
-    private void LevelUpShots(string shotToLevelUp)
-    {
-        foreach (Shot shot in player.shots)
-        {
-            if (shot.type == shotToLevelUp)
-            {
-                shot.LevelUp();
-            }
         }
     }
 
@@ -181,7 +148,6 @@ public class GameManager : MonoBehaviour
         simultaniuosWavesCounter--;
         if (wavesCounter < maxWaves)
         {
-            AutoUpgradeShot();
             upgradeMessage.SetActive(true);
             nextWaveCoroutine = StartCoroutine(NextWaveCountdown());
         }
@@ -191,19 +157,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void AutoUpgradeShot()
-    {
-        foreach (var t in player.shots)
-        {
-            if (t.level < t.shotLevelTransforms.Length)
-            {
-                LevelUpShots(t.type);
-                break;
-            }
-        }
-    }
-
-    IEnumerator NextWaveCountdown()
+    private IEnumerator NextWaveCountdown()
     {
         yield return new WaitForSeconds(delayBetweenWaves);
         upgradeMessage.SetActive(false);

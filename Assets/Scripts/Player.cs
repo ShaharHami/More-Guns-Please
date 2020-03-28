@@ -5,30 +5,31 @@ using System.Linq;
 using UnityEngine;
 using EventCallbacks;
 using TMPro;
+using UnityEditor.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public int playerHealth = 100;
-    public Shot[] shots;
-    public bool autoFire;
     public Vector3 spawnPoint;
-    [HideInInspector] public bool shooting;
     private int storePlayerHealth;
     private DoABarrelRoll doABarrelRoll;
     private HealthDisplay healthDisplay;
     private Explosions explosions;
     [HideInInspector] public bool lastFrameShooting;
+    private FireInputManager fireInputManager;
 
     public string activeShot { get; private set; }
 
     // Debugging
     public TextMeshProUGUI hitsDisplay;
+    
 
     private void Awake()
     {
-        lastFrameShooting = !shooting;
+        fireInputManager = GetComponent<FireInputManager>();
         explosions = FindObjectOfType<Explosions>();
         healthDisplay = GetComponent<HealthDisplay>();
+        lastFrameShooting = !fireInputManager.FireInput();
         storePlayerHealth = playerHealth;
     }
 
@@ -37,63 +38,19 @@ public class Player : MonoBehaviour
         doABarrelRoll = GetComponent<DoABarrelRoll>();
         EnemyShotHit.RegisterListener(OnDamage);
         healthDisplay.SetHealth(storePlayerHealth, false);
-        activeShot = shots[0].type;
-        SetInitialShotsLevel();
-    }
-
-    private void SetInitialShotsLevel()
-    {
-        foreach (Shot shot in shots)
-        {
-            if (shot.type != activeShot)
-            {
-                shot.SetInactive();
-            }
-            else
-            {
-                shot.SetLevel(1);
-            }
-        }
     }
 
     private void Update()
     {
-        if (autoFire)
-        {
-            shooting = true;
-        }
-        else
-        {
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                switch (touch.phase)
-                {
-                    case TouchPhase.Began:
-                        shooting = true;
-                        break;
-                    case TouchPhase.Ended:
-                        shooting = false;
-                        break;
-                }
-            }
-
-            shooting = Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space);
-        }
-        Shoot(shooting);
+        Shoot(fireInputManager.FireInput() && !doABarrelRoll.isRotating);
         if (doABarrelRoll.isRotating)
         {
-            lastFrameShooting = !shooting;
+            lastFrameShooting = !fireInputManager.FireInput();
         }
         else
         {
-            lastFrameShooting = shooting;
+            lastFrameShooting = fireInputManager.FireInput();
         }
-    }
-
-    public void SetAutoFire(bool setAutoFire)
-    {
-        autoFire = setAutoFire;
     }
 
     private void Damage(int damage)
@@ -117,7 +74,6 @@ public class Player : MonoBehaviour
         gameObject.SetActive(false);
         playerHealth = storePlayerHealth;
         transform.position = spawnPoint;
-        SetInitialShotsLevel();
     }
 
     void OnDisable()
@@ -127,11 +83,7 @@ public class Player : MonoBehaviour
 
     private void Shoot(bool fire)
     {
-        if (lastFrameShooting == shooting) return;
-        if (doABarrelRoll.isRotating)
-        {
-            fire = false;
-        }
+        if (lastFrameShooting == fireInputManager.FireInput()) return;
         FireWeapon fireWeaponEvent = new FireWeapon();
         fireWeaponEvent.Description = "Fire weapon: " + fire;
         fireWeaponEvent.fire = fire;

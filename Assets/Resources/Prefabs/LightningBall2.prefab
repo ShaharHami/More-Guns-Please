@@ -9489,7 +9489,8 @@ MonoBehaviour:
   isHoming: 1
   homingDamp: 0.1
   damage: 8
-  life: 7
+  life: 5
+  dir: {x: 0, y: 0, z: 0}
 --- !u!135 &61904627598343703
 SphereCollider:
   m_ObjectHideFlags: 0

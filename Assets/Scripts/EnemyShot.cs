@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using EventCallbacks;
+using UnityEngine.Serialization;
 
 
 public class EnemyShot : MonoBehaviour
@@ -11,61 +12,55 @@ public class EnemyShot : MonoBehaviour
     [Range(0.1f, 1f)] public float homingDamp = 0.5f;
     public int damage = 10;
     public float life;
-    float killTimer;
+    public Vector3 origin;
+    public Vector3 dest;
+    private float killTimer;
     private Vector3 direction;
-    private Transform player;
     private Explosions explosions;
     private Vector3 stageDimensions;
     private Vector3 targetPos;
+    private Player player;
+    public bool dirSet;
 
     private void Awake()
     {
-        var playerGO = FindObjectOfType<Player>();
-        if (playerGO != null)
-        {
-            player = playerGO.transform;
-        }
+        player = FindObjectOfType<Player>();
         explosions = FindObjectOfType<Explosions>();
     }
 
     private void OnEnable()
     {
-        if (player != null && isTargetingPlayer)
-        {
-            targetPos = player.position;
-        }
-        else
-        {
-            targetPos = new Vector3(transform.position.x, 0, transform.position.z - 500);
-        }
-
-        GetTarget();
+        dirSet = false;
+        direction = default;
+        // if (player != null)
+        // {
+        //     if (isTargetingPlayer || isHoming)
+        //     {
+        //         GetTarget();
+        //     }
+        // }
+        // else
+        // {
+        //     targetPos = new Vector3(transform.position.x, 0, transform.position.z - 500);
+        // }
         killTimer = 0;
     }
+    
+    // private void GetTarget()
+    // {
+    //     direction = player.transform.position - transform.position;
+    //     direction.y = 0;
+    //     direction.Normalize();
+    // }
 
-    private void GetTarget()
+    public void SetDir(Vector3 pos1, Vector3 pos2)
     {
-        direction = targetPos - transform.position;
-        direction.y = 0;
-        direction.Normalize();
+        origin = pos1;
+        dest = pos2;
+        dirSet = true;
     }
-
     void FixedUpdate()
     {
-        if (player != null && player.gameObject.activeInHierarchy && isHoming)
-        {
-            targetPos = player.position;
-            GetTarget();
-        }
-
-        Vector3 motion = Time.deltaTime * shotSpeed * direction;
-        motion.y = 0;
-        if (isHoming)
-        {
-            motion = Vector3.Lerp(Vector3.zero, motion, 0.5f);
-        }
-
-        transform.position += motion;
         killTimer += Time.fixedDeltaTime;
         if (killTimer >= life)
         {

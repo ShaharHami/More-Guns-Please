@@ -1,55 +1,50 @@
-﻿using UnityEngine;
+﻿using System;
+using EventCallbacks;
+using UnityEngine;
 
-[System.Serializable]
-public class Shot
+public class Shot : MonoBehaviour
 {
-    public string type;
-    public int level;
-    public GameObject[] shotLevelTransforms;
-    public Player player;
+    public string tagToCompare;
+    public string explosionName;
+    public float life;
+    private Explosions explosions;
+    private float killTimer;
 
-    public void LevelUp()
+    void Start()
     {
-        if (level < shotLevelTransforms.Length)
+        explosions = FindObjectOfType<Explosions>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag(tagToCompare))
         {
-            SetLevel(level + 1);
+            Explode(other.gameObject);
+            killTimer = 0;
         }
     }
 
-    public void SetLevel(int manualLevel)
+    private void Update()
     {
-        if (manualLevel > shotLevelTransforms.Length) return;
-        if (manualLevel < level)
-        {
-            foreach (GameObject t in shotLevelTransforms)
-            {
-                t.SetActive(false);
-            }
-            level = 0;
-        }
-        for (int i = level; i < manualLevel; i++)
-        {
-            if (shotLevelTransforms[i] != null)
-            {
-                shotLevelTransforms[i].SetActive(true);
-            }
-        }
-        level = manualLevel;
-
-        if (Input.touchCount <= 0 && !Input.GetMouseButton(0)) return;
-        if (player == null)
-        {
-            player = GameObject.FindObjectOfType<Player>();
-        }
-
-        player.lastFrameShooting = false;
+        killTimer += Time.deltaTime;
+        if (!(killTimer >= life)) return;
+        Explode(null);
+        killTimer = 0;
     }
 
-    public void SetInactive()
+    private void Explode(GameObject target)
     {
-        foreach (GameObject obj in shotLevelTransforms)
+        if (!gameObject.activeSelf) return;
+        if (target != null)
         {
-            obj.SetActive(false);
+            MissleHitEvent missileHit = new MissleHitEvent();
+            missileHit.Description = "Unit " + gameObject.name + " has hit ";
+            missileHit.damage = 3; //TODO: get rocket damage from central data manager
+            missileHit.UnitGO = target.gameObject;
+            missileHit.FireEvent();
         }
+
+        explosions.Explode(explosionName, transform.position, 1f);
+        gameObject.SetActive(false);
     }
 }

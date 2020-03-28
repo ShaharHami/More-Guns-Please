@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ForwardMotion : MonoBehaviour
+public class SimpleShot : MonoBehaviour
 {
     public float speed;
     public float killTimer;
@@ -26,8 +26,8 @@ public class ForwardMotion : MonoBehaviour
         hasDirection = false;
         StopCoroutine(coroutine);
     }
-    
-    void Update()
+
+    private void FixedUpdate()
     {
         if (!hasDirection)
         {
@@ -36,9 +36,10 @@ public class ForwardMotion : MonoBehaviour
             rotation = Quaternion.LookRotation(dir);
             transform.rotation = rotation;
         }
-        transform.position += Time.deltaTime * speed * dir.normalized;
+        transform.position += Time.fixedDeltaTime * speed * dir.normalized;
     }
-    IEnumerator Kill()
+
+    private IEnumerator Kill()
     {
         yield return new WaitForSeconds(killTimer);
         gameObject.SetActive(false);

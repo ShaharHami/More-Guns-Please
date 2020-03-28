@@ -193,6 +193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4871765493881346}
+  - component: {fileID: 4036299125728382689}
   - component: {fileID: 33247406621687192}
   - component: {fileID: 23750490241137498}
   - component: {fileID: 64289634335598212}
@@ -224,6 +225,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4036299125728382689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707194919326154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4877556f8870d44bbb68002bfa217b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotType: 1
+  shotProbability: 0.54
+  shot: {fileID: 1468168142180032627, guid: f9ae81ed1a67ce845bffbffffe471265, type: 3}
+  shotSpeed: 1
+  homingDamp: 0.5
+  target: {fileID: 0}
+  Motion: {x: 0, y: 0, z: 0}
 --- !u!33 &33247406621687192
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1266217297579756744}
   - component: {fileID: 4979522911740987605}
+  - component: {fileID: 8616446721192970063}
   - component: {fileID: 245504360725912139}
   m_Layer: 0
-  m_Name: TestShot
+  m_Name: RoundShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 577528209415914265}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 9088984702116215655}
   m_Father: {fileID: 0}
@@ -41,11 +42,26 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 577528209415914265}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8616446721192970063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577528209415914265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ce5580beed9410aae9cbd7da03760b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagToCompare: Enemy
+  explosionName: missile hit
+  life: 2
 --- !u!114 &245504360725912139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4b2b56bcbc63b409e83171a35e7817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 100
   killTimer: 5
 --- !u!1 &2068785887057993834
 GameObject:
