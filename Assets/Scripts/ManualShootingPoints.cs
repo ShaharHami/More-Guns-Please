@@ -41,5 +41,8 @@ public class ManualShootingPoints : ShootingPoints
             sp.enabled = true;
             i++;
         }
+
+        int counter = shootingPoints.Count(shootingPoint => shootingPoint.enabled);
+        MaxedOut = counter >= maxShootingPoints;
     }
 }

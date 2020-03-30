@@ -42,10 +42,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -76}
   m_LocalScale: {x: 0.6, y: 0.8, z: 0.6}
   m_Children:
-  - {fileID: 3474822412784830837}
-  - {fileID: 3109032440713607340}
+  - {fileID: 3474308787121355300}
+  - {fileID: 3110779484230355965}
   - {fileID: 6148826007288587320}
-  - {fileID: 742572515516981224}
+  - {fileID: 8855610981876535387}
   - {fileID: 8778953705781955254}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b242c0445e6929646b4cb0ce06134820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 500
+  moveSpeed: 200
   motionDampRate: 5
   rotationDampRate: 10
   maxSpeed: 1
@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   engines:
-  - {fileID: 3474822412784830837}
-  - {fileID: 3109032440713607340}
+  - {fileID: 3474308787121355300}
+  - {fileID: 3110779484230355965}
   speed: 0.7
 --- !u!114 &6073261310400574385
 MonoBehaviour:
@@ -160,9 +160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0757f34252f20347aafb278787ded4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthDisplayCanvas: {fileID: 8459007943217881811}
-  healthDisplay: {fileID: 3445551604496609514}
-  healthBar: {fileID: 1793728831155985728}
+  healthDisplayCanvas: {fileID: 8855610981876535713}
+  healthDisplay: {fileID: 8855610981876537102}
+  healthBar: {fileID: 8855610981876537139}
 --- !u!114 &4254381355159483205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +209,7 @@ MonoBehaviour:
   volley: {fileID: 2330721987044803814}
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   pointColor: {r: 0, g: 0.86945343, b: 1, a: 1}
+  maxShootingPoints: 8
   shootingPoints:
   - shootingPoint: {fileID: 8683176598543656531}
     enabled: 1
@@ -264,6 +265,7 @@ MonoBehaviour:
   volley: {fileID: 7945710085408908514}
   lineColor: {r: 1, g: 0, b: 0.8691969, a: 1}
   pointColor: {r: 1, g: 0, b: 0.7630091, a: 1}
+  maxShootingPoints: 8
   shootingPoints:
   - shootingPoint: {fileID: 8683176598543656531}
     enabled: 1
@@ -319,7 +321,8 @@ MonoBehaviour:
   volley: {fileID: 6913984447837905404}
   lineColor: {r: 0, g: 1, b: 0.91119623, a: 1}
   pointColor: {r: 0.9595677, g: 0.9811321, b: 0, a: 1}
-  numberOfPoints: 1
+  maxShootingPoints: 12
+  shootingPoints: 1
   shootingAngle: 0
   distanceFromCenter: 6.34
   centerOffsetX: 0
@@ -852,7 +855,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93170d2c6bae948ca90b9b8188e02816, type: 3}
---- !u!4 &3109032440713607340 stripped
+--- !u!4 &3110779484230355965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000014107537954, guid: 93170d2c6bae948ca90b9b8188e02816,
     type: 3}
@@ -982,7 +985,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9475698742e944615b0ab2c4b4ecc1b7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93170d2c6bae948ca90b9b8188e02816, type: 3}
---- !u!4 &3474822412784830837 stripped
+--- !u!4 &3474308787121355300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000014107537954, guid: 93170d2c6bae948ca90b9b8188e02816,
     type: 3}
@@ -1117,19 +1120,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02e034dd7cf131e4aa2145e7716ab33f, type: 3}
---- !u!223 &8459007943217881811 stripped
+--- !u!223 &8855610981876535713 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 1117206810566668554, guid: 02e034dd7cf131e4aa2145e7716ab33f,
     type: 3}
   m_PrefabInstance: {fileID: 8855610981876536281}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &742572515516981224 stripped
+--- !u!224 &8855610981876535387 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8118677862708874289, guid: 02e034dd7cf131e4aa2145e7716ab33f,
     type: 3}
   m_PrefabInstance: {fileID: 8855610981876536281}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1793728831155985728 stripped
+--- !u!114 &8855610981876537139 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7062182540871814809, guid: 02e034dd7cf131e4aa2145e7716ab33f,
     type: 3}
@@ -1141,7 +1144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3445551604496609514 stripped
+--- !u!114 &8855610981876537102 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6139670356991976243, guid: 02e034dd7cf131e4aa2145e7716ab33f,
     type: 3}

@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 public class AngularShootingPoints : ShootingPoints
 {
-    [FormerlySerializedAs("numberOfPoints")] [Header("Angular Shot Settings")]
+    [Header("Angular Shot Settings")]
     public int shootingPoints;
 
     [Range(0f, 360f)] public float shootingAngle;
@@ -43,7 +43,7 @@ public class AngularShootingPoints : ShootingPoints
 
         return shootingPoints;
     }
-
+    
     protected override void UpgradeChildCount(float n)
     {
         if (!enabled)
@@ -54,10 +54,10 @@ public class AngularShootingPoints : ShootingPoints
         {
             if (shootingPoints >= maxShootingPoints) return;
             shootingPoints += (int) n;
-            shootingAngle += n * ((maxShootingPoints - shootingPoints) * 2);
+            shootingAngle += n * ((maxShootingPoints - shootingPoints) * 0.5f);
         }
+        MaxedOut = shootingPoints >= maxShootingPoints;
     }
-
     private Vector3 GetAngles(int posNum)
     {
         Vector3 offset = new Vector3(

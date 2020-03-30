@@ -12,6 +12,7 @@ public abstract class ShootingPoints : MonoBehaviour, IUpgradable
     public Color lineColor;
     public Color pointColor;
     public int maxShootingPoints;
+    public bool MaxedOut { get; protected set; }
     public abstract Vector3[] GetShootingPoints();
     protected abstract void UpgradeChildCount(float n);
     private bool isShooting;

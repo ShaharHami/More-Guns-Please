@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf9294b438b40549a53aa7151a2617c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   moduleName: Scatter Shots
   propName: count
   upgradeValue: 1

@@ -58,13 +58,18 @@ public class UpgradeManager : MonoBehaviour
 
     public void SpawnUpgrades(int upgradeCount)
     {
+        List<Upgrade> ugds = new List<Upgrade>();
+        foreach (var upgradable in upgradables.Where(upgradable => !upgradable.MaxedOut))
+        {
+            ugds.AddRange(upgrades.Where(up => up.moduleName == upgradable.ModuleName));
+        }
         Vector3 screen =
             camera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, camera.transform.position.y));
         float margin = (screen.x * 2) / upgradeCount;
         float t = upgradeCount / 2f;
         for (int i = 0; i < upgradeCount; i++)
         {
-            GameObject upgrade = ObjectPooler.Instance.SpawnFromPool(upgrades[Random.Range(0, upgrades.Count)].name, new Vector3((margin * (i+.5f-t)), 0, screen.z + spawnOffset), Quaternion.Euler(new Vector3(0,180,0)));
+            GameObject upgrade = ObjectPooler.Instance.SpawnFromPool(ugds[Random.Range(0, ugds.Count)].name, new Vector3((margin * (i+.5f-t)), 0, screen.z + spawnOffset), Quaternion.Euler(new Vector3(0,180,0)));
             activeUpgrades.Add(upgrade);
         }
     }
