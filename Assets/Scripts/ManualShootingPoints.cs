@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -15,9 +16,8 @@ public class ManualShootingPoints : ShootingPoints
     private void OnDrawGizmos()
     {
         points = GetShootingPoints();
-        for (int i = 0; i < points.Length; i++)
+        foreach (var a in points)
         {
-            var a = points[i];
             Gizmos.color = pointColor;
             Gizmos.DrawCube(a, Vector3.one / 2);
         }
@@ -26,5 +26,20 @@ public class ManualShootingPoints : ShootingPoints
     public override Vector3[] GetShootingPoints()
     {
         return (from sp in shootingPoints where sp.enabled select sp.shootingPoint.position).ToArray();
+    }
+
+    protected override void UpgradeChildCount(float n)
+    {
+        if (!enabled)
+        {
+            enabled = true;
+        }
+        int i = 0;
+        foreach (var sp in shootingPoints.Where(sp => !sp.enabled))
+        {
+            if (!(i < (int)n)) continue;
+            sp.enabled = true;
+            i++;
+        }
     }
 }

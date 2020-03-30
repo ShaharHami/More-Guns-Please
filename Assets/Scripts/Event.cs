@@ -68,4 +68,11 @@ namespace EventCallbacks
     {
         public float respawnTimer;
     }
+    
+    public class UpgradeEvent : Event<UpgradeEvent>
+    {
+        public string moduleName;
+        public string propName;
+        public float upgradeValue;
+    }
 }

@@ -13956,8 +13956,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400006}
-  - component: {fileID: 1468168142180032627}
   - component: {fileID: 8686598890978069243}
+  - component: {fileID: 1604711617140653087}
+  - component: {fileID: 4964786120389114679}
   m_Layer: 0
   m_Name: FireBall3
   m_TagString: Untagged
@@ -13983,27 +13984,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1468168142180032627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd2111cfcdad2432284f6e957a795c75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitEffect: {fileID: 4034685459527600621, guid: 3a149f4bc16a74c1f97a28dce646cdbd,
-    type: 3}
-  shotSpeed: 60
-  isTargetingPlayer: 1
-  isHoming: 0
-  homingDamp: 0.1
-  damage: 10
-  life: 5
-  dir: {x: 0, y: 0, z: 0}
 --- !u!135 &8686598890978069243
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -14017,6 +13997,35 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.04
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1604711617140653087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ce5580beed9410aae9cbd7da03760b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagToCompare: Player
+  explosionName: missile hit
+  life: 5
+--- !u!114 &4964786120389114679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4b2b56bcbc63b409e83171a35e7817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 30
+  killTimer: 5
 --- !u!1 &100008
 GameObject:
   m_ObjectHideFlags: 0

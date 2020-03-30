@@ -46,12 +46,6 @@ public class EnemyShot : MonoBehaviour
         killTimer = 0;
     }
     
-    // private void GetTarget()
-    // {
-    //     direction = player.transform.position - transform.position;
-    //     direction.y = 0;
-    //     direction.Normalize();
-    // }
 
     public void SetDir(Vector3 pos1, Vector3 pos2)
     {

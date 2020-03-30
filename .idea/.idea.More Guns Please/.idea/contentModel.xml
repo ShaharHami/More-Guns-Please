@@ -70,6 +70,7 @@
             </e>
           </e>
         </e>
+        <e p="RotateMaterial.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="AngularShootingPoints.cs" t="Include" />
           <e p="CanGetShot.cs" t="Include" />
@@ -89,10 +90,10 @@
           <e p="FormationContainer.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="HealthDisplay.cs" t="Include" />
-          <e p="Homing.cs" t="Include" />
           <e p="IExplode.cs" t="Include" />
           <e p="IpooledObject.cs" t="Include" />
           <e p="IshootingPoints.cs" t="Include" />
+          <e p="IUpgradable.cs" t="Include" />
           <e p="Lasers.cs" t="Include" />
           <e p="ManualShootingPoints.cs" t="Include" />
           <e p="MinMaxAttribute.cs" t="Include" />
@@ -103,7 +104,9 @@
           <e p="Shot.cs" t="Include" />
           <e p="SimpleShot.cs" t="Include" />
           <e p="SingleFormationManager.cs" t="Include" />
+          <e p="TargetingSystem.cs" t="Include" />
           <e p="Testing.cs" t="Include" />
+          <e p="UpgradeManager.cs" t="Include" />
           <e p="Volley.cs" t="Include" />
           <e p="VolleySettings.cs" t="Include" />
         </e>
@@ -135,6 +138,7 @@
             <e p="EmojiOne Attribution.txt" t="Include" />
           </e>
         </e>
+        <e p="Upgrade.cs" t="Include" />
       </e>
       <e p="More Guns Please.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />

@@ -81,6 +81,7 @@
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
+     <Compile Include="Assets\RotateMaterial.cs" />
      <Compile Include="Assets\Scripts\AngularShootingPoints.cs" />
      <Compile Include="Assets\Scripts\CanGetShot.cs" />
      <Compile Include="Assets\Scripts\CollisionDetection.cs" />
@@ -99,8 +100,8 @@
      <Compile Include="Assets\Scripts\FormationContainer.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\HealthDisplay.cs" />
-     <Compile Include="Assets\Scripts\Homing.cs" />
      <Compile Include="Assets\Scripts\IExplode.cs" />
+     <Compile Include="Assets\Scripts\IUpgradable.cs" />
      <Compile Include="Assets\Scripts\IpooledObject.cs" />
      <Compile Include="Assets\Scripts\IshootingPoints.cs" />
      <Compile Include="Assets\Scripts\Lasers.cs" />
@@ -113,9 +114,12 @@
      <Compile Include="Assets\Scripts\Shot.cs" />
      <Compile Include="Assets\Scripts\SimpleShot.cs" />
      <Compile Include="Assets\Scripts\SingleFormationManager.cs" />
+     <Compile Include="Assets\Scripts\TargetingSystem.cs" />
      <Compile Include="Assets\Scripts\Testing.cs" />
+     <Compile Include="Assets\Scripts\UpgradeManager.cs" />
      <Compile Include="Assets\Scripts\Volley.cs" />
      <Compile Include="Assets\Scripts\VolleySettings.cs" />
+     <Compile Include="Assets\Upgrade.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />

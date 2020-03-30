@@ -27,7 +27,4 @@ MonoBehaviour:
   initialPositionX: {x: -40.41204, y: 40.41204}
   initialPositionZ: {x: 0, y: 0}
   EnemyTypes:
-  - Trident 1
-  - SG_radogost_optimized
-  - SG_stribog_optimized
-  - Trident
+  - Enemy1

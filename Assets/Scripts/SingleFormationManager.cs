@@ -70,7 +70,8 @@ public class SingleFormationManager : MonoBehaviour
             animator.SetTrigger(trigger);
         }
     }
-    public void SpawnEnemy(string enemyType, GameObject positionMarker, Quaternion rot)
+
+    private void SpawnEnemy(string enemyType, GameObject positionMarker, Quaternion rot)
     {
         GameObject pooledEnemy = ObjectPooler.Instance.SpawnFromPool(enemyType, Vector3.zero, rot);
         Enemy enemy = pooledEnemy.GetComponent<Enemy>();

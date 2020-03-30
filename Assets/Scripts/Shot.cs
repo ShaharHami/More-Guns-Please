@@ -7,6 +7,8 @@ public class Shot : MonoBehaviour
     public string tagToCompare;
     public string explosionName;
     public float life;
+    public bool scatterShot;
+    public Volley volley;
     private Explosions explosions;
     private float killTimer;
 
@@ -15,21 +17,30 @@ public class Shot : MonoBehaviour
         explosions = FindObjectOfType<Explosions>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnEnable()
     {
-        if (other.gameObject.CompareTag(tagToCompare))
-        {
-            Explode(other.gameObject);
-            killTimer = 0;
-        }
+        killTimer = 0;
+        volley = GetComponent<Volley>();
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        killTimer += Time.deltaTime;
-        if (!(killTimer >= life)) return;
-        Explode(null);
         killTimer = 0;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.gameObject.CompareTag(tagToCompare)) return;
+        killTimer = 0;
+        Explode(other.gameObject);
+    }
+
+    private void FixedUpdate()
+    {
+        killTimer += Time.fixedDeltaTime;
+        if ((killTimer < life)) return;
+        killTimer = 0;
+        Explode(null);
     }
 
     private void Explode(GameObject target)
@@ -44,7 +55,16 @@ public class Shot : MonoBehaviour
             missileHit.FireEvent();
         }
 
-        explosions.Explode(explosionName, transform.position, 1f);
+        if (scatterShot && volley != null)
+        {
+            volley.PerformSimpleVolley(true);
+        }
+
+        if (explosionName != "")
+        {
+            explosions.Explode(explosionName, transform.position, 1f);
+        }
+
         gameObject.SetActive(false);
     }
 }

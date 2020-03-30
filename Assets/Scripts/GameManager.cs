@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private int simultaniuosWavesCounter;
     public float delayBetweenWaves;
     public GameObject startButton;
+    public int upgradeCount;
     private SceneManager sceneManager;
     private bool volleyActive;
     private Coroutine nextWaveCoroutine, respawnCoroutine;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerDied.RegisterListener(OnPlayerDeath);
         FormationDead.RegisterListener(OnFormationDead);
+        UpgradeEvent.RegisterListener(OnUpgraded);
         gameOver.SetActive(false);
     }
 
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerDied.UnregisterListener(OnPlayerDeath);
         FormationDead.UnregisterListener(OnFormationDead);
+        UpgradeEvent.UnregisterListener(OnUpgraded);
         StopAllCoroutines();
     }
 
@@ -66,6 +69,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             KillAllEnemies();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            UpgradeManager.Instance.SpawnUpgrades(upgradeCount);
         }
 
         if (Input.GetKeyDown(KeyCode.V))
@@ -97,13 +105,11 @@ public class GameManager : MonoBehaviour
 
     public void SpawnWave()
     {
-        if (simultaniuosWavesCounter < allowedSimultaniousWaves)
-        {
-            enemySpawner.SpawnFormation(formations[Random.Range(0, formations.Length)]);
-            simultaniuosWavesCounter++;
-            wavesCounter++;
-            wavesDisplay.text = wavesCounter + " / " + maxWaves;
-        }
+        if (simultaniuosWavesCounter >= allowedSimultaniousWaves) return;
+        enemySpawner.SpawnFormation(formations[Random.Range(0, formations.Length)]);
+        simultaniuosWavesCounter++;
+        wavesCounter++;
+        wavesDisplay.text = wavesCounter + " / " + maxWaves;
     }
 
     public void KillAllEnemies()
@@ -149,7 +155,7 @@ public class GameManager : MonoBehaviour
         if (wavesCounter < maxWaves)
         {
             upgradeMessage.SetActive(true);
-            nextWaveCoroutine = StartCoroutine(NextWaveCountdown());
+            UpgradeManager.Instance.SpawnUpgrades(upgradeCount);
         }
         else
         {
@@ -157,6 +163,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnUpgraded(UpgradeEvent e)
+    {
+        upgradeMessage.SetActive(false);
+        nextWaveCoroutine = StartCoroutine(NextWaveCountdown());
+    }
     private IEnumerator NextWaveCountdown()
     {
         yield return new WaitForSeconds(delayBetweenWaves);

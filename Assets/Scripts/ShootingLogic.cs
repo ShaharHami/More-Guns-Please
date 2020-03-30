@@ -23,7 +23,8 @@ public class ShootingLogic : MonoBehaviour
     private List<EnemyShot> enemyShots;
     // private Vector3 motion;
     private bool isHoming;
-
+    private Vector3 enemyPosition;
+    private Vector3 enemyForward;
     public Vector3 Motion;
     
 
@@ -42,8 +43,10 @@ public class ShootingLogic : MonoBehaviour
         if (target == null || !target.gameObject.activeInHierarchy) return;
         float range = Random.Range(0.0f, 1.0f);
         if (!(shotProbability >= range)) return;
+        enemyPosition = transform.position;
+        enemyForward = transform.forward;
         GameObject shotInstance =
-            ObjectPooler.Instance.SpawnFromPool(shot.gameObject.name, transform.position, Quaternion.identity);
+            ObjectPooler.Instance.SpawnFromPool(shot.gameObject.name, enemyPosition, Quaternion.identity);
         EnemyShot enemyShot = shotInstance.GetComponent<EnemyShot>();
         enemyShots.Add(enemyShot);
     }
@@ -82,7 +85,7 @@ public class ShootingLogic : MonoBehaviour
             case ShotType.Forward:
                 if (!enemyShot.dirSet)
                 {
-                    enemyShot.SetDir(enemyShot.transform.position, transform.forward); 
+                    enemyShot.SetDir(enemyShot.transform.position, enemyForward); 
                 }
                 break;
             case ShotType.Target:

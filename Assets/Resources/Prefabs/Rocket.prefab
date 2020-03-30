@@ -18668,6 +18668,8 @@ MonoBehaviour:
   target: {fileID: 8423576279343656326}
   initialTarget: {fileID: 8423576279343656326}
   speed: 100
+  targetingEnemy: 1
+  isHoming: 1
 --- !u!136 &6728231691953445119
 CapsuleCollider:
   m_ObjectHideFlags: 0

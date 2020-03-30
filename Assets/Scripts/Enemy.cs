@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
     private Vector3 cummulativeDir;
     private ShootingLogic shootingLogic;
     Vector3 dest;
+    public Volley volley;
 
     private HealthDisplay healthDisplay;
     public float TurnSpeed { get; set; }
@@ -48,6 +49,10 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         healthDisplay = GetComponent<HealthDisplay>();
+        if (volley == null)
+        {
+            volley = GetComponent<Volley>();
+        }
     }
 
     private void OnEnable()
@@ -66,12 +71,8 @@ public class Enemy : MonoBehaviour
         AllEnemieGOs.Add(gameObject);
         player = GameObject.FindGameObjectWithTag("Player");
         MissleHitEvent.RegisterListener(OnMissleHit);
-        shootingLogic = GetComponent<ShootingLogic>();
-        if (shootingLogic != null)
-        {
-            float fireRate = Random.Range(fireRateMin, fireRateMax);
-            InvokeRepeating(nameof(ShotLogic), fireRateMin, fireRate);
-        }
+        float fireRate = Random.Range(fireRateMin, fireRateMax);
+        InvokeRepeating(nameof(ShotLogic), fireRateMin, fireRate);
     }
 
     private void OnDisable()
@@ -116,7 +117,7 @@ public class Enemy : MonoBehaviour
         return cummulativeDir;
     }
 
-    void FixedUpdate()
+    private void LateUpdate()
     {
         var position = transform.position;
         switch (enemyState)
@@ -139,12 +140,14 @@ public class Enemy : MonoBehaviour
                 TurnSpeed = slowTurnSpeed;
 
                 LerpRotation(Destination() - position);
+                // enemyState = EnemyState.InFormation;
                 break;
             }
             case EnemyState.InFormation:
             {
                 TurnSpeed = fastTurnSpeed;
                 LerpRotation(Destination() - position);
+                // transform.LookAt(Destination());
                 break;
             }
         }
@@ -156,11 +159,12 @@ public class Enemy : MonoBehaviour
         {
             return dest;
         }
-        if (!player.activeInHierarchy)
-        { 
-            enemyState = EnemyState.SlowTurning;
+
+        if (!player.activeSelf)
+        {
+            enemyState = EnemyState.ReachedFormation;
         }
-        else 
+        else
         {
             if (lookAtPlayer)
             {
@@ -171,6 +175,7 @@ public class Enemy : MonoBehaviour
                 dest = transform.position - Vector3.forward;
             }
         }
+
         return dest;
     }
 
@@ -183,23 +188,14 @@ public class Enemy : MonoBehaviour
     void LerpRotation(Vector3 dest)
     {
         Quaternion toRotation = Quaternion.LookRotation(dest);
-        transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, TurnSpeed * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, TurnSpeed * Time.deltaTime);
     }
 
     private void ShotLogic()
     {
-        // if (player != null && player.gameObject.activeInHierarchy)
-        // {
-        //     float range = Random.Range(0.0f, 1.0f);
-        //     if (shotProbability >= range)
-        //     {
-        //         GameObject shotInstance = ObjectPooler.Instance.SpawnFromPool(shot.name, transform.position, Quaternion.identity);
-        //         // shotInstance.transform.parent = transform;
-        //         EnemyShot enemyShot = shotInstance.GetComponent<EnemyShot>();
-        //         enemyShot.SetDir(transform.forward);
-        //     }
-        // }
-        shootingLogic.Shoot();
+        if (player == null || !player.activeSelf) return;
+        var rnd = Random.Range(0f, 1f) < shotProbability;
+        volley.PerformSimpleVolley(rnd);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -239,6 +235,7 @@ public class Enemy : MonoBehaviour
             enemyHealth = 0;
             KillEnemy();
         }
+
         healthDisplay.ChangeHealth(enemyHealth);
     }
 

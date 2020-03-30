@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1946466125410282684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2667514103188621140}
+  m_Layer: 0
+  m_Name: target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2667514103188621140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946466125410282684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8813114336363697583}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8813114336363661701
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +137,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 2
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -4816,7 +4846,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 2
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -9445,8 +9475,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8813114336363697583}
-  - component: {fileID: 1698047103929068785}
   - component: {fileID: 61904627598343703}
+  - component: {fileID: -847040532288226159}
+  - component: {fileID: 65182973784751603}
   m_Layer: 0
   m_Name: LightningBall2
   m_TagString: Untagged
@@ -9463,34 +9494,14 @@ Transform:
   m_GameObject: {fileID: 8813114336363661711}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 8813114336363697573}
   - {fileID: 8813114336363697575}
+  - {fileID: 2667514103188621140}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1698047103929068785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8813114336363661711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd2111cfcdad2432284f6e957a795c75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitEffect: {fileID: 4034685459527600621, guid: a2ddf7f5f8f1d354ca47ae5cfbf2a559,
-    type: 3}
-  shotSpeed: 30
-  isTargetingPlayer: 1
-  isHoming: 1
-  homingDamp: 0.1
-  damage: 8
-  life: 5
-  dir: {x: 0, y: 0, z: 0}
 --- !u!135 &61904627598343703
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9504,3 +9515,37 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.04
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-847040532288226159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8813114336363661711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ce5580beed9410aae9cbd7da03760b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagToCompare: Player
+  explosionName: EnemyShotHit 2
+  life: 5
+  scatterShot: 0
+  volley: {fileID: 0}
+--- !u!114 &65182973784751603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8813114336363661711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50218ceac5be94713a463282a528c462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 2667514103188621140}
+  initialTarget: {fileID: 2667514103188621140}
+  speed: 20
+  targetingEnemy: 0
+  isHoming: 1

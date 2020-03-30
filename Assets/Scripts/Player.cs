@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using EventCallbacks;
 using TMPro;
-using UnityEditor.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -36,7 +34,7 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         doABarrelRoll = GetComponent<DoABarrelRoll>();
-        EnemyShotHit.RegisterListener(OnDamage);
+        MissleHitEvent.RegisterListener(OnDamage);
         healthDisplay.SetHealth(storePlayerHealth, false);
     }
 
@@ -67,9 +65,7 @@ public class Player : MonoBehaviour
     void KillPlayer()
     {
         explosions.Explode("Player Death", transform.position, 2f);
-        PlayerDied playerDied = new PlayerDied();
-        playerDied.Description = "Player Died";
-        playerDied.respawnTimer = 5f;
+        PlayerDied playerDied = new PlayerDied {Description = "Player Died", respawnTimer = 5f};
         playerDied.FireEvent();
         gameObject.SetActive(false);
         playerHealth = storePlayerHealth;
@@ -78,15 +74,13 @@ public class Player : MonoBehaviour
 
     void OnDisable()
     {
-        EnemyShotHit.UnregisterListener(OnDamage);
+        MissleHitEvent.UnregisterListener(OnDamage);
     }
 
     private void Shoot(bool fire)
     {
         if (lastFrameShooting == fireInputManager.FireInput()) return;
-        FireWeapon fireWeaponEvent = new FireWeapon();
-        fireWeaponEvent.Description = "Fire weapon: " + fire;
-        fireWeaponEvent.fire = fire;
+        FireWeapon fireWeaponEvent = new FireWeapon {Description = "Fire weapon: " + fire, fire = fire};
         fireWeaponEvent.FireEvent();
     }
 
@@ -96,8 +90,9 @@ public class Player : MonoBehaviour
     int counter;
     string message;
 
-    private void OnDamage(EnemyShotHit hit)
+    private void OnDamage(MissleHitEvent hit)
     {
+        if (!hit.UnitGO.CompareTag("Player")) return;
         Damage(hit.damage);
         // Debugging
         if (hitsTaken.Keys.Contains(hit.UnitGO.name))
