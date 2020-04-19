@@ -129,5 +129,6 @@ public class Volley : MonoBehaviour
         Vector3 point = shootingPoints[randomBarrel ? Random.Range(0, shootingPoints.Length) : shotNum];
         Quaternion dir = Quaternion.LookRotation((point - transform.position), Vector3.up);
         GameObject obj = ObjectPooler.Instance.SpawnFromPool(shotPrefab.name, point, dir);
+        obj.GetComponent<Shot>().shooter = gameObject;
     }
 }

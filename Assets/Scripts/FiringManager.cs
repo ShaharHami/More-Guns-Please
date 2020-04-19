@@ -22,6 +22,7 @@ public class FiringManager : MonoBehaviour
     {
         foreach (var shootingPoints in shootingPointsList.Where(shootingPoints => shootingPoints.enabled))
         {
+            // shootingPoints.volley.shotPrefab.GetComponent<Shot>().shooter = info.shooter;
             shootingPoints.volley.SetShootingPoints(shootingPoints.GetShootingPoints());
             shootingPoints.volley.PerformSimpleVolley(info.fire);
         }

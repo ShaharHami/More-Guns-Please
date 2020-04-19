@@ -6,7 +6,7 @@ using EventCallbacks;
 using Random = UnityEngine.Random;
 
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamagable, ICauseDamage
 {
     public static List<Enemy> AllEnemies { get; private set; }
     public static List<GameObject> AllEnemieGOs { get; private set; }
@@ -22,6 +22,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float avoidenceRadius;
     [SerializeField] private Color gizmoColor;
     public int initialHealth;
+    public int health { get; set; }
+    public int Health;
+    public int maxHealth { get; set; }
+    public int damageAmount { get; set; }
+    public int DamageAmount;
     private Explosions explosions;
     private GameObject player;
     private Transform destinationPoint;
@@ -57,7 +62,9 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
-        healthDisplay.SetHealth(enemyHealth, false);
+        maxHealth = health = Health;
+        damageAmount = DamageAmount;
+        healthDisplay.SetHealth(health, false);
         cummulativeDir = new Vector3();
         hasReachedPoint = false;
         enemyState = EnemyState.Fly;
@@ -70,7 +77,7 @@ public class Enemy : MonoBehaviour
         AllEnemies.Add(this);
         AllEnemieGOs.Add(gameObject);
         player = GameObject.FindGameObjectWithTag("Player");
-        MissleHitEvent.RegisterListener(OnMissleHit);
+        // ProjectileHitEvent.RegisterListener(OnMissleHit);
         float fireRate = Random.Range(fireRateMin, fireRateMax);
         InvokeRepeating(nameof(ShotLogic), fireRateMin, fireRate);
     }
@@ -80,13 +87,12 @@ public class Enemy : MonoBehaviour
         CancelInvoke(nameof(ShotLogic));
         AllEnemies.Remove(this);
         AllEnemieGOs.Remove(gameObject);
-        MissleHitEvent.UnregisterListener(OnMissleHit);
+        // ProjectileHitEvent.UnregisterListener(OnMissleHit);
     }
 
     void Start()
     {
         explosions = FindObjectOfType<Explosions>();
-        initialHealth = enemyHealth;
     }
 
     private void OnDrawGizmos()
@@ -194,49 +200,45 @@ public class Enemy : MonoBehaviour
     private void ShotLogic()
     {
         if (player == null || !player.activeSelf) return;
+        // volley.shotPrefab.GetComponent<Shot>().shooter = gameObject;
         var rnd = Random.Range(0f, 1f) < shotProbability;
         volley.PerformSimpleVolley(rnd);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Damage(enemyHealth);
-        }
+        // if (other.gameObject.CompareTag("Player"))
+        // {
+        //     Damage(enemyHealth);
+        // }
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        print(other.collider.name);
-    }
+    // void OnMissleHit(ProjectileHitEvent hit)
+    // {
+    //     // if (hit.shooter == gameObject)
+    //     // {
+    //     //     Damage(hit.damage);
+    //     // }
+    // }
 
-    void OnMissleHit(MissleHitEvent hit)
-    {
-        if (hit.UnitGO == gameObject)
-        {
-            Damage(hit.damage);
-        }
-    }
+    // void OnParticleCollision(GameObject other)
+    // {
+    //     if (other.gameObject.CompareTag("Lasers"))
+    //     {
+    //         Damage(2); //TODO: get laser damage from central data manager
+    //     }
+    // }
 
-    void OnParticleCollision(GameObject other)
+    public void Damage(int damage)
     {
-        if (other.gameObject.CompareTag("Lasers"))
+        health -= damage;
+        if (health <= 0)
         {
-            Damage(2); //TODO: get laser damage from central data manager
-        }
-    }
-
-    void Damage(int damage)
-    {
-        enemyHealth -= damage;
-        if (enemyHealth <= 0)
-        {
-            enemyHealth = 0;
+            health = 0;
             KillEnemy();
         }
 
-        healthDisplay.ChangeHealth(enemyHealth);
+        healthDisplay.ChangeHealth(health);
     }
 
     public void FlyToPoint(Transform point)
@@ -282,7 +284,7 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(delay);
         obj.SetActive(false);
         Transform thisParent = transform.parent;
-        enemyHealth = initialHealth;
+        health = maxHealth;
         EnemyDied enemyDied = new EnemyDied();
         enemyDied.Description = "Enemy " + gameObject.name + " has died ";
         enemyDied.enemy = transform;

@@ -1,41 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using EventCallbacks;
-using TMPro;
+using ForceShield;
 
 public class Player : MonoBehaviour
 {
-    public int playerHealth = 100;
     public Vector3 spawnPoint;
-    private int storePlayerHealth;
-    private DoABarrelRoll doABarrelRoll;
-    private HealthDisplay healthDisplay;
+    public DoABarrelRoll doABarrelRoll;
     private Explosions explosions;
     [HideInInspector] public bool lastFrameShooting;
     private FireInputManager fireInputManager;
-
-    public string activeShot { get; private set; }
-
-    // Debugging
-    public TextMeshProUGUI hitsDisplay;
-    
+    public ForceShieldController forceShieldController;
 
     private void Awake()
     {
         fireInputManager = GetComponent<FireInputManager>();
         explosions = FindObjectOfType<Explosions>();
-        healthDisplay = GetComponent<HealthDisplay>();
         lastFrameShooting = !fireInputManager.FireInput();
-        storePlayerHealth = playerHealth;
     }
 
     private void OnEnable()
     {
-        doABarrelRoll = GetComponent<DoABarrelRoll>();
-        MissleHitEvent.RegisterListener(OnDamage);
-        healthDisplay.SetHealth(storePlayerHealth, false);
+        Invoke(nameof(StartForceShield), 0.5f);
+    }
+
+    private void StartForceShield()
+    {
+        forceShieldController.EnableShield();
     }
 
     private void Update()
@@ -51,93 +42,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Damage(int damage)
-    {
-        playerHealth -= damage;
-        healthDisplay.ChangeHealth(playerHealth);
-        if (playerHealth <= 0)
-        {
-            playerHealth = 0;
-            KillPlayer();
-        }
-    }
-
-    void KillPlayer()
+    public void KillPlayer()
     {
         explosions.Explode("Player Death", transform.position, 2f);
         PlayerDied playerDied = new PlayerDied {Description = "Player Died", respawnTimer = 5f};
         playerDied.FireEvent();
         gameObject.SetActive(false);
-        playerHealth = storePlayerHealth;
         transform.position = spawnPoint;
-    }
-
-    void OnDisable()
-    {
-        MissleHitEvent.UnregisterListener(OnDamage);
     }
 
     private void Shoot(bool fire)
     {
         if (lastFrameShooting == fireInputManager.FireInput()) return;
-        FireWeapon fireWeaponEvent = new FireWeapon {Description = "Fire weapon: " + fire, fire = fire};
+        FireWeapon fireWeaponEvent = new FireWeapon
+            {Description = "Fire weapon: " + fire, fire = fire, shooter = gameObject};
         fireWeaponEvent.FireEvent();
-    }
-
-    // BLAHHHHHYHHHHH
-    // Debugging
-    Dictionary<string, int> hitsTaken = new Dictionary<string, int>();
-    int counter;
-    string message;
-
-    private void OnDamage(MissleHitEvent hit)
-    {
-        if (!hit.UnitGO.CompareTag("Player")) return;
-        Damage(hit.damage);
-        // Debugging
-        if (hitsTaken.Keys.Contains(hit.UnitGO.name))
-        {
-            hitsTaken[hit.UnitGO.name] += hit.damage;
-        }
-        else
-        {
-            hitsTaken.Add(hit.UnitGO.name, hit.damage);
-        }
-
-        RenderMessage();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        var enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            int amount = enemy.initialHealth;
-            // Debugging
-            if (hitsTaken.Keys.Contains(other.gameObject.name))
-            {
-                hitsTaken[other.gameObject.name] += amount;
-            }
-            else
-            {
-                hitsTaken.Add(other.gameObject.name, amount);
-            }
-
-            Damage(amount);
-        }
-
-        // Debugging
-        RenderMessage();
-    }
-
-    private void RenderMessage()
-    {
-        if (hitsDisplay == null) return;
-        message = "";
-        foreach (var hitType in hitsTaken.Keys)
-        {
-            message += "Total Damage From: " + hitType + ": " + hitsTaken[hitType] + Environment.NewLine;
-        }
-        hitsDisplay.text = message;
     }
 }

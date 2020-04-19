@@ -15,14 +15,14 @@ public class HealthDisplay : MonoBehaviour
     private void Awake()
     {
         healthBarScale = new Vector3(1, 1, 1);
-        rot = healthDisplayCanvas.transform.rotation;
+        // rot = healthDisplayCanvas.transform.rotation;
         if (healthBar != null)
         {
             healthBar.transform.localScale = healthBarScale;
         }
     }
 
-    public void SetHealth(int health, bool rotate)
+    public void SetHealth(int health, bool rotate = false)
     {
         baseHealth = health;
         ChangeHealth(health);
@@ -42,13 +42,13 @@ public class HealthDisplay : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!rotateWithParent)
-        {
-            healthDisplayCanvas.transform.rotation = rot;
-            if (healthBar != null)
-            {
-//                healthBar.transform.rotation = Quaternion.Euler(90, 0, 0);
-            }
-        }
+//         if (!rotateWithParent)
+//         {
+//             healthDisplayCanvas.transform.rotation = rot;
+//             if (healthBar != null)
+//             {
+// //                healthBar.transform.rotation = Quaternion.Euler(90, 0, 0);
+//             }
+//         }
     }
 }

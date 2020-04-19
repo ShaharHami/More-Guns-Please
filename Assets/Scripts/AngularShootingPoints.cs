@@ -43,7 +43,11 @@ public class AngularShootingPoints : ShootingPoints
 
         return shootingPoints;
     }
-    
+
+    public override void UpgradeHealth(float n)
+    {
+    }
+
     protected override void UpgradeChildCount(float n)
     {
         if (!enabled)

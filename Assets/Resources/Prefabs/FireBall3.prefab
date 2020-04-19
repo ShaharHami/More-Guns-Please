@@ -14009,9 +14009,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ce5580beed9410aae9cbd7da03760b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagToCompare: Player
+  tagsToCompare:
+  - Player
+  - PlayerShield
   explosionName: missile hit
   life: 5
+  scatterShot: 0
+  volley: {fileID: 0}
+  shooter: {fileID: 0}
 --- !u!114 &4964786120389114679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14025,7 +14030,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 30
-  killTimer: 5
+  goStraight: 0
+  scatterShot: 0
 --- !u!1 &100008
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public abstract class ShootingPoints : MonoBehaviour, IUpgradable
     public int maxShootingPoints;
     public bool MaxedOut { get; protected set; }
     public abstract Vector3[] GetShootingPoints();
+    public abstract void UpgradeHealth(float n);
     protected abstract void UpgradeChildCount(float n);
     private bool isShooting;
     
@@ -62,4 +63,6 @@ public abstract class ShootingPoints : MonoBehaviour, IUpgradable
         FireWeapon fireWeapon = new FireWeapon {fire = true};
         fireWeapon.FireEvent();
     }
+
+
 }

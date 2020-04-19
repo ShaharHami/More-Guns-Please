@@ -31,10 +31,12 @@ namespace EventCallbacks
     {
         public int VerbosityLevel;
     }
-    public class MissleHitEvent : Event<MissleHitEvent>
+    public class ProjectileHitEvent : Event<ProjectileHitEvent>
     {
         public int damage;
-        public GameObject UnitGO;
+        public GameObject shooter;
+        public GameObject target;
+        public Transform projectile;
     }
     public class EnemyShotHit : Event<EnemyShotHit>
     {
@@ -44,6 +46,7 @@ namespace EventCallbacks
     public class FireWeapon : Event<FireWeapon>
     {
         public bool fire;
+        public GameObject shooter;
     }
 
     public class EnemyDied : Event<EnemyDied>

@@ -5,12 +5,12 @@ public class CanGetShot : MonoBehaviour
 {
     private void OnEnable()
     {
-        MissleHitEvent.RegisterListener(OnMissleHit);
+        ProjectileHitEvent.RegisterListener(OnMissleHit);
     }
 
-    void OnMissleHit(MissleHitEvent hit)
+    void OnMissleHit(ProjectileHitEvent hit)
     {
-        if (hit.UnitGO == gameObject)
+        if (hit.shooter == gameObject)
         {
 //            Damage(hit.damage);
         }

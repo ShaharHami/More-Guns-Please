@@ -9527,11 +9527,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ce5580beed9410aae9cbd7da03760b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagToCompare: Player
+  tagsToCompare:
+  - Player
+  - PlayerShield
   explosionName: EnemyShotHit 2
   life: 5
   scatterShot: 0
   volley: {fileID: 0}
+  shooter: {fileID: 0}
+  DamageAmount: 2
 --- !u!114 &65182973784751603
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,6 +28,10 @@ public class ManualShootingPoints : ShootingPoints
         return (from sp in shootingPoints where sp.enabled select sp.shootingPoint.position).ToArray();
     }
 
+    public override void UpgradeHealth(float n)
+    {
+    }
+
     protected override void UpgradeChildCount(float n)
     {
         if (!enabled)

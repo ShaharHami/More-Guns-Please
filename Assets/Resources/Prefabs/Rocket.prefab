@@ -18650,9 +18650,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ce5580beed9410aae9cbd7da03760b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagToCompare: Enemy
+  tagsToCompare:
+  - Enemy
   explosionName: missile hit
   life: 2
+  scatterShot: 0
+  volley: {fileID: 0}
+  shooter: {fileID: 0}
+  DamageAmount: 3
 --- !u!114 &213504265621278848
 MonoBehaviour:
   m_ObjectHideFlags: 0

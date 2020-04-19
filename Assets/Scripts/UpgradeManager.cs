@@ -41,6 +41,11 @@ public class UpgradeManager : MonoBehaviour
                     upgradable.UpgradeCount(upgradeEvent.upgradeValue);
                     break;
                 }
+                case "health":
+                {
+                    upgradable.UpgradeHealth(upgradeEvent.upgradeValue);
+                    break;
+                }
             }
         }
 
@@ -53,11 +58,12 @@ public class UpgradeManager : MonoBehaviour
     }
     private void Start()
     {
-        upgradables = FindObjectsOfType<MonoBehaviour>().OfType<IUpgradable>().ToList();
+        // upgradables = FindObjectsOfType<MonoBehaviour>().OfType<IUpgradable>().ToList();
     }
 
     public void SpawnUpgrades(int upgradeCount)
     {
+        upgradables = FindObjectsOfType<MonoBehaviour>().OfType<IUpgradable>().ToList();
         List<Upgrade> ugds = new List<Upgrade>();
         foreach (var upgradable in upgradables.Where(upgradable => !upgradable.MaxedOut))
         {

@@ -8,6 +8,7 @@ TagManager:
   - Missile Target
   - Enemy
   - Enemy Shot
+  - PlayerShield
   layers:
   - Default
   - TransparentFX

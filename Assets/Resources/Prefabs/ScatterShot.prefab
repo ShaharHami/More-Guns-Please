@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 4979522911740987605}
   - component: {fileID: 8616446721192970063}
   - component: {fileID: 245504360725912139}
-  - component: {fileID: 6036478515798776374}
-  - component: {fileID: 6077592648177059032}
   m_Layer: 0
   m_Name: ScatterShot
   m_TagString: Untagged
@@ -61,11 +59,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ce5580beed9410aae9cbd7da03760b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagToCompare: Enemy
+  tagsToCompare:
+  - Enemy
   explosionName: 
   life: 2.5
   scatterShot: 1
-  volley: {fileID: 0}
+  volley: {fileID: 421044484365062382}
+  shooter: {fileID: 0}
+  DamageAmount: 2
 --- !u!114 &245504360725912139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,54 +82,6 @@ MonoBehaviour:
   speed: 40
   goStraight: 0
   scatterShot: 1
---- !u!114 &6036478515798776374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 577528209415914265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 718aba89d9b72d147a9c799388a518bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotPrefab: {fileID: 577528209415914265, guid: 293d2bdd6948a0a4f8726a83089993a5,
-    type: 3}
-  volleyInterval: 0
-  shotsInterval: 0
-  randomBarrel: 0
-  sequential: 0
-  ltr: 0
-  alternating: 0
-  shootingPoints:
-  - {x: 0.53033006, y: 0, z: -0.53033006}
-  - {x: 0.5303301, y: 0, z: 0.53033006}
-  - {x: -0.53033006, y: 0, z: 0.53033006}
-  - {x: -0.53033, y: 0, z: -0.5303302}
---- !u!114 &6077592648177059032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 577528209415914265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ffe455bce131f24397177cf0b112986, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
-  enabled: 1
-  volley: {fileID: 6036478515798776374}
-  lineColor: {r: 1, g: 1, b: 1, a: 1}
-  pointColor: {r: 1, g: 0.68601555, b: 0.4198113, a: 1}
-  maxShootingPoints: 0
-  shootingPoints: 4
-  shootingAngle: 360
-  distanceFromCenter: 0.75
-  centerOffsetX: 0
-  centerOffsetZ: 0
 --- !u!1 &2068785887057993834
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,9 +94,11 @@ GameObject:
   - component: {fileID: 4572462355785464642}
   - component: {fileID: 1528530654234953502}
   - component: {fileID: 5795035544586410664}
+  - component: {fileID: 421044484365062382}
+  - component: {fileID: 7937778472403864934}
   m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
+  m_Name: Scatter
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -222,4 +177,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderer: {fileID: 1528530654234953502}
-  scrollSpeed: 300
+  rotationSpeedRange: {x: 56.759552, y: 1000}
+--- !u!114 &421044484365062382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068785887057993834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718aba89d9b72d147a9c799388a518bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPrefab: {fileID: 577528209415914265, guid: 293d2bdd6948a0a4f8726a83089993a5,
+    type: 3}
+  volleyInterval: 0
+  shotsInterval: 0
+  randomBarrel: 0
+  sequential: 0
+  ltr: 0
+  alternating: 0
+  shootingPoints:
+  - {x: 0.53033, y: 0, z: 0.5303302}
+  - {x: -0.5303301, y: 0, z: 0.53033006}
+  - {x: -0.53032994, y: 0, z: -0.5303302}
+  - {x: 0.53033024, y: 0, z: -0.5303299}
+--- !u!114 &7937778472403864934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068785887057993834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ffe455bce131f24397177cf0b112986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  enabled: 1
+  volley: {fileID: 421044484365062382}
+  lineColor: {r: 1, g: 1, b: 1, a: 1}
+  pointColor: {r: 1, g: 0.68601555, b: 0.4198113, a: 1}
+  maxShootingPoints: 0
+  shootingPoints: 4
+  shootingAngle: 360
+  distanceFromCenter: 0.75
+  centerOffsetX: 0
+  centerOffsetZ: 0
