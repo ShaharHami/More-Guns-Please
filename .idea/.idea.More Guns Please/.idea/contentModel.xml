@@ -51,14 +51,45 @@
             <e p="readme.txt" t="Include" />
           </e>
         </e>
-        <e p="DoubleSidedMeshGenerator" t="Include">
-          <e p="DoubleSidedMeshGeneratorWindow.cs" t="Include" />
-        </e>
         <e p="Editor" t="Include">
+          <e p="DoubleSidedMeshGenerator" t="Include">
+            <e p="DoubleSidedMeshGeneratorWindow.cs" t="Include" />
+          </e>
           <e p="ExplosionManagerEditor.cs" t="Include" />
           <e p="FormationEditor.cs" t="Include" />
           <e p="MinMaxDrawer.cs" t="Include" />
           <e p="ObjectPoolerInspector.cs" t="Include" />
+          <e p="TextureAndMeshHelpers" t="Include">
+            <e p="MaterialCombiner" t="Include">
+              <e p="TextureScaler.cs" t="Include" />
+            </e>
+            <e p="TextureChannelCombiner" t="Include">
+              <e p="Editor" t="Include">
+                <e p="TextureChannelCombinerEditor.cs" t="Include" />
+              </e>
+              <e p="TextureChannelCombiner.cs" t="Include" />
+            </e>
+          </e>
+          <e p="VertexAnimationTexture" t="Include">
+            <e p="Editor" t="Include">
+              <e p="VATGPUPlayerEditor.cs" t="Include" />
+              <e p="VATPlayerEditor.cs" t="Include" />
+              <e p="VATRecorderEditor.cs" t="Include" />
+              <e p="VATSampleEditor.cs" t="Include" />
+            </e>
+            <e p="Scripts" t="Include">
+              <e p="VATAnimation.cs" t="Include" />
+              <e p="VATGenerator.cs" t="Include" />
+              <e p="VATGPUPlayer.cs" t="Include" />
+              <e p="VATMeshGenerator.cs" t="Include" />
+              <e p="VATPlayer.cs" t="Include" />
+              <e p="VATRecorder.cs" t="Include" />
+            </e>
+            <e p="Shaders" t="Include">
+              <e p="VATCustomNode.cginc" t="Include" />
+            </e>
+            <e p="VATSample.cs" t="Include" />
+          </e>
         </e>
         <e p="ForceShield" t="Include">
           <e p="WithBulletHits" t="Include">
@@ -170,38 +201,7 @@
             <e p="EmojiOne Attribution.txt" t="Include" />
           </e>
         </e>
-        <e p="TextureAndMeshHelpers" t="Include">
-          <e p="MaterialCombiner" t="Include">
-            <e p="TextureScaler.cs" t="Include" />
-          </e>
-          <e p="TextureChannelCombiner" t="Include">
-            <e p="Editor" t="Include">
-              <e p="TextureChannelCombinerEditor.cs" t="Include" />
-            </e>
-            <e p="TextureChannelCombiner.cs" t="Include" />
-          </e>
-        </e>
         <e p="Upgrade.cs" t="Include" />
-        <e p="VertexAnimationTexture" t="Include">
-          <e p="Editor" t="Include">
-            <e p="VATGPUPlayerEditor.cs" t="Include" />
-            <e p="VATPlayerEditor.cs" t="Include" />
-            <e p="VATRecorderEditor.cs" t="Include" />
-            <e p="VATSampleEditor.cs" t="Include" />
-          </e>
-          <e p="Scripts" t="Include">
-            <e p="VATAnimation.cs" t="Include" />
-            <e p="VATGenerator.cs" t="Include" />
-            <e p="VATGPUPlayer.cs" t="Include" />
-            <e p="VATMeshGenerator.cs" t="Include" />
-            <e p="VATPlayer.cs" t="Include" />
-            <e p="VATRecorder.cs" t="Include" />
-          </e>
-          <e p="Shaders" t="Include">
-            <e p="VATCustomNode.cginc" t="Include" />
-          </e>
-          <e p="VATSample.cs" t="Include" />
-        </e>
         <e p="Wireframe" t="Include">
           <e p="Editor" t="Include">
             <e p="WireframeMeshGenerator.cs" t="Include" />

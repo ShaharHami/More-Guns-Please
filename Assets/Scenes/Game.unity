@@ -13444,16 +13444,6 @@ MonoBehaviour:
       type: 3}
     size: 5
     preWarmGradual: 1
-  - tag: Trident
-    prefab: {fileID: 8050213697546200590, guid: e94b3bd159fd948bc8d0294d112218f9,
-      type: 3}
-    size: 0
-    preWarmGradual: 0
-  - tag: Trident 1
-    prefab: {fileID: 8050213697546200590, guid: 40dd3c9fbda554942b1a7ead9eaa4cac,
-      type: 3}
-    size: 0
-    preWarmGradual: 0
   - tag: SG_radogost_optimized
     prefab: {fileID: 1106064001349348, guid: 805fa5d4d7f98eb43abf27378bf9a5e1, type: 3}
     size: 0

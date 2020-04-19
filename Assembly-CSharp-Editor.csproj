@@ -58,20 +58,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Editor\DoubleSidedMeshGenerator\DoubleSidedMeshGeneratorWindow.cs" />
      <Compile Include="Assets\Editor\ExplosionManagerEditor.cs" />
      <Compile Include="Assets\Editor\FormationEditor.cs" />
      <Compile Include="Assets\Editor\MinMaxDrawer.cs" />
      <Compile Include="Assets\Editor\ObjectPoolerInspector.cs" />
+     <Compile Include="Assets\Editor\TextureAndMeshHelpers\MaterialCombiner\TextureScaler.cs" />
+     <Compile Include="Assets\Editor\TextureAndMeshHelpers\TextureChannelCombiner\Editor\TextureChannelCombinerEditor.cs" />
+     <Compile Include="Assets\Editor\TextureAndMeshHelpers\TextureChannelCombiner\TextureChannelCombiner.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Editor\VATGPUPlayerEditor.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Editor\VATPlayerEditor.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Editor\VATRecorderEditor.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Editor\VATSampleEditor.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Scripts\VATAnimation.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Scripts\VATGPUPlayer.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Scripts\VATGenerator.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Scripts\VATMeshGenerator.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Scripts\VATPlayer.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\Scripts\VATRecorder.cs" />
+     <Compile Include="Assets\Editor\VertexAnimationTexture\VATSample.cs" />
      <Compile Include="Assets\ForceShield\WithBulletHits\Editor\ForceShieldControllerEditor.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Editor\DynamicJoystickEditor.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Editor\FloatingJoystickEditor.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Editor\JoystickEditor.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Editor\VariableJoystickEditor.cs" />
-     <Compile Include="Assets\TextureAndMeshHelpers\TextureChannelCombiner\Editor\TextureChannelCombinerEditor.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Editor\VATGPUPlayerEditor.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Editor\VATPlayerEditor.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Editor\VATRecorderEditor.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Editor\VATSampleEditor.cs" />
      <Compile Include="Assets\Wireframe\Editor\WireframeMeshGenerator.cs" />
      <Compile Include="Assets\Wwise\Editor\WwiseComponents\AkAmbientInspector.cs" />
      <Compile Include="Assets\Wwise\Editor\WwiseComponents\AkAudioListenerInspector.cs" />
@@ -124,6 +134,7 @@
      <Compile Include="Assets\Wwise\Editor\WwiseWindows\AkWwiseXMLBuilder.cs" />
      <Compile Include="Assets\Wwise\Editor\WwiseWindows\TreeViewControl\TreeViewControl.cs" />
      <Compile Include="Assets\Wwise\Editor\WwiseWindows\TreeViewControl\TreeViewItem.cs" />
+     <None Include="Assets\Editor\VertexAnimationTexture\Shaders\VATCustomNode.cginc" />
  <Reference Include="UnityEditor.TestRunner">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
  </Reference>

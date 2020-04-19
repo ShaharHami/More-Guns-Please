@@ -39,4 +39,6 @@ MonoBehaviour:
   initialPositionX: {x: -11.885895, y: 11.885895}
   initialPositionZ: {x: -0.3706379, y: -0.3706379}
   EnemyTypes:
-  - Trident
+  - Enemy1
+  - Enemy2
+  - Enemy3

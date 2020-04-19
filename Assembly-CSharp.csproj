@@ -80,7 +80,6 @@
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUI.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
      <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
-     <Compile Include="Assets\DoubleSidedMeshGenerator\DoubleSidedMeshGeneratorWindow.cs" />
      <Compile Include="Assets\ForceShield\WithBulletHits\ForceShieldController.cs" />
      <Compile Include="Assets\ForceShield\WithBulletHits\ForceShieldSample.cs" />
      <Compile Include="Assets\Joystick Pack\Examples\JoystickPlayerExample.cs" />
@@ -134,16 +133,7 @@
      <Compile Include="Assets\Scripts\UpgradeManager.cs" />
      <Compile Include="Assets\Scripts\Volley.cs" />
      <Compile Include="Assets\Scripts\VolleySettings.cs" />
-     <Compile Include="Assets\TextureAndMeshHelpers\MaterialCombiner\TextureScaler.cs" />
-     <Compile Include="Assets\TextureAndMeshHelpers\TextureChannelCombiner\TextureChannelCombiner.cs" />
      <Compile Include="Assets\Upgrade.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Scripts\VATAnimation.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Scripts\VATGPUPlayer.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Scripts\VATGenerator.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Scripts\VATMeshGenerator.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Scripts\VATPlayer.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\Scripts\VATRecorder.cs" />
-     <Compile Include="Assets\VertexAnimationTexture\VATSample.cs" />
      <Compile Include="Assets\Wwise\Deployment\API\Generated\Android\AkAudioAPI_Android.cs" />
      <Compile Include="Assets\Wwise\Deployment\API\Generated\Android\AkCommunicationSettings_Android.cs" />
      <Compile Include="Assets\Wwise\Deployment\API\Generated\Android\AkPlatformInitSettings_Android.cs" />
@@ -359,7 +349,6 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
-     <None Include="Assets\VertexAnimationTexture\Shaders\VATCustomNode.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\Wwise\Version.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
