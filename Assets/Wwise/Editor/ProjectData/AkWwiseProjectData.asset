@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48659e5ab2d742741a6feae8346c277c, type: 3}
+  m_Name: AkWwiseProjectData
+  m_EditorClassIdentifier: 
+  AcousticTextureWwu:
+  - PhysicalPath: Virtual Acoustics\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: f5e40d946aea5e428da685ad9b18fe86
+    GuidInternal: 
+    m_lastTime: -8586150922880500326
+    List: []
+  AuxBusWwu:
+  - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 93197a4c3e8e614a9b213084042fd894
+    GuidInternal: 
+    m_lastTime: -8586150922881170441
+    List:
+    - name: Master Audio Bus
+      guid: d8a41415a61d2a41a17e75ca0c2149f3
+      id: 3803692087
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+      Path: Default Work Unit\Master Audio Bus
+  BankWwu:
+  - PhysicalPath: SoundBanks\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: eb2d5516ad83e14799fd021d76f7f7f3
+    GuidInternal: 
+    m_lastTime: -8586150922880890395
+    List: []
+  EventWwu:
+  - PhysicalPath: Events\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 3f2d4552b621aa4b9721f826041f1a1f
+    GuidInternal: 
+    m_lastTime: -8586150922881090425
+    List: []
+  RtpcWwu:
+  - PhysicalPath: Game Parameters\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 4b6b5c13bd4a804198614778381b3c35
+    GuidInternal: 
+    m_lastTime: -8586150922880690358
+    List: []
+  StateWwu:
+  - PhysicalPath: States\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 56424c920dbffc42a8b2207dcbe2826e
+    GuidInternal: 
+    m_lastTime: -8586150922881055421
+    List: []
+  SwitchWwu:
+  - PhysicalPath: Switches\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 3360fd547e4f384bb7a1f63d7a59f025
+    GuidInternal: 
+    m_lastTime: -8586150922880630347
+    List: []
+  TriggerWwu:
+  - PhysicalPath: Triggers\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 6dfded7ec6ca6b45825981d84bb62161
+    GuidInternal: 
+    m_lastTime: -8586150922880955409
+    List: []
+  ExpandedItems:
+  - /More Guns Please_WwiseProject
+  autoPopulateEnabled: 1
+  CurrentPluginConfig: 
