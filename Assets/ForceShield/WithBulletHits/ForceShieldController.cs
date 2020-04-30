@@ -11,7 +11,8 @@ namespace ForceShield
     {
         public float on, off;
         [SerializeField, Range(-10, 10)] float _DissolveValue;
-        [SerializeField, Range(0, 10)] float _animationDuration = 2;
+        [SerializeField, Range(0, 10)] float _animationDurationIN = 2;
+        [SerializeField, Range(0, 10)] float _animationDurationOUT = 2;
 
         public int health { get; set; }
         public int maxHealth { get; set; }
@@ -88,17 +89,17 @@ namespace ForceShield
 
         public void PlayAppearingAnimation()
         {
-            DOTween.To(() => _DissolveValue, x => _DissolveValue = x, on, _animationDuration).SetEase(Ease.InOutFlash);
+            DOTween.To(() => _DissolveValue, x => _DissolveValue = x, on, _animationDurationIN).SetEase(Ease.OutCirc);
             _recordingPlayed = true;
-            _finishTime = Time.time + Mathf.Lerp(0, _animationDuration, _DissolveValue);
+            _finishTime = Time.time + Mathf.Lerp(0, _animationDurationIN, _DissolveValue);
             _targetDissolveValue = on;
         }
 
         public void PlayDisappearingAnimation()
         {
-            DOTween.To(() => _DissolveValue, x => _DissolveValue = x, off, _animationDuration).SetEase(Ease.InOutFlash);
+            DOTween.To(() => _DissolveValue, x => _DissolveValue = x, off, _animationDurationOUT);
             _recordingPlayed = true;
-            _finishTime = Time.time + Mathf.Lerp(0, _animationDuration, 1 - _DissolveValue);
+            _finishTime = Time.time + Mathf.Lerp(0, _animationDurationOUT, 1 - _DissolveValue);
             _targetDissolveValue = off;
         }
 
@@ -135,7 +136,7 @@ namespace ForceShield
                 shieldLevel = 0;
                 health = 0;
                 PlayDisappearingAnimation();
-                Invoke(nameof(DisableShield), _animationDuration);
+                Invoke(nameof(DisableShield), _animationDurationOUT);
             }
             healthDisplay.ChangeHealth(health);
             shieldUpgradeManager.MaxedOut = health >= maxHealth;
@@ -195,18 +196,18 @@ namespace ForceShield
             _hitsCount--;
         }
 
-        void UpdateAnimation()
-        {
-            if (_recordingPlayed)
-            {
-                _DissolveValue = Mathf.Lerp(1 - _targetDissolveValue, _targetDissolveValue,
-                    Mathf.InverseLerp(_finishTime - _animationDuration, _finishTime, Time.time));
-                if (Time.time > _finishTime)
-                {
-                    _recordingPlayed = false;
-                }
-            }
-        }
+        // void UpdateAnimation()
+        // {
+        //     if (_recordingPlayed)
+        //     {
+        //         _DissolveValue = Mathf.Lerp(1 - _targetDissolveValue, _targetDissolveValue,
+        //             Mathf.InverseLerp(_finishTime - _animationDuration, _finishTime, Time.time));
+        //         if (Time.time > _finishTime)
+        //         {
+        //             _recordingPlayed = false;
+        //         }
+        //     }
+        // }
 
 
         void SendHitsToRenderer()

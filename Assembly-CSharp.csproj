@@ -89,7 +89,6 @@
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
      <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
-     <Compile Include="Assets\RotateMaterial.cs" />
      <Compile Include="Assets\Scripts\AngularShootingPoints.cs" />
      <Compile Include="Assets\Scripts\CanGetShot.cs" />
      <Compile Include="Assets\Scripts\CollisionDetection.cs" />
@@ -122,6 +121,7 @@
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerHealthManager.cs" />
+     <Compile Include="Assets\Scripts\RotateMaterial.cs" />
      <Compile Include="Assets\Scripts\ShieldUpgradeManager.cs" />
      <Compile Include="Assets\Scripts\ShootingLogic.cs" />
      <Compile Include="Assets\Scripts\ShootingPoints.cs" />
@@ -130,10 +130,10 @@
      <Compile Include="Assets\Scripts\SingleFormationManager.cs" />
      <Compile Include="Assets\Scripts\TargetingSystem.cs" />
      <Compile Include="Assets\Scripts\Testing.cs" />
+     <Compile Include="Assets\Scripts\Upgrade.cs" />
      <Compile Include="Assets\Scripts\UpgradeManager.cs" />
      <Compile Include="Assets\Scripts\Volley.cs" />
      <Compile Include="Assets\Scripts\VolleySettings.cs" />
-     <Compile Include="Assets\Upgrade.cs" />
      <Compile Include="Assets\Wwise\Deployment\API\Generated\Android\AkAudioAPI_Android.cs" />
      <Compile Include="Assets\Wwise\Deployment\API\Generated\Android\AkCommunicationSettings_Android.cs" />
      <Compile Include="Assets\Wwise\Deployment\API\Generated\Android\AkPlatformInitSettings_Android.cs" />
@@ -423,6 +423,9 @@
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>F:/Unity/2019.3.0f6/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

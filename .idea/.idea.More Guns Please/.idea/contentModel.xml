@@ -124,7 +124,6 @@
             </e>
           </e>
         </e>
-        <e p="RotateMaterial.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="AngularShootingPoints.cs" t="Include" />
           <e p="CanGetShot.cs" t="Include" />
@@ -158,6 +157,7 @@
           <e p="ObjectPooler.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="PlayerHealthManager.cs" t="Include" />
+          <e p="RotateMaterial.cs" t="Include" />
           <e p="ShieldUpgradeManager.cs" t="Include" />
           <e p="ShootingLogic.cs" t="Include" />
           <e p="ShootingPoints.cs" t="Include" />
@@ -166,6 +166,7 @@
           <e p="SingleFormationManager.cs" t="Include" />
           <e p="TargetingSystem.cs" t="Include" />
           <e p="Testing.cs" t="Include" />
+          <e p="Upgrade.cs" t="Include" />
           <e p="UpgradeManager.cs" t="Include" />
           <e p="Volley.cs" t="Include" />
           <e p="VolleySettings.cs" t="Include" />
@@ -201,7 +202,6 @@
             <e p="EmojiOne Attribution.txt" t="Include" />
           </e>
         </e>
-        <e p="Upgrade.cs" t="Include" />
         <e p="Wireframe" t="Include">
           <e p="Editor" t="Include">
             <e p="WireframeMeshGenerator.cs" t="Include" />

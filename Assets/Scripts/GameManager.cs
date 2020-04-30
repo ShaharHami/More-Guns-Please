@@ -46,6 +46,11 @@ public class GameManager : MonoBehaviour
         StopAllCoroutines();
     }
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     void Start()
     {
         enemySpawner = FindObjectOfType<EnemySpawner>();
@@ -94,10 +99,20 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        nextWaveCoroutine = StartCoroutine(NextWaveCountdown());
         startButton.SetActive(false);
+        Invoke(nameof(StartShield), 1f);
+        Invoke(nameof(StartWaves), 2f);
     }
 
+    private void StartWaves()
+    {
+        nextWaveCoroutine = StartCoroutine(NextWaveCountdown());
+    }
+
+    private void StartShield()
+    {
+        player.forceShieldController.EnableShield();
+    }
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

@@ -65,10 +65,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_119A4DAF: 1
+    - Vector1_119A4DAF: 3.89
     - Vector1_53FE45EB: 0.05
     - Vector1_65400C8E: 0.94
-    - Vector1_673BC6F1: 5
+    - Vector1_673BC6F1: 3
     - Vector1_683BAEF7: 9.3
     - Vector1_6D3C132F: 0.148
     - Vector1_6DB87101: 0.212
@@ -83,7 +83,7 @@ Material:
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DissolveValue: -4.88
+    - _DissolveValue: -1.11
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -102,12 +102,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_2DCF5472: {r: 0, g: 0.3462386, b: 1, a: 0}
+    - Color_360EC262: {r: 1.4142135, g: 1.4142135, b: 1.4142135, a: 1}
     - Color_5D13ABB0: {r: 0.28627452, g: 0.68235296, b: 0.20392157, a: 1}
+    - Vector2_1010C6E0: {r: 0.2, g: 3.38, b: 0, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _intersectionColor: {r: 1, g: 0.50518686, b: 0, a: 1}
+    - _intersectionColor: {r: 0, g: 0.75065, b: 1.4886408, a: 0.6666667}
 --- !u!114 &2230717049461138289
 MonoBehaviour:
   m_ObjectHideFlags: 11

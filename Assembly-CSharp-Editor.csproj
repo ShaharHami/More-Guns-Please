@@ -195,6 +195,9 @@
  <Reference Include="UnityEditor.UI">
  <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
+ <HintPath>F:/Unity/Projects/More Guns Please/Library/ScriptAssemblies/Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>F:/Unity/2019.3.0f6/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
  </Reference>

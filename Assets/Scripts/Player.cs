@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        Invoke(nameof(StartForceShield), 0.5f);
+        // Invoke(nameof(StartForceShield), 0.5f);
     }
 
     private void StartForceShield()

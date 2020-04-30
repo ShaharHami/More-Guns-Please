@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(DoABarrelRoll))]
@@ -44,12 +45,14 @@ public class DragFingerMove : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
             Touch touch = Input.GetTouch(0);
             inputPos = touch.position;
             HandleFlight();
         }
         else if (Input.GetMouseButton(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
             inputPos = Input.mousePosition;
             HandleFlight();
         }
